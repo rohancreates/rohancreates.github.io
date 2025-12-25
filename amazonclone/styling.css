@@ -1,0 +1,249 @@
+*{
+    text-decoration: none;
+    padding: 0px;
+    margin: 0px;
+}
+
+#body{
+    padding: 0px;
+    margin: 0px;
+
+}
+.navbar{
+    padding: 5px;
+    background-color: #151827;
+    margin: 0px;
+    max-height: 50px;
+}
+#amazonlogo{
+    padding-top: 10px;
+    margin-left: 0px;
+    cursor: pointer;
+}
+.logo{
+    
+    height: auto;
+    border: solid 1px #151827;
+    display: flex;
+    padding-left: 10px;
+    padding-right: 10px;
+    cursor: pointer;
+}
+
+.logo:hover{
+    cursor: pointer;
+    border: white 1px solid;
+}
+
+.navdiv{
+    margin : 0px;
+    padding: 0px;
+    background-color: #151827;
+    display: flex;
+    height: 50px;
+    
+}
+.address{
+    border: solid 1px #151827;
+    padding-left: 10px;
+    padding-right: 0px;
+    color: white;
+    font-size: 3px;
+    cursor: pointer;
+    width: 300px;
+    max-width: 200px;
+}
+.li{
+    width: 300px;
+    color: white;
+    font-size: large;
+    max-width: 200px;
+    cursor: pointer;
+    display: block;
+    align-items: center;
+    text-align: center;
+    margin-top: 10px;
+
+
+}
+.address:hover{
+    text-decoration: none;
+    cursor: pointer;
+    border: white 1px solid;
+}
+#addresstext{
+    color: white;
+    font-size: 14px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+#loginbutton{
+    margin-left: auto;
+    margin-right: 30px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 8px 15px;
+    font-size: 16px;
+    background-color: #f0c14b;
+    border: 1px solid #a88734;
+    border-radius: 3px;
+    cursor: pointer;
+}
+#loginbutton:hover{
+    background-color: #a88734;
+    color: #f0c14b;
+
+    cursor: pointer;
+
+}
+#searchbar{
+    width: 560px;
+    height: 40px;
+    margin-left: 20px;
+    margin-top: 5px;
+    border-radius: 5px 0 0 5px;
+    border: none;
+    padding-left: 10px;
+}
+#searchicon{
+    color: black;
+    padding-top: 10px;
+    padding-left: 3px;
+}
+#searchbtn{
+    padding-top: 0px;
+    height: 40px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-left: 0px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border-radius: 0 5px 5px 0px;
+    border: none;
+    background-color: #febd69;
+    cursor: pointer;
+    padding-left: 5px;
+}
+#searchbtn:hover{
+    background-color: #f3a847;
+    cursor: pointer;
+}
+.EN{
+    color: white;
+    border: solid 1px #151827;
+    display: flex;
+}
+.ENclass{
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    border: solid 1px #151827;
+    display: flex;
+    border: #151827 1px solid;
+    align-items: center;
+    padding-left: 2px;
+    margin-right: 20px;
+    margin-left: 30px;
+    
+}
+#jhanda{
+    margin-right: 5px;
+}
+
+.ENclass:hover{
+    cursor: pointer;
+    border: white 1px solid;
+}
+
+.orders{
+    border: solid 1px #151827;
+    display: flex;
+    align-items: center;
+}
+.orders:hover{
+    cursor: pointer;
+    border: white 1px solid;
+}
+.divofcart{
+    border: solid 1px #151827;
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+.divofcart:hover{
+    cursor: pointer;
+    border: white 1px solid;
+}
+
+
+.sub-nav {
+  display: flex;
+  align-items: center;
+  background-color: #232f3e; /* Amazon's dark blue/grey */
+  color: white;
+  padding: 8px 15px;
+  
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
+
+.sub-nav a {
+    font-size: larger;
+  color: white;
+  text-decoration: none;
+  padding-left: 8px;
+  padding-right: 10px;
+  border: 1px solid transparent; /* Prevents jumping on hover */
+}
+
+.sub-nav a:hover {
+  border: 1px solid white; /* The classic Amazon hover effect */
+  border-radius: 2px;
+}
+
+
+
+/* 
+-------------------------------------------------------------------------------------
+ */
+
+
+
+ .mainbody{
+    width: 100%;
+    height: 1000px;
+    margin: 0px;
+    padding: 0px;
+    background-color: #eaeded;
+ }
+
+
+#mainbanner{
+    width: 100%;
+    height: auto;
+}
+.ghost{
+    width: 100%;
+    height: 600px;
+    background-color: #eaeded;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: relative;
+
+}
+
+.background{
+    width: 100%;
+    height: 600px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-image: url('images for css/middle.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0.3;
+    z-index: -1;
+}
