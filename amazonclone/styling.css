@@ -215,35 +215,35 @@
     height: 1000px;
     margin: 0px;
     padding: 0px;
-    background-color: #eaeded;
+    background-color: #393c3c;
  }
 
-
-#mainbanner{
+ .mainbody{
+    background-color: #2f3031;
+    margin: 0;
+ }
+ .pink{
     width: 100%;
-    height: auto;
-}
-.ghost{
-    width: 100%;
-    height: 600px;
-    background-color: #eaeded;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    position: relative;
+  height: 600px;
+  /* Replace URL with your actual image */
+  background-image: url('https://images-eu.ssl-images-amazon.com/images/G/31/2025/GW/SSH/Unrec/PC/934044757._CB774996144_.jpg');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+ }
+ .pink::after{
+    content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 400px; /* How tall the "fade" area is */
+  
+  /* Graduating from Transparent (top) to Grey (bottom) */
+  background: linear-gradient(to bottom, transparent, #2f3031);
+ }
 
-}
-
-.background{
-    width: 100%;
-    height: 600px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-image: url('images for css/middle.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    opacity: 0.3;
-    z-index: -1;
-}
+ .belowpink{
+    height: 500px;
+    background-color: #2f3031;
+ }
