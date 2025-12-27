@@ -2,6 +2,7 @@
     text-decoration: none;
     padding: 0px;
     margin: 0px;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 #body{
@@ -102,7 +103,7 @@
 
 }
 #searchbar{
-    width: 560px;
+    width: 700px;
     height: 40px;
     margin-left: 20px;
     margin-top: 5px;
@@ -229,7 +230,7 @@
 
  .mainbody{
     width: 100%;
-    height: 1000px;
+    height: 2000px;
     margin: 0px;
     padding: 0px;
     background-color: #dedede;
@@ -274,14 +275,68 @@
     background-color: white; /* Boxes MUST be white to stand out */
     color: black;            /* Text must be black for readability */
     width: 300px;
-    height: 400px;
+    height: 380px;
     padding: 20px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3); /* Adds depth */
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: center;
+}
+.box:hover {
+    scale: calc(1.03);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
 }
 
 .divofcart:hover .fa-cart-shopping {
   animation: fa-bounce 1s infinite;
 }
 
+#signinbtn {
+    display: inline-block;
+    justify-content: center;
+    margin-top: 5%;
+    width: 90%;
+    background-color: #f0c14b;
+    border: 1px solid #a88734;
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+#signinbtn:hover {
+    background-color: #a88734;
+    color: #f0c14b;
+    cursor: pointer;
+}
+#fourthbox{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+}
 
 
+.right-column {
+    display: flex;
+    flex-direction: column; /* This makes the internal boxes stack! */
+    gap: 20px;
+}
+
+.small-box {
+    background: white;
+    width: 300px;
+    padding: 20px;
+    
+    border-radius: 8px;
+    /* Height will adjust based on content */
+
+}
+.small-box:hover{
+
+    scale: calc(1.03);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
