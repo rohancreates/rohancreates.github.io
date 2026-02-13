@@ -1,147 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="styling.css">
-    <link rel="stylesheet" href="image.png">
-    <link rel="stylesheet" href="images for css/">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
-    <link rel="stylesheet" href="https://www.amazon.in/events/deals/?_encoding=UTF8&_encoding=UTF8&ref_=dealz_cs_see_more&dynamicBubble=%7B%2522collectionId%2522%3A%2522deals-contextual-link%2522%2C%2522departmentsIncluded%2522%3A%5B1375416031%5D%7D&pd_rd_w=7OXoe&content-id=amzn1.sym.47226dd1-3657-494d-8578-f5621c2124b3&pf_rd_p=47226dd1-3657-494d-8578-f5621c2124b3&pf_rd_r=0X7YAAGACM1NJV43FXPN&pd_rd_wg=xC4Lc&pd_rd_r=ab780267-5d94-4bae-b59a-c181be87304a&bubble-id=deals-contextual-link">
-</head>
-<body>
-<nav class="navbar">
-    <div class="navdiv">
-        <div class="logo">
-            <img src="images for css/Amazon-Logo-White-PNG-Image.png" alt="" height="40px" id="amazonlogo" >
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body>
+    <nav>
+      <div class="navdiv">
+        <img
+          class="im"
+          src="images/images.png"
+          alt=""
+          height="60px"
+          width="120px"
+        />
+        <!-- Hamburger -->
+        <div class="hamburger" onclick="toggleMenu()">
+          <i class="fa-solid fa-bars"></i>
         </div>
 
-           <div class="address">
-             <a class="li" href="#" id="addresstext" >
-                    Delivering to ghaziabad,india : <br><b>Update location</b> 
-            <i class="fa-solid fa-location-dot"></i>
-            </a>
-            </div>
+        <!-- <a class="link" href="#">Bestseller</a>
+        <a class="link" href="#">Electronics</a>
+        <a class="link" href="#">Offers</a>
+        <a class="link" href="#">Shoping</a> -->
+        <div class="nav-items">
+          <button class="loc">
+            Delivering to Delhi <br /><i class="fa-solid fa-location-dot"></i>
+            110001 Update location
+          </button>
 
-            <input type="text" id="searchbar" placeholder="Search Amazon.in">
+          <div class="search">
+            <input
+              width="300px"
+              class="inp"
+              type="text"
+              placeholder="Search products"
+            />
+            <button class="btn">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+          </div>
 
-            <a id="searchbtn"><i id="searchicon" class="fa-solid fa-magnifying-glass" ></i></a>
+          <button class="loc ret">
+            Returns <br />
+            & Orders
+          </button>
+          <button class="loc sign">
+            Hello, sign in <br />
+            Account & Lists
+          </button>
 
-            <div class="ENclass">
-            <a id="lang" class="EN" href="#"><img src="images for css/indiaflag.png" alt="" width="30px" id="jhanda">Lang</a>
-            </div>
-            
-           
-            <div class="orders">
-                <img src="images for css/orders.png" id="orderlogo" 
-                width="80" alt="">
-            </div>
-
-            <div class="divofcart">
-                <i class="fa-solid fa-cart-shopping"></i>
-                <p id="carttextp">Cart</p>
-            </div>
-
-            <button id="loginbutton">login</button>
+          <button class="login">
+            <i class="fa-solid fa-cart-arrow-down"></i>
+          </button>
+        </div>
+      </div>
+    </nav>
+    <div class="nav2">
+      <label class="bb" for="shoping">All</label>
+      <label class="bb" for="shoping">shoping</label>
+      <label class="bb" for="shoping">Mx Player</label>
+      <label class="bb" for="shoping">sell</label>
+      <label class="bb" for="shoping">Bestseller</label>
+      <label class="bb" for="shoping">Mobiles</label>
+      <label class="bb" for="shoping">Customer Service</label>
+      <label class="bb" for="shoping">prime</label>
+      <label class="bb" for="shoping">fashion</label>
+      <label class="bb" for="shoping">electronics</label>
+      <label class="bb" for="shoping">Books</label>
+      <label class="bb" for="shoping">Computers</label>
+      <label class="bb" for="shoping">Gift Cards</label>
     </div>
-</nav>
-
-<div class="sub-nav">
-    <a href="#"><i class="menu-icon"></i>All</a>
-    <a href="#">Fresh</a>
-    <a href="#">MX Player</a>
-    <a href="#">Sell</a>
-    <a href="#">Bestsellers</a>
-    <a href="#">Mobiles</a>
-    <a href="#">Electronics</a>
-    <a href="#">Fashion</a>
-    <a href="#">Home</a>
-    <a href="#">Books</a>
-    <a href="#">Toys</a>
-    <a href="#">New releases</a>
-    <a href="#">Kids</a>
-</div>
-<div class="mainbody">
-    
-    <div class="pink">
-        <a href="https://www.amazon.in/s?i=shoes&rh=n%3A1983396031%2Cp_85%3A10440599031%2Cp_36%3A-59900%2Cp_28%3ASneakers%257Csneaker&s=exact-aware-popularity-rank&dc&hidden-keywords=-sponsored-formal-sandal-slipper-slide-flip-baby-chappal&ds=v1%3AHol0oYk%2B2ZZ7qToi4A54jqljmBBPGewUQZw8BHNaBdU&_encoding=UTF8&content-id=amzn1.sym.53fa5490-6cd6-4d3e-ba89-e027caa3c9db&pd_rd_r=90afbab8-2d8f-426f-9a1e-6d4bcef81599&pd_rd_w=SxeUR&pd_rd_wg=9iUTf&pf_rd_p=53fa5490-6cd6-4d3e-ba89-e027caa3c9db&pf_rd_r=ESYJBH5XZX53F7D2BS55&qid=1764703595&ref=pd_hp_d_hero_unk"></a>
+    <div class="div1">
+      <img height="300px" width="800px" src="images/img1.png" alt="" />
     </div>
-
-    <div class="box-container">
-
-        <div class="box" id="box1"><h3>Continue shopping deals</h3>
-            <a target="_blank" href="https://www.amazon.in/events/deals/?_encoding=UTF8&_encoding=UTF8&ref_=dealz_cs_see_more&dynamicBubble=%7B%2522collectionId%2522%3A%2522deals-contextual-link%2522%2C%2522departmentsIncluded%2522%3A%5B1375416031%5D%7D&pd_rd_w=7OXoe&content-id=amzn1.sym.47226dd1-3657-494d-8578-f5621c2124b3&pf_rd_p=47226dd1-3657-494d-8578-f5621c2124b3&pf_rd_r=0X7YAAGACM1NJV43FXPN&pd_rd_wg=xC4Lc&pd_rd_r=ab780267-5d94-4bae-b59a-c181be87304a&bubble-id=deals-contextual-link">
-            <img
-             src="/rohancreates.github.io/amazonclone/images for css/box1.png" alt="">
-           see more details
-        </a></div>
-
-        <div class="box"><h3>Revamp your home</h3>
-            <a target="_blank" href="https://www.amazon.in/b/?_encoding=UTF8&node=12414705031&pd_rd_w=960VU&content-id=amzn1.sym.f8e82c51-0408-4554-a158-9be4d776850d&pf_rd_p=f8e82c51-0408-4554-a158-9be4d776850d&pf_rd_r=0X7YAAGACM1NJV43FXPN&pd_rd_wg=xC4Lc&pd_rd_r=ab780267-5d94-4bae-b59a-c181be87304a&ref_=pd_hp_d_atf_unk">
-                <img src="/rohancreates.github.io/amazonclone/images for css/box2.2.png" alt="" id="box2image">
-                explore more
-            </a>
-
-        </div>
-
-        <div class="box"><h3>Bulk order discounts + Up to 18% GST savings</h3>
-            <a target="_blank" href="https://www.amazon.in/b/ref=vpr_b2c_pqc_reg/?_encoding=UTF8&ie=UTF8&node=80662860031&pd_rd_w=SHhOC&content-id=amzn1.sym.cf5632b9-cf46-4edc-8eb8-62d7de4b16d8&pf_rd_p=cf5632b9-cf46-4edc-8eb8-62d7de4b16d8&pf_rd_r=ESYJBH5XZX53F7D2BS55&pd_rd_wg=H6Ygz&pd_rd_r=84fa2823-7dea-41a1-af4a-6a33ad439c99&ref_=pd_hp_d_atf_unk">
-                <img src="/rohancreates.github.io/amazonclone/images for css/box3.png" alt="">
-                Create a free account
-            </a>
-        
-        </div>
-
-
-        <!-- <div class="box" id="fourthbox">
-
-            <div  id="signinbox">
-                <h3>Sign in for your best experience</h3>
-                <div>
-                    <button id="signinbtn">Sign in securely</button>
-                </div>
-            </div>
-
-            <div>
-                <a href="https://www.amazon.in/dp/B0BVM9TKXS/ref=syn_sd_onsite_desktop_0?ie=UTF8&psc=1&pd_rd_plhdr=t&aref=nIr9S0FcsM">
-                    <img src="/rohancreates.github.io/amazonclone/images for css/below sign in.png" alt="">
-                </a>
-            </div>
-
-        </div> -->
-
-        <div class="right-column" >
-        <div class="small-box" >
-
-
-            
-                <h3>Sign in for your best experience</h3>
-                <div>
-                    <button id="signinbtn">Sign in securely</button>
-                </div>
-
-
-
-        </div>
-        <div class="small-box">
-
-
-            
-                <a href="https://www.amazon.in/dp/B0BVM9TKXS/ref=syn_sd_onsite_desktop_0?ie=UTF8&psc=1&pd_rd_plhdr=t&aref=nIr9S0FcsM">
-                    <img src="/rohancreates.github.io/amazonclone/images for css/below sign in.png" alt="">
-                </a>
-
-
-        </div>
-
+    <div class="boxm">
+      <div class="box box1">
+        <h3>Revamp your home in style</h3>
+        <img class="imgg" src="images/img2.jpg" alt="" />
+      </div>
+      <div class="box box2">
+        <h3>Bulk order discounts + Up to 18% GST savings</h3>
+        <img class="imgg" src="images/img3.jpg" alt="" />
+      </div>
+      <div class="box box3">
+        <h3>Appliances for your home | Up to 55% off</h3>
+        <img class="imgg" src="images/img4.jpg" alt="" />
+      </div>
+      <div class="box box4">
+        <h3>Starting ₹49 | Deals on home essentials</h3>
+        <img class="imgg" src="images/img5.jpg" alt="" />
+      </div>
     </div>
 
+    <div class="boxn">
+      <div class="box box5">
+        <h3>Starting ₹149 | Headphones</h3>
+        <img class="imgg" src="images/img7.jpg" alt="">
+      </div>
+      <div class="box box6">
+        <h3>Automotive essentials | Up to 60% off</h3>
+         <img class="imgg" src="images/img8.jpg" alt="">
+      </div>
+      <div class="box box7">
+        <h3>Starting ₹199 | Amazon Brands & more</h3>
+         <img class="imgg" src="images/img9.jpg" alt="">
+      </div>
+      <div class="box box8">
+        <h3>Up to 50% off | Baby care & toys | Amazon Brands</h3>
+         <img class="imgg" src="images/img10.jpg" alt="">
+      </div>
+    </div>
 
+    <nav class="navend">Back To Top</nav>
 
-
-
-
-</div>
-</body>
+    <div class="div3">
+      <h2 class="ab">Connect with Us</h2>
+      <h3 class="ab">Facebook</h3>
+      <h3 class="ab">Twitter</h3>
+      <h3 class="ab">Instagram</h3>
+    </div>
+  </body>
 </html>
