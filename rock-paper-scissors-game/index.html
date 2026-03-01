@@ -26,12 +26,32 @@
             width: 400px;
             font-family: monospace;
             min-height: 100px;
+            border: 2px solid black;
+            border-radius: 30px;
 
+        }
+        .button:hover{
+            cursor: pointer;
+            scale: 1.06;
+        }
+        .mahadiv{
+            display: flex;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        .div2{
+            display: flex;
+            flex-direction: row;
+            border: 2px solid black;
+            padding: 10px;
+            width: 300px;
+            border: 4px solid rgb(230, 85, 85);
+            background-color: #EA7B7B;
+            border-radius: 20px;
         }
         .divofbutton{
             padding: 10px;
-            margin-top: 10px;
-            width: 600px;
+            width: 500px;
             display: flex;
             border: 4px solid rgb(230, 85, 85);
             align-items: center;
@@ -41,6 +61,7 @@
             background-color: #EA7B7B;
             border-radius: 20px;
         }
+        
         @media (max-width: 600px){
             .divofbutton{
                 width: 90%;
@@ -51,6 +72,27 @@
                 font-size: 20px;
             }
         }
+        #rockbutton{
+            background-image: url(sigma\ rock.png);
+        background-size: 100px;
+        background-repeat: no-repeat;
+        background-position: right;
+        background-color: #a1a1a1;
+        }
+        #paperbutton{
+        background-image: url(konan.png);
+        background-size: 160px;
+        background-repeat: no-repeat;
+        background-color: #cdcdcd;
+        }
+        #scissorbutton{
+        background-image: url(inosuke.png);
+        background-size: 100px;
+        background-repeat: no-repeat;
+        background-position: right;
+        background-color: rgb(184, 203, 220);
+        }
+
     </style>
 </head>
 
@@ -62,7 +104,7 @@
 
     console.log('yoyo whassup');
     </script>
-
+<div class="mahadiv">
 <div class="divofbutton">
     <button id="rockbutton" class="button" type="button" onclick="
 
@@ -146,6 +188,10 @@
         alert(`You picked scissors. Computer picked ${computerMove2}. ${result3}`);
 
     ">scissors</button>
+</div>
+<div class="div2">
+    div 2
+</div>
 </div>
 
 
