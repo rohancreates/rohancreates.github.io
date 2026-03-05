@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IRONFORGE ELITE — Greater Noida West</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600;700;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C96D;
+    --gold-dim: #7A5E2A;
+    --black: #060608;
+    --dark: #0D0D10;
+    --dark2: #13131A;
+    --dark3: #1A1A24;
+    --white: #F5F3EE;
+    --grey: #8A8A96;
+    --red: #C0392B;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Barlow', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom Cursor */
+  .cursor {
+    position: fixed;
+    width: 10px; height: 10px;
+    background: var(--gold);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s;
+    mix-blend-mode: difference;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 36px; height: 36px;
+    border: 1.5px solid var(--gold);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transition: transform 0.18s ease, opacity 0.2s;
+    opacity: 0.6;
+  }
+
+  /* Noise overlay */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    background-size: 200px;
+    opacity: 0.35;
+    pointer-events: none;
+    z-index: 1000;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 500;
+    padding: 20px 60px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: linear-gradient(to bottom, rgba(6,6,8,0.95), transparent);
+    backdrop-filter: blur(2px);
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 4px;
+    color: var(--white);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--gold); }
+  .nav-links { display: flex; gap: 40px; list-style: none; }
+  .nav-links a {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--grey);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-cta {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--black);
+    background: var(--gold);
+    padding: 10px 28px;
+    text-decoration: none;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    transition: background 0.3s, transform 0.2s;
+  }
+  .nav-cta:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    position: relative;
+    display: flex; align-items: center;
+    overflow: hidden;
+    padding: 0 60px;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 70% 50%, rgba(201,168,76,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 20% 80%, rgba(192,57,43,0.06) 0%, transparent 50%),
+      linear-gradient(135deg, #060608 0%, #0D0D14 50%, #060608 100%);
+  }
+
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
+    background-size: 80px 80px;
+    mask-image: radial-gradient(ellipse 70% 70% at 65% 50%, black 30%, transparent 80%);
+  }
+
+  .hero-line-accent {
+    position: absolute;
+    top: 0; bottom: 0; right: 38%;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, var(--gold-dim), transparent);
+    opacity: 0.4;
+  }
+
+  .hero-content { position: relative; z-index: 2; max-width: 680px; }
+
+  .hero-eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 28px;
+    display: flex; align-items: center; gap: 16px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.3s forwards;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    width: 40px; height: 1px;
+    background: var(--gold);
+  }
+
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(72px, 10vw, 130px);
+    line-height: 0.9;
+    letter-spacing: 2px;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.5s forwards;
+  }
+  .hero-title .line2 { color: var(--gold); display: block; }
+  .hero-title .line3 {
+    display: block;
+    -webkit-text-stroke: 1px rgba(245,243,238,0.3);
+    color: transparent;
+    font-size: clamp(56px, 8vw, 100px);
+  }
+
+  .hero-desc {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--grey);
+    max-width: 440px;
+    margin: 32px 0 48px;
+    font-weight: 300;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.7s forwards;
+  }
+
+  .hero-actions {
+    display: flex; gap: 20px; align-items: center;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.9s forwards;
+  }
+  .btn-primary {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--black);
+    background: var(--gold);
+    padding: 16px 40px;
+    text-decoration: none;
+    clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-primary::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: rgba(255,255,255,0.15);
+    transform: translateX(-100%) skewX(-20deg);
+    transition: transform 0.5s;
+  }
+  .btn-primary:hover::after { transform: translateX(120%) skewX(-20deg); }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+  .btn-secondary {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--white);
+    text-decoration: none;
+    display: flex; align-items: center; gap: 10px;
+    transition: color 0.3s;
+  }
+  .btn-secondary::after {
+    content: '→';
+    transition: transform 0.3s;
+  }
+  .btn-secondary:hover { color: var(--gold); }
+  .btn-secondary:hover::after { transform: translateX(6px); }
+
+  .hero-stats {
+    position: absolute; right: 60px; bottom: 80px;
+    display: flex; flex-direction: column; gap: 32px;
+    z-index: 2;
+    opacity: 0;
+    animation: fadeIn 1s 1.2s forwards;
+  }
+  .stat-item { text-align: right; }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px;
+    color: var(--white);
+    line-height: 1;
+  }
+  .stat-num span { color: var(--gold); }
+  .stat-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--grey);
+  }
+
+  .scroll-indicator {
+    position: absolute; bottom: 36px; left: 60px;
+    display: flex; align-items: center; gap: 12px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--grey);
+    z-index: 2;
+    animation: fadeIn 1s 1.4s forwards;
+    opacity: 0;
+  }
+  .scroll-line {
+    width: 1px; height: 50px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+  }
+
+  /* MARQUEE */
+  .marquee-section {
+    background: var(--gold);
+    padding: 18px 0;
+    overflow: hidden;
+    position: relative;
+  }
+  .marquee-track {
+    display: flex;
+    white-space: nowrap;
+    animation: marquee 20s linear infinite;
+  }
+  .marquee-item {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 4px;
+    color: var(--black);
+    padding: 0 40px;
+    display: flex; align-items: center; gap: 40px;
+  }
+  .marquee-dot { width: 6px; height: 6px; background: var(--black); border-radius: 50%; opacity: 0.4; }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* SECTION COMMONS */
+  section { padding: 120px 60px; position: relative; }
+  .section-eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .section-eyebrow::before { content: ''; width: 30px; height: 1px; background: var(--gold); }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 6vw, 80px);
+    line-height: 1;
+    letter-spacing: 1px;
+  }
+
+  /* ABOUT / ELITE */
+  .elite-section {
+    background: var(--dark);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .elite-left { position: relative; }
+  .elite-img-wrapper {
+    position: relative;
+    height: 600px;
+  }
+  .elite-img-bg {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, var(--dark3), var(--dark2));
+    border: 1px solid rgba(201,168,76,0.15);
+  }
+  .elite-img-inner {
+    position: absolute;
+    inset: 20px;
+    background: linear-gradient(160deg, rgba(201,168,76,0.06), transparent 60%),
+                linear-gradient(to bottom, transparent 40%, rgba(6,6,8,0.8));
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 40px;
+  }
+  .elite-dumbbell {
+    font-size: 120px;
+    text-align: center;
+    margin-bottom: 20px;
+    opacity: 0.15;
+    filter: grayscale(1);
+  }
+  .elite-badge {
+    position: absolute; top: -20px; right: -20px;
+    width: 100px; height: 100px;
+    background: var(--gold);
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 2px;
+  }
+  .elite-badge-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    color: var(--black);
+    line-height: 1;
+  }
+  .elite-badge-text {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--black);
+    text-transform: uppercase;
+  }
+  .feature-list { list-style: none; margin-top: 40px; }
+  .feature-list li {
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    display: flex; align-items: center; gap: 16px;
+    font-size: 15px;
+    color: var(--grey);
+    transition: color 0.3s;
+  }
+  .feature-list li:hover { color: var(--white); }
+  .feature-list li::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--gold);
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    flex-shrink: 0;
+  }
+
+  /* PROGRAMS */
+  .programs-section { background: var(--black); }
+  .programs-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 60px;
+  }
+  .program-card {
+    background: var(--dark2);
+    padding: 48px 36px;
+    position: relative;
+    overflow: hidden;
+    cursor: none;
+    transition: transform 0.4s, background 0.4s;
+    border-bottom: 2px solid transparent;
+  }
+  .program-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(201,168,76,0.08), transparent);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .program-card:hover { background: var(--dark3); transform: translateY(-4px); border-bottom-color: var(--gold); }
+  .program-card:hover::before { opacity: 1; }
+  .program-icon {
+    font-size: 36px;
+    margin-bottom: 24px;
+    display: block;
+  }
+  .program-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 3px;
+    color: var(--gold-dim);
+    margin-bottom: 8px;
+  }
+  .program-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    color: var(--white);
+  }
+  .program-desc {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--grey);
+    font-weight: 300;
+  }
+  .program-arrow {
+    position: absolute; bottom: 32px; right: 32px;
+    font-size: 20px;
+    color: var(--gold);
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s;
+  }
+  .program-card:hover .program-arrow { opacity: 1; transform: translateX(0); }
+
+  /* UPGRADE BANNER */
+  .upgrade-section {
+    background: var(--dark);
+    padding: 0 60px;
+  }
+  .upgrade-inner {
+    background: linear-gradient(120deg, rgba(201,168,76,0.15), rgba(201,168,76,0.05) 50%, transparent);
+    border: 1px solid rgba(201,168,76,0.25);
+    padding: 80px 80px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 60px;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .upgrade-inner::before {
+    content: 'UPGRADE';
+    position: absolute;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 200px;
+    color: rgba(201,168,76,0.04);
+    right: -20px; top: -30px;
+    line-height: 1;
+    pointer-events: none;
+    letter-spacing: 4px;
+  }
+  .upgrade-tag {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--black);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+    margin-bottom: 20px;
+  }
+
+  /* COMMUNITY */
+  .community-section { background: var(--black); }
+  .community-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    margin-top: 60px;
+  }
+  .community-card {
+    background: var(--dark2);
+    padding: 36px 28px;
+    text-align: center;
+    transition: background 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .community-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transition: transform 0.4s;
+  }
+  .community-card:hover { background: var(--dark3); }
+  .community-card:hover::after { transform: scaleX(1); }
+  .community-icon { font-size: 32px; margin-bottom: 16px; display: block; }
+  .community-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+  .community-desc { font-size: 13px; color: var(--grey); line-height: 1.6; }
+
+  /* TRAINERS */
+  .trainers-section { background: var(--dark); }
+  .trainers-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 60px;
+  }
+  .trainer-card {
+    background: var(--dark2);
+    padding: 48px 36px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.4s;
+  }
+  .trainer-card:hover { transform: translateY(-6px); }
+  .trainer-avatar {
+    width: 80px; height: 80px;
+    background: linear-gradient(135deg, var(--gold-dim), var(--gold));
+    border-radius: 2px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 32px;
+    margin-bottom: 24px;
+    clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+  }
+  .trainer-role {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .trainer-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--white);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+  }
+  .trainer-specialty {
+    font-size: 13px;
+    color: var(--grey);
+    line-height: 1.6;
+  }
+
+  /* CTA */
+  .cta-section {
+    background: var(--dark);
+    text-align: center;
+    padding: 140px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-section::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(201,168,76,0.08), transparent);
+  }
+  .cta-mega {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(60px, 10vw, 140px);
+    line-height: 0.9;
+    letter-spacing: 3px;
+    position: relative;
+  }
+  .cta-mega .outline {
+    -webkit-text-stroke: 1px rgba(245,243,238,0.2);
+    color: transparent;
+  }
+  .cta-contact {
+    margin-top: 60px;
+    display: flex; align-items: center; justify-content: center; gap: 16px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 20px;
+    letter-spacing: 3px;
+    color: var(--grey);
+  }
+  .cta-contact a {
+    color: var(--gold);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .cta-contact a:hover { color: var(--gold-light); }
+  .cta-contact-sep { opacity: 0.3; }
+
+  /* FOOTER */
+  footer {
+    background: var(--black);
+    border-top: 1px solid rgba(201,168,76,0.1);
+    padding: 60px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    letter-spacing: 4px;
+  }
+  .footer-logo span { color: var(--gold); }
+  .footer-tagline {
+    font-size: 13px;
+    color: var(--grey);
+    margin-top: 8px;
+    font-weight: 300;
+    letter-spacing: 1px;
+  }
+  .footer-links {
+    list-style: none;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .footer-links a {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--grey);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .footer-links a:hover { color: var(--gold); }
+  .footer-address {
+    font-size: 13px;
+    line-height: 1.8;
+    color: var(--grey);
+    font-weight: 300;
+  }
+  .footer-address strong { color: var(--white); font-weight: 500; display: block; margin-bottom: 4px; }
+  .footer-phone {
+    margin-top: 12px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 20px;
+    color: var(--gold);
+    letter-spacing: 2px;
+  }
+  .footer-bottom {
+    background: var(--black);
+    border-top: 1px solid rgba(255,255,255,0.04);
+    padding: 20px 60px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-bottom p {
+    font-size: 12px;
+    color: rgba(138,138,150,0.5);
+    letter-spacing: 1px;
+  }
+
+  /* REVEAL ANIMATIONS */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s, transform 0.8s;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-left {
+    opacity: 0;
+    transform: translateX(-40px);
+    transition: opacity 0.8s, transform 0.8s;
+  }
+  .reveal-left.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .reveal-right {
+    opacity: 0;
+    transform: translateX(40px);
+    transition: opacity 0.8s, transform 0.8s;
+  }
+  .reveal-right.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* GOLD LINE DIVIDERS */
+  .gold-divider {
+    width: 60px; height: 2px;
+    background: var(--gold);
+    margin: 24px 0;
+  }
+
+  /* BOLLYTWIST highlight */
+  .bollytwist-section {
+    background: var(--dark);
+    overflow: hidden;
+    padding: 120px 60px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .bollytwist-visual {
+    background: linear-gradient(135deg, var(--dark2), var(--dark3));
+    border: 1px solid rgba(201,168,76,0.12);
+    height: 500px;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  .bollytwist-visual::after {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 30% 70%, rgba(201,168,76,0.12), transparent 50%),
+      radial-gradient(circle at 70% 30%, rgba(192,57,43,0.08), transparent 50%);
+  }
+  .bolly-icon { font-size: 80px; position: relative; z-index: 1; }
+  .bolly-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    letter-spacing: 6px;
+    color: var(--gold);
+    position: relative; z-index: 1;
+    margin-top: 16px;
+  }
+  .bolly-sub {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    letter-spacing: 4px;
+    color: var(--grey);
+    text-transform: uppercase;
+    position: relative; z-index: 1;
+  }
+
+  /* Challenges strip */
+  .challenges-strip {
+    background: var(--dark2);
+    padding: 60px;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 2px;
+  }
+  .challenge-item {
+    background: var(--dark3);
+    padding: 28px 20px;
+    text-align: center;
+    transition: background 0.3s;
+    cursor: none;
+  }
+  .challenge-item:hover { background: rgba(201,168,76,0.1); }
+  .challenge-emoji { font-size: 28px; margin-bottom: 10px; display: block; }
+  .challenge-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--grey);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 1024px) {
+    nav { padding: 16px 28px; }
+    .nav-links { display: none; }
+    section { padding: 80px 28px; }
+    .hero { padding: 0 28px; }
+    .hero-stats { right: 28px; bottom: 60px; }
+    .elite-section { grid-template-columns: 1fr; }
+    .programs-grid { grid-template-columns: 1fr 1fr; }
+    .community-grid { grid-template-columns: 1fr 1fr; }
+    .trainers-grid { grid-template-columns: 1fr 1fr; }
+    .bollytwist-section { grid-template-columns: 1fr; }
+    .challenges-strip { grid-template-columns: repeat(3, 1fr); }
+    footer { grid-template-columns: 1fr; gap: 32px; padding: 40px 28px; }
+    .footer-bottom { padding: 20px 28px; flex-direction: column; gap: 8px; }
+    .upgrade-inner { grid-template-columns: 1fr; padding: 48px 36px; }
+    .upgrade-section { padding: 0 28px; }
+  }
+  @media (max-width: 640px) {
+    .programs-grid { grid-template-columns: 1fr; }
+    .community-grid { grid-template-columns: 1fr 1fr; }
+    .trainers-grid { grid-template-columns: 1fr; }
+    .hero-stats { display: none; }
+    .challenges-strip { grid-template-columns: repeat(2, 1fr); }
+    .cta-section { padding: 80px 28px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">IRON<span>FORGE</span></a>
+  <ul class="nav-links">
+    <li><a href="#programs">Programs</a></li>
+    <li><a href="#community">Community</a></li>
+    <li><a href="#trainers">Trainers</a></li>
+    <li><a href="#upgrade">Upgrade</a></li>
+  </ul>
+  <a href="tel:+919643365362" class="nav-cta">Join Now</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-line-accent"></div>
+
+  <div class="hero-content">
+    <p class="hero-eyebrow">Greater Noida West · Elite Fitness</p>
+    <h1 class="hero-title">
+      FORGE
+      <span class="line2">YOUR</span>
+      <span class="line3">LEGACY</span>
+    </h1>
+    <p class="hero-desc">Ultra-luxurious. World-class equipment. A community of 1500+ athletes. This is where transformations are forged — not just bodies.</p>
+    <div class="hero-actions">
+      <a href="tel:+919643365362" class="btn-primary">Start Training</a>
+      <a href="#programs" class="btn-secondary">Explore Programs</a>
+    </div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat-item">
+      <div class="stat-num">1500<span>+</span></div>
+      <div class="stat-label">Elite Members</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">8<span>+</span></div>
+      <div class="stat-label">Programs</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num"><span>#</span>1</div>
+      <div class="stat-label">Greater Noida West</div>
+    </div>
+  </div>
+
+  <div class="scroll-indicator">
+    <div class="scroll-line"></div>
+    Scroll to Explore
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-section">
+  <div class="marquee-track">
+    <div class="marquee-item">STRENGTH TRAINING <span class="marquee-dot"></span></div>
+    <div class="marquee-item">FAT LOSS PROGRAMS <span class="marquee-dot"></span></div>
+    <div class="marquee-item">BOLLYTWIST CLASS <span class="marquee-dot"></span></div>
+    <div class="marquee-item">CROSSFIT TRAINING <span class="marquee-dot"></span></div>
+    <div class="marquee-item">FORM FIXES <span class="marquee-dot"></span></div>
+    <div class="marquee-item">PERSONAL TRAINING <span class="marquee-dot"></span></div>
+    <div class="marquee-item">CARDIO & TREADMILL <span class="marquee-dot"></span></div>
+    <div class="marquee-item">AESTHETIC WORKOUTS <span class="marquee-dot"></span></div>
+    <!-- duplicate for seamless loop -->
+    <div class="marquee-item">STRENGTH TRAINING <span class="marquee-dot"></span></div>
+    <div class="marquee-item">FAT LOSS PROGRAMS <span class="marquee-dot"></span></div>
+    <div class="marquee-item">BOLLYTWIST CLASS <span class="marquee-dot"></span></div>
+    <div class="marquee-item">CROSSFIT TRAINING <span class="marquee-dot"></span></div>
+    <div class="marquee-item">FORM FIXES <span class="marquee-dot"></span></div>
+    <div class="marquee-item">PERSONAL TRAINING <span class="marquee-dot"></span></div>
+    <div class="marquee-item">CARDIO & TREADMILL <span class="marquee-dot"></span></div>
+    <div class="marquee-item">AESTHETIC WORKOUTS <span class="marquee-dot"></span></div>
+  </div>
+</div>
+
+<!-- ELITE FACILITY -->
+<section class="elite-section" id="about">
+  <div class="elite-left reveal-left">
+    <div class="elite-img-wrapper">
+      <div class="elite-img-bg"></div>
+      <div class="elite-img-inner">
+        <div class="elite-dumbbell">🏋️</div>
+        <div class="elite-badge">
+          <span class="elite-badge-num">1500</span>
+          <span class="elite-badge-text">Members</span>
+        </div>
+        <p style="font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:2px;color:var(--white);">Ultra Elite<br>Facility</p>
+        <p style="font-size:13px;color:var(--grey);margin-top:8px;">Greater Noida West's Premium Gym</p>
+      </div>
+    </div>
+  </div>
+  <div class="elite-right reveal-right">
+    <p class="section-eyebrow">Why Ironforge</p>
+    <h2 class="section-title">NOT JUST A GYM.<br>AN EXPERIENCE.</h2>
+    <div class="gold-divider"></div>
+    <p style="font-size:15px;line-height:1.8;color:var(--grey);font-weight:300;max-width:480px;">
+      Ironforge isn't where average people show up. It's where driven individuals level up. With professional-grade equipment, elite programming, and a culture that celebrates every PR — we built the gym Greater Noida West deserved.
+    </p>
+    <ul class="feature-list">
+      <li>World-class professional-grade equipment</li>
+      <li>Ultra luxurious & premium environment</li>
+      <li>Certified expert trainers for every discipline</li>
+      <li>Community of 1500+ committed athletes</li>
+      <li>Dedicated zones for cardio, strength & functional training</li>
+      <li>Regular fitness challenges, events & member spotlights</li>
+    </ul>
+  </div>
+</section>
+
+<!-- PROGRAMS -->
+<section class="programs-section" id="programs">
+  <div class="reveal">
+    <p class="section-eyebrow">What We Offer</p>
+    <h2 class="section-title">ELITE<br>PROGRAMS</h2>
+  </div>
+  <div class="programs-grid">
+    <div class="program-card reveal" style="transition-delay:0.1s">
+      <span class="program-icon">🏋️</span>
+      <p class="program-num">01</p>
+      <p class="program-name">Strength Training</p>
+      <p class="program-desc">Build raw power and sculptural aesthetics with structured progressive overload programs guided by certified trainers.</p>
+      <span class="program-arrow">→</span>
+    </div>
+    <div class="program-card reveal" style="transition-delay:0.2s">
+      <span class="program-icon">🔥</span>
+      <p class="program-num">02</p>
+      <p class="program-name">Fat Loss Programs</p>
+      <p class="program-desc">Science-backed fat loss protocols combining resistance training, cardio, and nutrition guidance for visible results.</p>
+      <span class="program-arrow">→</span>
+    </div>
+    <div class="program-card reveal" style="transition-delay:0.3s">
+      <span class="program-icon">💃</span>
+      <p class="program-num">03</p>
+      <p class="program-name">Bollytwist Class</p>
+      <p class="program-desc">Our signature Bollywood-themed fitness class — high energy, rhythmic, and incredibly effective for cardio and fun.</p>
+      <span class="program-arrow">→</span>
+    </div>
+    <div class="program-card reveal" style="transition-delay:0.1s">
+      <span class="program-icon">⚡</span>
+      <p class="program-num">04</p>
+      <p class="program-name">Crossfit Training</p>
+      <p class="program-desc">Functional, high-intensity workouts that build endurance, strength, and athletic performance simultaneously.</p>
+      <span class="program-arrow">→</span>
+    </div>
+    <div class="program-card reveal" style="transition-delay:0.2s">
+      <span class="program-icon">🎯</span>
+      <p class="program-num">05</p>
+      <p class="program-name">Form Fixes</p>
+      <p class="program-desc">Expert form correction sessions that help you train safely, prevent injuries, and maximize every rep's efficiency.</p>
+      <span class="program-arrow">→</span>
+    </div>
+    <div class="program-card reveal" style="transition-delay:0.3s">
+      <span class="program-icon">🏃</span>
+      <p class="program-num">06</p>
+      <p class="program-name">Cardio & Treadmill</p>
+      <p class="program-desc">Dedicated cardio zones with premium machines for sustained endurance training and active recovery sessions.</p>
+      <span class="program-arrow">→</span>
+    </div>
+  </div>
+</section>
+
+<!-- BOLLYTWIST SPOTLIGHT -->
+<section class="bollytwist-section">
+  <div class="bollytwist-visual reveal-left">
+    <div class="bolly-icon">💃🕺</div>
+    <div class="bolly-text">BOLLYTWIST</div>
+    <div class="bolly-sub">Bollywood Fitness Experience</div>
+  </div>
+  <div class="reveal-right">
+    <p class="section-eyebrow">Signature Class</p>
+    <h2 class="section-title" style="font-size:clamp(40px,5vw,70px);">FITNESS MEETS<br><span style="color:var(--gold);">BOLLYWOOD</span></h2>
+    <div class="gold-divider"></div>
+    <p style="font-size:15px;line-height:1.8;color:var(--grey);font-weight:300;margin-bottom:32px;">
+      Only at Ironforge. Our exclusive Bollytwist class fuses Bollywood dance energy with fitness science — burning calories never felt this electric. No experience needed. Just bring your energy.
+    </p>
+    <p style="font-size:14px;color:var(--grey);margin-bottom:28px;line-height:1.7;">
+      ✦ &nbsp;High-energy dance cardio sessions<br>
+      ✦ &nbsp;All fitness levels welcome<br>
+      ✦ &nbsp;Expert dance-fitness instructors<br>
+      ✦ &nbsp;Scheduled group sessions weekly
+    </p>
+    <a href="tel:+919643365362" class="btn-primary">Book a Free Trial</a>
+  </div>
+</section>
+
+<!-- UPGRADE MY GYM -->
+<section class="upgrade-section" id="upgrade" style="padding-top:80px;padding-bottom:80px;">
+  <div class="upgrade-inner reveal">
+    <div>
+      <div class="upgrade-tag">🚀 Special Offer</div>
+      <h2 class="section-title" style="font-size:clamp(40px,5vw,68px);">UPGRADE<br>MY GYM<br><span style="color:var(--gold);">PROGRAM</span></h2>
+      <div class="gold-divider"></div>
+      <p style="font-size:15px;line-height:1.8;color:var(--grey);font-weight:300;max-width:440px;">
+        Switching from another gym? Don't settle for less. Our exclusive Upgrade My Gym Program offers a seamless transition with premium benefits — because you deserve the best from day one.
+      </p>
+    </div>
+    <div style="text-align:center;">
+      <p style="font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:var(--grey);margin-bottom:16px;">Call Us Today</p>
+      <a href="tel:+919643365362" style="font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--gold);letter-spacing:2px;text-decoration:none;display:block;margin-bottom:24px;">+91-96433 65362</a>
+      <a href="tel:+919643365362" class="btn-primary">Claim Your Upgrade</a>
+    </div>
+  </div>
+</section>
+
+<!-- COMMUNITY CATEGORIES -->
+<section class="community-section" id="community">
+  <div class="reveal">
+    <p class="section-eyebrow">Our Community</p>
+    <h2 class="section-title">MORE THAN<br>1500 STRONG</h2>
+    <p style="font-size:15px;color:var(--grey);margin-top:20px;font-weight:300;max-width:500px;line-height:1.7;">A vibrant, tight-knit community that celebrates wins, corrects forms, hosts challenges, and grows together every single day.</p>
+  </div>
+  <div class="community-grid">
+    <div class="community-card reveal" style="transition-delay:0.1s">
+      <span class="community-icon">🏆</span>
+      <p class="community-label">Winners</p>
+      <p class="community-desc">Monthly challenges with real prizes. Champions recognized & spotlighted.</p>
+    </div>
+    <div class="community-card reveal" style="transition-delay:0.15s">
+      <span class="community-icon">⭐</span>
+      <p class="community-label">Star Trainers</p>
+      <p class="community-desc">Elite certified coaches dedicated to your transformation journey.</p>
+    </div>
+    <div class="community-card reveal" style="transition-delay:0.2s">
+      <span class="community-icon">📈</span>
+      <p class="community-label">Results</p>
+      <p class="community-desc">Real before & afters from real members. Proof that it works.</p>
+    </div>
+    <div class="community-card reveal" style="transition-delay:0.25s">
+      <span class="community-icon">💪</span>
+      <p class="community-label">Motivation</p>
+      <p class="community-desc">Daily content, reels, and member spotlights to keep you going.</p>
+    </div>
+    <div class="community-card reveal" style="transition-delay:0.3s">
+      <span class="community-icon">🎯</span>
+      <p class="community-label">Challenges</p>
+      <p class="community-desc">Fitness competitions and events that bring the community alive.</p>
+    </div>
+    <div class="community-card reveal" style="transition-delay:0.35s">
+      <span class="community-icon">🤝</span>
+      <p class="community-label">Collaborations</p>
+      <p class="community-desc">Expert partnerships and special events throughout the year.</p>
+    </div>
+    <div class="community-card reveal" style="transition-delay:0.4s">
+      <span class="community-icon">🎬</span>
+      <p class="community-label">Form Fixes</p>
+      <p class="community-desc">Educational reels correcting common mistakes for safer training.</p>
+    </div>
+    <div class="community-card reveal" style="transition-delay:0.45s">
+      <span class="community-icon">🎉</span>
+      <p class="community-label">Events</p>
+      <p class="community-desc">Festival celebrations, themed workouts — fitness meets culture.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CHALLENGE STRIP -->
+<div class="challenges-strip">
+  <div class="challenge-item">
+    <span class="challenge-emoji">🏅</span>
+    <p class="challenge-name">Form Fixes</p>
+  </div>
+  <div class="challenge-item">
+    <span class="challenge-emoji">🤝</span>
+    <p class="challenge-name">Collaborations</p>
+  </div>
+  <div class="challenge-item">
+    <span class="challenge-emoji">🥇</span>
+    <p class="challenge-name">Winners</p>
+  </div>
+  <div class="challenge-item">
+    <span class="challenge-emoji">⚡</span>
+    <p class="challenge-name">Challenges</p>
+  </div>
+  <div class="challenge-item">
+    <span class="challenge-emoji">⭐</span>
+    <p class="challenge-name">Star Trainers</p>
+  </div>
+  <div class="challenge-item">
+    <span class="challenge-emoji">🔥</span>
+    <p class="challenge-name">Motivation</p>
+  </div>
+</div>
+
+<!-- TRAINERS -->
+<section class="trainers-section" id="trainers">
+  <div class="reveal">
+    <p class="section-eyebrow">Expert Coaches</p>
+    <h2 class="section-title">TRAIN WITH<br><span style="color:var(--gold);">THE BEST</span></h2>
+  </div>
+  <div class="trainers-grid">
+    <div class="trainer-card reveal" style="transition-delay:0.1s">
+      <div class="trainer-avatar">💪</div>
+      <p class="trainer-role">Head Strength Coach</p>
+      <p class="trainer-name">Strength & Aesthetics</p>
+      <p class="trainer-specialty">Specializing in progressive overload, body recomposition, and aesthetic sculpting for competitive-level results.</p>
+    </div>
+    <div class="trainer-card reveal" style="transition-delay:0.2s">
+      <div class="trainer-avatar">🔥</div>
+      <p class="trainer-role">Fat Loss Specialist</p>
+      <p class="trainer-name">Metabolic Training</p>
+      <p class="trainer-specialty">Expert in HIIT, metabolic conditioning, and evidence-based fat loss protocols combined with nutrition coaching.</p>
+    </div>
+    <div class="trainer-card reveal" style="transition-delay:0.3s">
+      <div class="trainer-avatar">⚡</div>
+      <p class="trainer-role">Functional & Crossfit</p>
+      <p class="trainer-name">Athletic Performance</p>
+      <p class="trainer-specialty">CrossFit-certified coach building explosive power, endurance, and functional strength for everyday athletes.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="reveal">
+    <p class="section-eyebrow" style="justify-content:center;margin-bottom:24px;">Greater Noida West</p>
+    <h2 class="cta-mega">
+      BEGIN YOUR<br>
+      <span class="outline">TRANSFORMATION</span>
+    </h2>
+    <p style="font-size:16px;color:var(--grey);margin-top:32px;font-weight:300;letter-spacing:1px;">The iron is waiting. Are you?</p>
+    <div class="cta-contact">
+      <a href="tel:+919643365362">+91-96433 65362</a>
+      <span class="cta-contact-sep">|</span>
+      <span>Greater Noida West</span>
+    </div>
+    <div style="margin-top:48px;display:flex;gap:20px;justify-content:center;">
+      <a href="tel:+919643365362" class="btn-primary" style="font-size:16px;padding:20px 56px;">Call Now & Join</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-logo">IRON<span>FORGE</span></div>
+    <p class="footer-tagline">Elite Gym · Greater Noida West</p>
+    <p style="font-size:12px;color:rgba(138,138,150,0.4);margin-top:20px;letter-spacing:1px;">Premium. Professional. Elite.</p>
+  </div>
+  <ul class="footer-links">
+    <li><a href="#programs">Programs</a></li>
+    <li><a href="#community">Community</a></li>
+    <li><a href="#trainers">Trainers</a></li>
+    <li><a href="#upgrade">Upgrade My Gym</a></li>
+    <li><a href="tel:+919643365362">Contact Us</a></li>
+  </ul>
+  <div class="footer-address">
+    <strong>Location</strong>
+    Greater Noida West Area<br>
+    Uttar Pradesh, India
+    <div class="footer-phone">+91-96433 65362</div>
+  </div>
+</footer>
+<div class="footer-bottom">
+  <p>© 2025 Ironforge Elite Gym. All rights reserved.</p>
+  <p>Greater Noida West · Premium Fitness</p>
+</div>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = -100, my = -100, rx = -100, ry = -100;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx - 5 + 'px';
+    cursor.style.top = my - 5 + 'px';
+  });
+
+  function animateRing() {
+    rx += (mx - rx - 18) * 0.12;
+    ry += (my - ry - 18) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  document.querySelectorAll('a, button, .program-card, .community-card, .trainer-card, .challenge-item').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.transform = 'scale(2.5)';
+      ring.style.transform = 'scale(1.5)';
+      ring.style.opacity = '0.3';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.transform = 'scale(1)';
+      ring.style.transform = 'scale(1)';
+      ring.style.opacity = '0.6';
+    });
+  });
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12 });
+
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
