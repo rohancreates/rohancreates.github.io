@@ -1,0 +1,1536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Priyanka Makeover Studio — Best Makeup Artist in Delhi NCR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F9F4EE;
+    --ivory: #FDF8F2;
+    --gold: #C9A96E;
+    --gold-light: #E8D5B0;
+    --gold-dark: #9A7340;
+    --charcoal: #1A1612;
+    --warm-grey: #6B6059;
+    --blush: #E8C4B8;
+    --deep: #0D0A08;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--ivory);
+    color: var(--charcoal);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    position: fixed;
+    width: 8px; height: 8px;
+    background: var(--gold);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 36px; height: 36px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: all 0.25s ease;
+    opacity: 0.6;
+  }
+
+  /* TOP BAR */
+  .topbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 60px;
+    height: 72px;
+    background: rgba(253, 248, 242, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(201,169,110,0.2);
+    transition: all 0.4s;
+  }
+  .topbar.scrolled {
+    height: 60px;
+    background: rgba(253, 248, 242, 0.98);
+    box-shadow: 0 4px 30px rgba(0,0,0,0.06);
+  }
+
+  .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    color: var(--charcoal);
+    text-decoration: none;
+  }
+  .logo span { color: var(--gold); font-style: italic; }
+
+  nav { display: flex; gap: 40px; align-items: center; }
+  nav a {
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--warm-grey);
+    text-decoration: none;
+    transition: color 0.3s;
+    position: relative;
+  }
+  nav a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px; left: 0; right: 0;
+    height: 1px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transition: transform 0.3s;
+  }
+  nav a:hover { color: var(--charcoal); }
+  nav a:hover::after { transform: scaleX(1); }
+
+  .nav-cta {
+    background: var(--charcoal);
+    color: var(--cream) !important;
+    padding: 10px 28px;
+    font-size: 10px !important;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.3s !important;
+  }
+  .nav-cta:hover { background: var(--gold) !important; color: white !important; }
+  .nav-cta::after { display: none !important; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-top: 72px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 80px 80px 80px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    width: 40px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(52px, 6vw, 88px);
+    font-weight: 300;
+    line-height: 1.05;
+    color: var(--charcoal);
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.4s forwards;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold);
+  }
+  .hero-title .outline-text {
+    -webkit-text-stroke: 1px var(--charcoal);
+    color: transparent;
+  }
+
+  .hero-sub {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--warm-grey);
+    line-height: 1.8;
+    max-width: 400px;
+    margin-bottom: 52px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.6s forwards;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.8s forwards;
+  }
+
+  .btn-primary {
+    background: var(--gold);
+    color: white;
+    padding: 16px 40px;
+    font-family: 'Jost', sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s;
+    display: inline-block;
+  }
+  .btn-primary:hover {
+    background: var(--gold-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(201,169,110,0.3);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--charcoal);
+    padding: 16px 40px;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    border: 1px solid var(--charcoal);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s;
+    display: inline-block;
+  }
+  .btn-ghost:hover {
+    background: var(--charcoal);
+    color: var(--cream);
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 48px;
+    margin-top: 64px;
+    padding-top: 48px;
+    border-top: 1px solid rgba(201,169,110,0.2);
+    opacity: 0;
+    animation: fadeUp 0.8s 1s forwards;
+  }
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 40px;
+    font-weight: 300;
+    color: var(--charcoal);
+    line-height: 1;
+  }
+  .stat-num span { color: var(--gold); }
+  .stat-label {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--warm-grey);
+    margin-top: 6px;
+  }
+
+  .hero-right {
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    animation: fadeIn 1.2s 0.3s forwards;
+  }
+
+  .hero-image-wrap {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #E8D5B0 0%, #C9A96E 30%, #9A7340 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  /* Decorative pattern */
+  .hero-pattern {
+    position: absolute;
+    inset: 0;
+    opacity: 0.07;
+    background-image: repeating-linear-gradient(
+      45deg,
+      var(--charcoal) 0,
+      var(--charcoal) 1px,
+      transparent 0,
+      transparent 50%
+    );
+    background-size: 20px 20px;
+  }
+
+  .hero-image-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(100px, 14vw, 200px);
+    font-weight: 300;
+    color: rgba(255,255,255,0.12);
+    line-height: 1;
+    text-align: center;
+    font-style: italic;
+    user-select: none;
+  }
+
+  .hero-badge {
+    position: absolute;
+    bottom: 60px;
+    left: -30px;
+    background: var(--charcoal);
+    color: var(--cream);
+    padding: 32px 40px;
+    max-width: 260px;
+    z-index: 3;
+  }
+  .hero-badge-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-style: italic;
+    margin-bottom: 8px;
+  }
+  .hero-badge-sub {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 40px;
+    right: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    z-index: 3;
+    color: rgba(255,255,255,0.6);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fadeIn 1s 1.5s forwards;
+  }
+  .scroll-line {
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.6), transparent);
+    animation: scrollPulse 2s infinite;
+  }
+
+  /* MARQUEE */
+  .marquee-section {
+    background: var(--charcoal);
+    padding: 22px 0;
+    overflow: hidden;
+    border-top: 1px solid rgba(201,169,110,0.3);
+    border-bottom: 1px solid rgba(201,169,110,0.3);
+  }
+  .marquee-track {
+    display: flex;
+    gap: 0;
+    animation: marquee 20s linear infinite;
+    width: max-content;
+  }
+  .marquee-item {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    padding: 0 32px;
+    font-size: 11px;
+    font-weight: 300;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    white-space: nowrap;
+  }
+  .marquee-dot { color: var(--gold); font-size: 16px; }
+
+  /* ABOUT SECTION */
+  .section { padding: 120px 80px; }
+  .section-sm { padding: 80px 80px; }
+
+  .section-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .section-eyebrow::before {
+    content: '';
+    width: 40px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 4vw, 56px);
+    font-weight: 300;
+    line-height: 1.15;
+    margin-bottom: 24px;
+  }
+  .section-title em { font-style: italic; color: var(--gold); }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .about-image-block {
+    position: relative;
+  }
+
+  .about-img-main {
+    width: 100%;
+    aspect-ratio: 3/4;
+    background: linear-gradient(160deg, var(--blush) 0%, var(--gold-light) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .about-img-overlay {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: linear-gradient(to top, rgba(26,22,18,0.7), transparent);
+    padding: 40px 32px;
+    color: white;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-style: italic;
+  }
+
+  .about-img-accent {
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    width: 160px;
+    height: 160px;
+    border: 2px solid var(--gold);
+    opacity: 0.4;
+    z-index: 0;
+  }
+  .about-img-accent2 {
+    position: absolute;
+    bottom: -20px;
+    left: -20px;
+    width: 100px;
+    height: 100px;
+    background: var(--gold-light);
+    opacity: 0.3;
+    z-index: 0;
+  }
+
+  .portrait-placeholder {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 120px;
+    font-style: italic;
+    color: rgba(201,169,110,0.3);
+    user-select: none;
+  }
+
+  .about-text { font-size: 15px; font-weight: 300; color: var(--warm-grey); line-height: 1.9; }
+  .about-text p { margin-bottom: 20px; }
+
+  .about-features {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 40px;
+  }
+  .feature-item {
+    padding: 24px;
+    border: 1px solid rgba(201,169,110,0.2);
+    transition: border-color 0.3s;
+  }
+  .feature-item:hover { border-color: var(--gold); }
+  .feature-icon { font-size: 20px; margin-bottom: 10px; }
+  .feature-title {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--charcoal);
+    margin-bottom: 6px;
+  }
+  .feature-desc { font-size: 12px; color: var(--warm-grey); line-height: 1.6; }
+
+  /* SERVICES */
+  .services-section {
+    background: var(--charcoal);
+    color: var(--cream);
+    padding: 120px 80px;
+  }
+  .services-section .section-title { color: var(--cream); }
+  .services-section .section-eyebrow { color: var(--gold); }
+  .services-section .section-eyebrow::before { background: var(--gold); }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 60px;
+  }
+
+  .service-card {
+    background: rgba(255,255,255,0.03);
+    padding: 48px 40px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: background 0.4s;
+    border: 1px solid rgba(201,169,110,0.1);
+  }
+  .service-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(201,169,110,0.1), transparent);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .service-card:hover { background: rgba(255,255,255,0.06); }
+  .service-card:hover::before { opacity: 1; }
+
+  .service-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 72px;
+    font-weight: 300;
+    color: rgba(201,169,110,0.15);
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    line-height: 1;
+    transition: color 0.4s;
+  }
+  .service-card:hover .service-number { color: rgba(201,169,110,0.25); }
+
+  .service-icon { font-size: 28px; margin-bottom: 20px; display: block; }
+  .service-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    font-weight: 400;
+    color: var(--cream);
+    margin-bottom: 12px;
+  }
+  .service-desc {
+    font-size: 13px;
+    font-weight: 300;
+    color: rgba(249,244,238,0.5);
+    line-height: 1.7;
+    margin-bottom: 24px;
+  }
+  .service-link {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: gap 0.3s;
+  }
+  .service-link:hover { gap: 14px; }
+
+  /* WHY CHOOSE US */
+  .why-section { padding: 120px 80px; background: var(--cream); }
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+    margin-top: 60px;
+  }
+  .why-card {
+    text-align: center;
+    padding: 48px 24px;
+    position: relative;
+    transition: transform 0.3s;
+  }
+  .why-card:hover { transform: translateY(-8px); }
+  .why-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 50%; transform: translateX(-50%);
+    width: 40px; height: 2px;
+    background: var(--gold);
+    transition: width 0.4s;
+  }
+  .why-card:hover::after { width: 80px; }
+  .why-icon {
+    width: 72px; height: 72px;
+    background: var(--gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    font-size: 28px;
+  }
+  .why-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 400;
+    margin-bottom: 12px;
+    color: var(--charcoal);
+  }
+  .why-desc { font-size: 13px; color: var(--warm-grey); line-height: 1.7; font-weight: 300; }
+
+  /* PORTFOLIO */
+  .portfolio-section { padding: 120px 80px; }
+  .portfolio-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 60px;
+  }
+  .portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: repeat(2, 280px);
+    gap: 12px;
+  }
+  .port-item {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .port-item:nth-child(1) { grid-column: span 5; grid-row: span 2; }
+  .port-item:nth-child(2) { grid-column: span 4; grid-row: span 1; }
+  .port-item:nth-child(3) { grid-column: span 3; grid-row: span 1; }
+  .port-item:nth-child(4) { grid-column: span 3; grid-row: span 1; }
+  .port-item:nth-child(5) { grid-column: span 4; grid-row: span 1; }
+
+  .port-bg {
+    position: absolute;
+    inset: 0;
+    transition: transform 0.6s ease;
+  }
+  .port-item:hover .port-bg { transform: scale(1.06); }
+
+  .port-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(26,22,18,0.8) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.4s;
+    display: flex;
+    align-items: flex-end;
+    padding: 28px;
+  }
+  .port-item:hover .port-overlay { opacity: 1; }
+  .port-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-style: italic;
+    color: white;
+  }
+
+  /* Placeholder colors for portfolio */
+  .port-item:nth-child(1) .port-bg { background: linear-gradient(135deg, #C9A96E, #9A7340); }
+  .port-item:nth-child(2) .port-bg { background: linear-gradient(135deg, #E8C4B8, #C9A96E); }
+  .port-item:nth-child(3) .port-bg { background: linear-gradient(135deg, #1A1612, #3A2E26); }
+  .port-item:nth-child(4) .port-bg { background: linear-gradient(135deg, #E8D5B0, #C9A96E); }
+  .port-item:nth-child(5) .port-bg { background: linear-gradient(135deg, #9A7340, #C9A96E); }
+
+  .port-inner-text {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 48px;
+    font-style: italic;
+    color: rgba(255,255,255,0.2);
+    font-weight: 300;
+    pointer-events: none;
+  }
+
+  /* TESTIMONIALS */
+  .testimonials-section {
+    background: linear-gradient(135deg, #1A1612 0%, #2A1F15 100%);
+    padding: 120px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .testimonials-section::before {
+    content: '"';
+    position: absolute;
+    top: -60px; left: 60px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 400px;
+    color: rgba(201,169,110,0.06);
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    margin-top: 60px;
+  }
+  .testi-card {
+    padding: 40px;
+    border: 1px solid rgba(201,169,110,0.15);
+    background: rgba(255,255,255,0.03);
+    position: relative;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .testi-card:hover {
+    border-color: rgba(201,169,110,0.4);
+    transform: translateY(-4px);
+  }
+
+  .testi-stars {
+    color: var(--gold);
+    font-size: 14px;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+  }
+  .testi-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    font-style: italic;
+    color: var(--cream);
+    line-height: 1.7;
+    margin-bottom: 28px;
+    font-weight: 300;
+  }
+  .testi-author {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .testi-avatar {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    color: white;
+    flex-shrink: 0;
+  }
+  .testi-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--cream);
+    letter-spacing: 0.05em;
+  }
+  .testi-role { font-size: 11px; color: var(--gold); letter-spacing: 0.1em; }
+
+  /* BRANDS */
+  .brands-section { padding: 80px; background: var(--ivory); }
+  .brands-eyebrow {
+    text-align: center;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--warm-grey);
+    margin-bottom: 48px;
+  }
+  .brands-track {
+    display: flex;
+    gap: 0;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 40px;
+  }
+  .brand-pill {
+    padding: 16px 32px;
+    border: 1px solid rgba(201,169,110,0.3);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--warm-grey);
+    transition: all 0.3s;
+  }
+  .brand-pill:hover {
+    border-color: var(--gold);
+    color: var(--charcoal);
+  }
+
+  /* CONTACT / BOOKING */
+  .booking-section {
+    padding: 120px 80px;
+    background: var(--cream);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .booking-info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 24px 0;
+    border-bottom: 1px solid rgba(201,169,110,0.15);
+  }
+  .booking-info-icon { font-size: 20px; color: var(--gold); flex-shrink: 0; }
+  .booking-info-label { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--warm-grey); margin-bottom: 4px; }
+  .booking-info-val { font-size: 15px; color: var(--charcoal); font-weight: 300; }
+
+  .booking-form { display: flex; flex-direction: column; gap: 20px; }
+
+  .form-group { display: flex; flex-direction: column; gap: 8px; }
+  .form-label { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--warm-grey); }
+  .form-input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(201,169,110,0.3);
+    padding: 12px 0;
+    font-family: 'Jost', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--charcoal);
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  .form-input:focus { border-color: var(--gold); }
+  .form-input::placeholder { color: rgba(107,96,89,0.5); }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+
+  select.form-input { cursor: pointer; }
+
+  /* FOOTER */
+  footer {
+    background: var(--deep);
+    color: var(--cream);
+    padding: 80px;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 60px;
+    margin-bottom: 60px;
+    padding-bottom: 60px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .footer-brand-desc {
+    font-size: 13px;
+    font-weight: 300;
+    color: rgba(249,244,238,0.5);
+    line-height: 1.8;
+    margin-top: 20px;
+    margin-bottom: 32px;
+  }
+  .footer-social { display: flex; gap: 12px; }
+  .social-btn {
+    width: 40px; height: 40px;
+    border: 1px solid rgba(201,169,110,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: var(--gold);
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+  }
+  .social-btn:hover { background: var(--gold); color: white; border-color: var(--gold); }
+
+  .footer-col-title {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 28px;
+  }
+  .footer-links { display: flex; flex-direction: column; gap: 14px; }
+  .footer-links a {
+    font-size: 13px;
+    font-weight: 300;
+    color: rgba(249,244,238,0.5);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .footer-links a:hover { color: var(--cream); }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    color: rgba(249,244,238,0.3);
+    letter-spacing: 0.05em;
+  }
+  .footer-bottom a { color: var(--gold); text-decoration: none; }
+
+  /* FLOATING BOOK */
+  .float-book {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    z-index: 50;
+    background: var(--gold);
+    color: white;
+    padding: 16px 28px;
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 8px 32px rgba(201,169,110,0.4);
+    transition: all 0.3s;
+    opacity: 0;
+    animation: fadeIn 1s 2s forwards;
+  }
+  .float-book:hover {
+    background: var(--gold-dark);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(201,169,110,0.5);
+  }
+
+  /* Phone CTA bar */
+  .phone-bar {
+    background: var(--gold);
+    text-align: center;
+    padding: 12px;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    color: white;
+    text-transform: uppercase;
+  }
+  .phone-bar a { color: white; text-decoration: none; font-weight: 500; }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+  }
+
+  /* Scroll animations */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.15s; }
+  .reveal-delay-2 { transition-delay: 0.3s; }
+  .reveal-delay-3 { transition-delay: 0.45s; }
+
+  /* RESPONSIVE */
+  @media (max-width: 1024px) {
+    .topbar { padding: 0 32px; }
+    nav { gap: 24px; }
+    .hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-left { padding: 80px 40px 60px; }
+    .hero-right { height: 60vw; min-height: 300px; }
+    .hero-badge { display: none; }
+    .about-grid, .booking-section { grid-template-columns: 1fr; gap: 48px; }
+    .services-grid { grid-template-columns: repeat(2, 1fr); }
+    .why-grid { grid-template-columns: repeat(2, 1fr); }
+    .testimonials-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+    .section { padding: 80px 40px; }
+    .services-section, .why-section, .testimonials-section, .booking-section, .brands-section { padding: 80px 40px; }
+    footer { padding: 60px 40px; }
+    .portfolio-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+    .port-item:nth-child(1), .port-item:nth-child(2), .port-item:nth-child(3), .port-item:nth-child(4), .port-item:nth-child(5) {
+      grid-column: span 1; grid-row: span 1; height: 220px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Phone bar -->
+<div class="phone-bar">
+  📞 Call us: <a href="tel:+919999624960">+91-9999-624960</a> &nbsp;|&nbsp; Open 7 Days · 10:00 AM – 8:00 PM
+</div>
+
+<!-- Navigation -->
+<header class="topbar" id="navbar">
+  <a href="#" class="logo">Priyanka <span>Makeovers</span></a>
+  <nav>
+    <a href="#about">About</a>
+    <a href="#services">Services</a>
+    <a href="#portfolio">Portfolio</a>
+    <a href="#testimonials">Reviews</a>
+    <a href="#contact">Contact</a>
+    <a href="#contact" class="nav-cta">Book Now</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">Delhi NCR's Premier Makeup Studio · Since 2014</div>
+    <h1 class="hero-title">
+      Where Beauty<br>
+      Becomes <em>Art</em>
+    </h1>
+    <p class="hero-sub">
+      Priyanka Jain and her expert team have transformed thousands of women across Delhi, Noida & Ghaziabad — from intimate engagements to grand bridal celebrations.
+    </p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Book Appointment</a>
+      <a href="#portfolio" class="btn-ghost">View Portfolio</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">10<span>+</span></div>
+        <div class="stat-label">Years of Artistry</div>
+      </div>
+      <div>
+        <div class="stat-num">5k<span>+</span></div>
+        <div class="stat-label">Happy Brides</div>
+      </div>
+      <div>
+        <div class="stat-num">11<span>+</span></div>
+        <div class="stat-label">Premium Brands</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-image-wrap">
+      <div class="hero-pattern"></div>
+      <div class="hero-image-text">PMS</div>
+    </div>
+    <div class="hero-badge">
+      <div class="hero-badge-title">Priyanka Jain</div>
+      <div class="hero-badge-sub">Certified Makeup Artist · Delhi NCR</div>
+    </div>
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-section">
+  <div class="marquee-track">
+    <div class="marquee-item">Bridal Makeup <span class="marquee-dot">✦</span></div>
+    <div class="marquee-item">HD Makeup <span class="marquee-dot">✦</span></div>
+    <div class="marquee-item">Airbrush Makeup <span class="marquee-dot">✦</span></div>
+    <div class="marquee-item">Engagement <span class="marquee-dot">✦</span></div>
+    <div class="marquee-item">Reception <span class="marquee-dot">✦</span></div>
+    <div class="marquee-item">Party Makeup <span class="marquee-dot">✦</span></div>
+    <div class="marquee-item">Silicon Makeup <span class="marquee-dot">✦</span></div>
+    <div class="marquee-item">Fashion Shoots <span class="marquee-dot">✦</span></div>
+    <div class="marquee-item">Bridal Makeup <span class="marquee-dot">✦</span></div>
+    <div class="marquee-item">HD Makeup <span class="marquee-dot">✦</span></div>
+    <div class="marquee-item">Airbrush Makeup <span class="marquee-dot">✦</span></div>
+    <div class="marquee-item">Engagement <span class="marquee-dot">✦</span></div>
+    <div class="marquee-item">Reception <span class="marquee-dot">✦</span></div>
+    <div class="marquee-item">Party Makeup <span class="marquee-dot">✦</span></div>
+    <div class="marquee-item">Silicon Makeup <span class="marquee-dot">✦</span></div>
+    <div class="marquee-item">Fashion Shoots <span class="marquee-dot">✦</span></div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="section" id="about">
+  <div class="about-grid">
+    <div class="about-image-block reveal">
+      <div class="about-img-accent"></div>
+      <div class="about-img-accent2"></div>
+      <div class="about-img-main">
+        <div class="portrait-placeholder">PJ</div>
+        <div class="about-img-overlay">
+          "Every woman deserves to feel like royalty on her special day."
+        </div>
+      </div>
+    </div>
+    <div class="reveal reveal-delay-1">
+      <div class="section-eyebrow">About the Artist</div>
+      <h2 class="section-title">Priyanka Jain —<br>A <em>Decade</em> of Beauty</h2>
+      <div class="about-text">
+        <p>With over 10 years of experience transforming faces across Delhi NCR, Priyanka Jain has built a reputation as one of the region's most sought-after makeup artists. Her studio, Priyanka Makeover Studio (PMS), is a sanctuary for brides, professionals, and beauty enthusiasts.</p>
+        <p>Every look is crafted with precision — using exclusively premium international brands — ensuring your makeup is not only breathtaking but also long-lasting and skin-friendly.</p>
+      </div>
+      <div class="about-features">
+        <div class="feature-item">
+          <div class="feature-icon">🏆</div>
+          <div class="feature-title">Premium Products</div>
+          <div class="feature-desc">MAC, NARS, Huda Beauty, Kryolan & more</div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">✨</div>
+          <div class="feature-title">Certified Artist</div>
+          <div class="feature-desc">Professional training with 10+ years expertise</div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">📍</div>
+          <div class="feature-title">At-Home Service</div>
+          <div class="feature-desc">We come to you anywhere in Delhi NCR</div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">💎</div>
+          <div class="feature-title">Best Pricing</div>
+          <div class="feature-desc">Luxury results at fair, transparent prices</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services-section" id="services">
+  <div class="reveal">
+    <div class="section-eyebrow">Our Expertise</div>
+    <h2 class="section-title" style="color:var(--cream)">Signature <em>Services</em></h2>
+  </div>
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <span class="service-number">01</span>
+      <span class="service-icon">👰</span>
+      <div class="service-name">Bridal Makeup</div>
+      <div class="service-desc">Your wedding day look, perfected. We create timeless bridal beauty that photographs beautifully and lasts all day.</div>
+      <a href="#contact" class="service-link">Book Now →</a>
+    </div>
+    <div class="service-card reveal reveal-delay-1">
+      <span class="service-number">02</span>
+      <span class="service-icon">💍</span>
+      <div class="service-name">Engagement Makeup</div>
+      <div class="service-desc">Look radiant for your ring ceremony with a fresh, glowing look tailored to your personality.</div>
+      <a href="#contact" class="service-link">Book Now →</a>
+    </div>
+    <div class="service-card reveal reveal-delay-2">
+      <span class="service-number">03</span>
+      <span class="service-icon">🌬️</span>
+      <div class="service-name">Airbrush Makeup</div>
+      <div class="service-desc">Ultra-lightweight, flawless coverage using professional airbrush technology for a second-skin finish.</div>
+      <a href="#contact" class="service-link">Book Now →</a>
+    </div>
+    <div class="service-card reveal">
+      <span class="service-number">04</span>
+      <span class="service-icon">📷</span>
+      <div class="service-name">HD Makeup</div>
+      <div class="service-desc">Camera-ready looks that look flawless in every shot — ideal for shoots, films, and TV appearances.</div>
+      <a href="#contact" class="service-link">Book Now →</a>
+    </div>
+    <div class="service-card reveal reveal-delay-1">
+      <span class="service-number">05</span>
+      <span class="service-icon">🎉</span>
+      <div class="service-name">Party Makeup</div>
+      <div class="service-desc">Turn heads at every celebration. Glam, bold, or subtle — we create the perfect party look for you.</div>
+      <a href="#contact" class="service-link">Book Now →</a>
+    </div>
+    <div class="service-card reveal reveal-delay-2">
+      <span class="service-number">06</span>
+      <span class="service-icon">💄</span>
+      <div class="service-name">Reception & More</div>
+      <div class="service-desc">From Mehendi to Reception, Sangeet to Cocktail — complete wedding event makeup packages available.</div>
+      <a href="#contact" class="service-link">Book Now →</a>
+    </div>
+  </div>
+</section>
+
+<!-- WHY CHOOSE US -->
+<section class="why-section">
+  <div style="text-align:center" class="reveal">
+    <div class="section-eyebrow" style="justify-content:center">Why Choose Us</div>
+    <h2 class="section-title">The <em>PMS Difference</em></h2>
+  </div>
+  <div class="why-grid">
+    <div class="why-card reveal">
+      <div class="why-icon">✦</div>
+      <div class="why-title">Best Price</div>
+      <div class="why-desc">Luxury-grade makeup at prices that are honest, transparent, and always fair.</div>
+    </div>
+    <div class="why-card reveal reveal-delay-1">
+      <div class="why-icon">🌟</div>
+      <div class="why-title">Premium Products</div>
+      <div class="why-desc">We use only globally certified, skin-safe brands like MAC, NARS, Huda Beauty & Kryolan.</div>
+    </div>
+    <div class="why-card reveal reveal-delay-2">
+      <div class="why-icon">🎓</div>
+      <div class="why-title">True Professionals</div>
+      <div class="why-desc">A decade of certified expertise and thousands of transformations speak for themselves.</div>
+    </div>
+    <div class="why-card reveal reveal-delay-3">
+      <div class="why-icon">💯</div>
+      <div class="why-title">Satisfaction Guaranteed</div>
+      <div class="why-desc">We don't stop until you love what you see. Your confidence is our greatest achievement.</div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section class="portfolio-section" id="portfolio">
+  <div class="portfolio-header reveal">
+    <div>
+      <div class="section-eyebrow">Our Work</div>
+      <h2 class="section-title">The <em>Portfolio</em></h2>
+    </div>
+    <a href="#" class="btn-ghost">View All Work</a>
+  </div>
+  <div class="portfolio-grid reveal">
+    <div class="port-item">
+      <div class="port-bg"></div>
+      <div class="port-inner-text">Bridal</div>
+      <div class="port-overlay"><div class="port-label">Royal Bridal Look</div></div>
+    </div>
+    <div class="port-item">
+      <div class="port-bg"></div>
+      <div class="port-inner-text">HD</div>
+      <div class="port-overlay"><div class="port-label">HD Makeup</div></div>
+    </div>
+    <div class="port-item">
+      <div class="port-bg"></div>
+      <div class="port-inner-text">Night</div>
+      <div class="port-overlay"><div class="port-label">Party Glam</div></div>
+    </div>
+    <div class="port-item">
+      <div class="port-bg"></div>
+      <div class="port-inner-text">Blush</div>
+      <div class="port-overlay"><div class="port-label">Engagement</div></div>
+    </div>
+    <div class="port-item">
+      <div class="port-bg"></div>
+      <div class="port-inner-text">Gold</div>
+      <div class="port-overlay"><div class="port-label">Reception Look</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials-section" id="testimonials">
+  <div class="reveal" style="text-align:center">
+    <div class="section-eyebrow" style="justify-content:center; color:var(--gold)">Client Love</div>
+    <h2 class="section-title" style="color:var(--cream)">What They <em>Say</em></h2>
+  </div>
+  <div class="testimonials-grid">
+    <div class="testi-card reveal">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">"Very professional and was patient. She did a beautiful makeup to suit my skin tone. I would highly recommend her to everyone. Good job Priyanka!"</div>
+      <div class="testi-author">
+        <div class="testi-avatar">P</div>
+        <div>
+          <div class="testi-name">Priyanka Verma</div>
+          <div class="testi-role">Verified Client</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card reveal reveal-delay-1">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">"Perfectionist... so humble, professional and expert. I've been visiting her for the last 4 years. The way she manages time and work is incredible. Always keeps your trust up to the mark."</div>
+      <div class="testi-author">
+        <div class="testi-avatar">D</div>
+        <div>
+          <div class="testi-name">Dakshina Rai</div>
+          <div class="testi-role">Loyal Client · 4 Years</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card reveal reveal-delay-2">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">"I loved the makeup and all the services. She did the makeup for four of us — me, my mother-in-law, sis-in-law, and daughter-in-law. Very professional with excellent time management."</div>
+      <div class="testi-author">
+        <div class="testi-avatar">R</div>
+        <div>
+          <div class="testi-name">Rekha Garood</div>
+          <div class="testi-role">Wedding Party Client</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card reveal">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">"The light party makeup was absolutely stunning and perfect. The parlour is neat and clean, all staff are well trained. Thank you Team PMS for making my day special!"</div>
+      <div class="testi-author">
+        <div class="testi-avatar">S</div>
+        <div>
+          <div class="testi-name">Sanjali</div>
+          <div class="testi-role">Roka Ceremony Client</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card reveal reveal-delay-1">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">"The salon has a chic and inviting ambiance that instantly put me at ease. From the moment I walked in, I was greeted with warmth and professionalism."</div>
+      <div class="testi-author">
+        <div class="testi-avatar">S</div>
+        <div>
+          <div class="testi-name">Sonia Dua</div>
+          <div class="testi-role">Verified Client</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card reveal reveal-delay-2">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">"It was a wonderful experience at PMS. The staff was professional and friendly. Wide range of services, soothing ambiance. I would highly recommend it to others!"</div>
+      <div class="testi-author">
+        <div class="testi-avatar">J</div>
+        <div>
+          <div class="testi-name">Jyoti Jaiswal</div>
+          <div class="testi-role">Verified Client</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BRANDS -->
+<section class="brands-section">
+  <div class="brands-eyebrow reveal">Brands We Trust & Use</div>
+  <div class="brands-track reveal">
+    <div class="brand-pill">MAC</div>
+    <div class="brand-pill">NARS</div>
+    <div class="brand-pill">Huda Beauty</div>
+    <div class="brand-pill">Kryolan</div>
+    <div class="brand-pill">Bobbi Brown</div>
+    <div class="brand-pill">NYX</div>
+    <div class="brand-pill">Make Up For Ever</div>
+    <div class="brand-pill">Temptu</div>
+    <div class="brand-pill">Inglot</div>
+    <div class="brand-pill">Forever 52</div>
+  </div>
+</section>
+
+<!-- BOOKING SECTION -->
+<section class="booking-section" id="contact">
+  <div class="reveal">
+    <div class="section-eyebrow">Get in Touch</div>
+    <h2 class="section-title">Book Your <em>Session</em></h2>
+    <p style="font-size:14px; color:var(--warm-grey); font-weight:300; line-height:1.8; margin-bottom:40px;">
+      Ready to look and feel your absolute best? Fill in the form or reach out directly — we'd love to be part of your special day.
+    </p>
+    <div class="booking-info-item">
+      <span class="booking-info-icon">📞</span>
+      <div>
+        <div class="booking-info-label">Call / WhatsApp</div>
+        <div class="booking-info-val">+91-9999-624960</div>
+      </div>
+    </div>
+    <div class="booking-info-item">
+      <span class="booking-info-icon">🕐</span>
+      <div>
+        <div class="booking-info-label">Studio Hours</div>
+        <div class="booking-info-val">10:00 AM – 8:00 PM · Open 7 Days</div>
+      </div>
+    </div>
+    <div class="booking-info-item">
+      <span class="booking-info-icon">📍</span>
+      <div>
+        <div class="booking-info-label">Location</div>
+        <div class="booking-info-val">Greater Noida, Delhi NCR<br><span style="font-size:12px;color:var(--warm-grey)">Home service available across Delhi NCR</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="reveal reveal-delay-1">
+    <div class="booking-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Your Name</label>
+          <input class="form-input" type="text" placeholder="Full name">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Phone Number</label>
+          <input class="form-input" type="tel" placeholder="+91 XXXXX XXXXX">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Select Service</label>
+        <select class="form-input">
+          <option value="">Choose a service...</option>
+          <option>Bridal Makeup</option>
+          <option>Engagement Makeup</option>
+          <option>Reception Makeup</option>
+          <option>Party Makeup</option>
+          <option>Airbrush Makeup</option>
+          <option>HD Makeup</option>
+          <option>Haldi Makeup</option>
+          <option>Mehendi Makeup</option>
+          <option>Silicon Makeup</option>
+          <option>Commercial / Fashion Shoot</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Preferred Date</label>
+          <input class="form-input" type="date">
+        </div>
+        <div class="form-group">
+          <label class="form-label">No. of Persons</label>
+          <input class="form-input" type="number" placeholder="1" min="1">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Message (Optional)</label>
+        <input class="form-input" type="text" placeholder="Tell us anything special...">
+      </div>
+      <button class="btn-primary" style="margin-top:12px; border:none; font-family:inherit; cursor:pointer;">
+        Send Enquiry →
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="logo" style="font-size:26px; color:var(--cream)">Priyanka <span>Makeovers</span></div>
+      <div class="footer-brand-desc">
+        Priyanka Makeover Studio — where art meets beauty. We've been crafting extraordinary looks across Delhi NCR for over a decade, making every woman feel like her most confident self.
+      </div>
+      <div class="footer-social">
+        <a href="#" class="social-btn">f</a>
+        <a href="#" class="social-btn">in</a>
+        <a href="#" class="social-btn">▶</a>
+        <a href="#" class="social-btn">📷</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Services</div>
+      <div class="footer-links">
+        <a href="#">Bridal Makeup</a>
+        <a href="#">Engagement Makeup</a>
+        <a href="#">HD Makeup</a>
+        <a href="#">Airbrush Makeup</a>
+        <a href="#">Party Makeup</a>
+        <a href="#">Silicon Makeup</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Studio</div>
+      <div class="footer-links">
+        <a href="#">About Priyanka</a>
+        <a href="#">Portfolio</a>
+        <a href="#">Before & After</a>
+        <a href="#">Blog</a>
+        <a href="#">Pricing</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Contact</div>
+      <div class="footer-links">
+        <a href="tel:+919999624960">+91-9999-624960</a>
+        <a href="#">Greater Noida, Delhi NCR</a>
+        <a href="#">Mon–Sun · 10AM–8PM</a>
+        <a href="#">Book Appointment</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2017–2026 Priyanka Makeover Studio. All rights reserved.</span>
+    <span>Crafted with ♥ for beautiful women everywhere</span>
+  </div>
+</footer>
+
+<!-- Floating book button -->
+<a href="#contact" class="float-book">
+  ✦ Book Now
+</a>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+    setTimeout(() => {
+      ring.style.left = e.clientX + 'px';
+      ring.style.top = e.clientY + 'px';
+    }, 60);
+  });
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      ring.style.transform = 'translate(-50%, -50%) scale(1.6)';
+      ring.style.borderColor = 'var(--gold)';
+      cursor.style.opacity = '0';
+    });
+    el.addEventListener('mouseleave', () => {
+      ring.style.transform = 'translate(-50%, -50%) scale(1)';
+      cursor.style.opacity = '1';
+    });
+  });
+
+  // Navbar scroll
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
