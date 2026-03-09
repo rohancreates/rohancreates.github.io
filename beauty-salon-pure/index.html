@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LUMIÈRE | Luxury Beauty Salon</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap');
+
+    :root {
+      --charcoal: #0d0d0d;
+      --ivory: #f5f0e8;
+      --gold: #c9a96e;
+      --rose: #d4a5a0;
+      
+      --font-display: 'Cormorant Garamond', serif;
+      --font-body: 'DM Sans', sans-serif;
+      
+      --spacing-sm: 1rem;
+      --spacing-md: 2rem;
+      --spacing-lg: 4rem;
+      --spacing-xl: 8rem;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--charcoal);
+      color: var(--ivory);
+      font-family: var(--font-body);
+      overflow-x: hidden;
+      cursor: none; /* Hide default cursor for custom one */
+    }
+
+    /* Custom Cursor */
+    .custom-cursor {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 12px;
+      height: 12px;
+      background-color: var(--gold);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s ease-out;
+      mix-blend-mode: difference;
+    }
+    .custom-cursor.hover {
+      transform: translate(-50%, -50%) scale(2.5);
+      background-color: transparent;
+      border: 1px solid var(--gold);
+    }
+
+    h1, h2, h3, h4 {
+      font-family: var(--font-display);
+      font-weight: 400;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* Scroll animations */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 1s ease-out, transform 1s ease-out;
+    }
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Navbar */
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: var(--spacing-md) 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      transition: all 0.4s ease;
+    }
+    header.scrolled {
+      padding: var(--spacing-sm) 5%;
+      background-color: rgba(13, 13, 13, 0.95);
+      backdrop-filter: blur(10px);
+    }
+
+    .logo {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      letter-spacing: 0.1em;
+      color: var(--ivory);
+    }
+
+    nav ul {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    nav a {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      transition: color 0.3s;
+    }
+    nav a:hover, a.interactive:hover {
+      color: var(--gold);
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: none;
+    }
+    .hamburger span {
+      width: 25px;
+      height: 2px;
+      background: var(--ivory);
+      transition: 0.3s;
+    }
+
+    /* Hero */
+    .hero {
+      height: 100vh;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      overflow: hidden;
+    }
+    
+    .hero-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 120%; /* Extra height for parallax */
+      background: linear-gradient(rgba(13,13,13,0.4), rgba(13,13,13,0.8)), url('https://picsum.photos/1920/1080?random=10') center/cover;
+      z-index: -1;
+      will-change: transform;
+    }
+
+    .hero-title {
+      font-size: clamp(4rem, 8vw, 8rem);
+      line-height: 1.1;
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .char-reveal span {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .char-reveal.active span {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .btn-gold {
+      display: inline-block;
+      padding: 1rem 3rem;
+      background: var(--gold);
+      color: var(--charcoal);
+      font-family: var(--font-body);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      border: none;
+      border-radius: 2px;
+      position: relative;
+      overflow: hidden;
+      margin-top: 2rem;
+      transition: background 0.3s;
+    }
+    
+    .btn-gold::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(to right, transparent, rgba(255,255,255,0.4), transparent);
+      transform: skewX(-20deg);
+      transition: unset;
+    }
+    
+    .btn-gold:hover::before {
+      animation: shimmer 1s forwards;
+    }
+    
+    @keyframes shimmer {
+      100% { left: 200%; }
+    }
+    
+    /* Ripple Effect */
+    .ripple {
+      position: absolute;
+      border-radius: 50%;
+      transform: scale(0);
+      animation: rippleAnim 0.6s linear;
+      background-color: rgba(255, 255, 255, 0.4);
+    }
+    @keyframes rippleAnim {
+      to {
+        transform: scale(4);
+        opacity: 0;
+      }
+    }
+
+    /* Marquee */
+    .marquee {
+      width: 100%;
+      padding: var(--spacing-md) 0;
+      background: var(--ivory);
+      color: var(--charcoal);
+      overflow: hidden;
+      white-space: nowrap;
+      display: flex;
+    }
+    .marquee-content {
+      display: flex;
+      animation: marqueeScroll 20s linear infinite;
+    }
+    .marquee span {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      margin: 0 1rem;
+      font-style: italic;
+    }
+    @keyframes marqueeScroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* Services */
+    .services {
+      padding: var(--spacing-xl) 5%;
+    }
+    .section-title {
+      text-align: center;
+      font-size: 3rem;
+      margin-bottom: var(--spacing-lg);
+      color: var(--gold);
+    }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 3rem;
+      perspective: 1000px;
+    }
+    .service-card {
+      background: rgba(255,255,255,0.03);
+      padding: 3rem 2rem;
+      border: 1px solid rgba(255,255,255,0.05);
+      text-align: center;
+      transition: transform 0.1s ease-out; /* JavaScript handles the tilting */
+      transform-style: preserve-3d;
+    }
+    .service-icon {
+      font-size: 2.5rem;
+      color: var(--rose);
+      margin-bottom: 1.5rem;
+      transform: translateZ(30px);
+    }
+    .service-card h3 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      transform: translateZ(20px);
+    }
+    .service-card p {
+      color: rgba(245, 240, 232, 0.7);
+      line-height: 1.6;
+      transform: translateZ(10px);
+    }
+
+    /* About Section */
+    .about {
+      padding: var(--spacing-xl) 5%;
+      display: flex;
+      align-items: center;
+      gap: 5rem;
+      position: relative;
+    }
+    .about-stat {
+      flex: 1;
+      font-size: 15vw;
+      font-family: var(--font-display);
+      color: transparent;
+      -webkit-text-stroke: 1px var(--gold);
+      line-height: 1;
+      text-align: right;
+    }
+    .about-text {
+      flex: 1;
+      font-size: 1.2rem;
+      line-height: 1.8;
+      padding-right: 5%;
+    }
+    .about-text p {
+      margin-bottom: 1.5rem;
+    }
+
+    /* Gallery */
+    .gallery {
+      padding: var(--spacing-md) 5% var(--spacing-xl);
+    }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-auto-rows: 250px;
+      gap: 1.5rem;
+    }
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 4px;
+    }
+    /* Masonry mapping */
+    .gallery-item:nth-child(1) { grid-column: span 8; grid-row: span 2; }
+    .gallery-item:nth-child(2) { grid-column: span 4; grid-row: span 1; }
+    .gallery-item:nth-child(3) { grid-column: span 4; grid-row: span 1; }
+    .gallery-item:nth-child(4) { grid-column: span 4; grid-row: span 2; }
+    .gallery-item:nth-child(5) { grid-column: span 4; grid-row: span 1; }
+    .gallery-item:nth-child(6) { grid-column: span 4; grid-row: span 1; }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.7s ease;
+    }
+    .gallery-overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(201, 169, 110, 0.4);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      mix-blend-mode: multiply;
+    }
+    .gallery-item:hover img {
+      transform: scale(1.05);
+    }
+    .gallery-item:hover .gallery-overlay {
+      opacity: 1;
+    }
+
+    /* Testimonials */
+    .testimonials {
+      padding: var(--spacing-xl) 0;
+      background: #111;
+      overflow: hidden;
+    }
+    .carousel {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      padding: 2rem 5%;
+      gap: 2rem;
+      scrollbar-width: none; /* Firefox */
+    }
+    .carousel::-webkit-scrollbar {
+      display: none; /* Safari/Chrome */
+    }
+    .testimonial-card {
+      scroll-snap-align: center;
+      flex: 0 0 80%;
+      max-width: 500px;
+      background: var(--charcoal);
+      padding: 3rem 2rem;
+      border-left: 2px solid var(--rose);
+    }
+    .stars {
+      color: var(--gold);
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+    }
+    .quote {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-style: italic;
+      margin-bottom: 2rem;
+    }
+    .author {
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      color: var(--gold);
+    }
+
+    /* Booking CTA */
+    .booking-cta {
+      padding: var(--spacing-xl) 5%;
+      text-align: center;
+      background: linear-gradient(rgba(13,13,13,0.9), rgba(13,13,13,0.9)), url('https://picsum.photos/1920/1080?random=20') center/cover fixed;
+    }
+    .booking-cta h2 {
+      font-size: 4rem;
+      margin-bottom: 2rem;
+    }
+    
+    .btn-glow {
+      box-shadow: 0 0 20px rgba(201, 169, 110, 0.3);
+      animation: pulse 2s infinite alternate;
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 20px rgba(201, 169, 110, 0.3); transform: scale(1); }
+      100% { box-shadow: 0 0 40px rgba(201, 169, 110, 0.6); transform: scale(1.02); }
+    }
+
+    /* Footer */
+    footer {
+      padding: var(--spacing-lg) 5%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    .socials {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .socials svg {
+      width: 24px;
+      height: 24px;
+      fill: var(--ivory);
+      transition: fill 0.3s;
+    }
+    .socials a:hover svg {
+      fill: var(--gold);
+    }
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      font-size: 0.9rem;
+    }
+    .copyright {
+      color: rgba(245, 240, 232, 0.5);
+      font-size: 0.8rem;
+    }
+
+    /* Mobile off-canvas nav */
+    .nav-drawer {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 70%;
+      max-width: 400px;
+      height: 100vh;
+      background: var(--charcoal);
+      z-index: 99;
+      padding: 6rem 3rem;
+      transition: right 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+      border-left: 1px solid rgba(255,255,255,0.05);
+    }
+    .nav-drawer.open {
+      right: 0;
+    }
+    .nav-drawer ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+    .nav-drawer a {
+      font-family: var(--font-display);
+      font-size: 2rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .gallery-grid {
+        grid-auto-rows: 200px;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .hamburger {
+        display: flex;
+        z-index: 101;
+      }
+      header nav {
+        display: none;
+      }
+      .hamburger.active span:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+      }
+      .hamburger.active span:nth-child(2) {
+        opacity: 0;
+      }
+      .hamburger.active span:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+      }
+      
+      .about {
+        flex-direction: column;
+        text-align: center;
+        gap: 2rem;
+      }
+      .about-stat {
+        text-align: center;
+        font-size: 5rem;
+        -webkit-text-stroke: 1px var(--gold);
+      }
+      .about-text {
+        padding-right: 0;
+      }
+      
+      .gallery-item:nth-child(1), .gallery-item:nth-child(2), 
+      .gallery-item:nth-child(3), .gallery-item:nth-child(4), 
+      .gallery-item:nth-child(5), .gallery-item:nth-child(6) { 
+        grid-column: span 12; 
+        grid-row: span 1; 
+      }
+      .gallery-grid { grid-auto-rows: 250px; }
+      
+      .hero-title { font-size: 3.5rem; }
+    }
+
+    /* Prefers reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+      .reveal {
+        opacity: 1; transform: none;
+      }
+      .custom-cursor { display: none; }
+      body { cursor: auto; }
+      .service-card { transform: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Custom Cursor -->
+  <div class="custom-cursor" id="cursor"></div>
+
+  <!-- Header -->
+  <header id="header">
+    <div class="logo">LUMIÈRE</div>
+    <nav>
+      <ul>
+        <li><a href="#services" class="interactive">Services</a></li>
+        <li><a href="#about" class="interactive">About</a></li>
+        <li><a href="#gallery" class="interactive">Gallery</a></li>
+        <li><a href="#booking" class="interactive">Book</a></li>
+      </ul>
+    </nav>
+    <div class="hamburger interactive" id="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </header>
+
+  <!-- Mobile Nav Drawer -->
+  <div class="nav-drawer" id="navDrawer">
+    <ul>
+      <li><a href="#services" class="interactive">Services</a></li>
+      <li><a href="#about" class="interactive">About</a></li>
+      <li><a href="#gallery" class="interactive">Gallery</a></li>
+      <li><a href="#booking" class="interactive">Book</a></li>
+    </ul>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero" id="home">
+    <div class="hero-bg" id="parallaxBg"></div>
+    <h1 class="hero-title char-reveal reveal">
+      Experience<br>True Elegance
+    </h1>
+    <a href="#booking" class="btn-gold interactive reveal">Book Now</a>
+  </section>
+
+  <!-- Marquee -->
+  <div class="marquee">
+    <div class="marquee-content">
+      <span>Hair</span><span>·</span>
+      <span>Nails</span><span>·</span>
+      <span>Skin</span><span>·</span>
+      <span>Lashes</span><span>·</span>
+      <span>Brows</span><span>·</span>
+      <span>Hair</span><span>·</span>
+      <span>Nails</span><span>·</span>
+      <span>Skin</span><span>·</span>
+      <span>Lashes</span><span>·</span>
+      <span>Brows</span><span>·</span>
+      <span>Hair</span><span>·</span>
+      <span>Nails</span><span>·</span>
+      <span>Skin</span><span>·</span>
+      <span>Lashes</span><span>·</span>
+      <span>Brows</span><span>·</span>
+    </div>
+  </div>
+
+  <!-- Services -->
+  <section class="services" id="services">
+    <h2 class="section-title reveal char-reveal">Our Services</h2>
+    <div class="services-grid">
+      <div class="service-card reveal interactive-card">
+        <div class="service-icon">✦</div>
+        <h3>Hair Artistry</h3>
+        <p>Expert cuts, bespoke coloring, and deep nourishment treatments tailored to your unique style.</p>
+      </div>
+      <div class="service-card reveal interactive-card" style="transition-delay: 0.1s;">
+        <div class="service-icon">✧</div>
+        <h3>Skin Rituals</h3>
+        <p>Rejuvenating facials using pure, botanical ingredients to restore your natural, youthful glow.</p>
+      </div>
+      <div class="service-card reveal interactive-card" style="transition-delay: 0.2s;">
+        <div class="service-icon">✦</div>
+        <h3>Nail Design</h3>
+        <p>Meticulous manicures and pedicures with an array of premium, long-lasting finishes.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="about" id="about">
+    <div class="about-stat reveal" id="statCounter" data-target="12">0</div>
+    <div class="about-text reveal" style="transition-delay: 0.2s;">
+      <h2 class="section-title char-reveal" style="text-align: left;">Years of<br>Excellence</h2>
+      <p>Situated in the heart of the city, Lumière is a sanctuary for the modern connoisseur of beauty. We believe that true luxury lies in the details.</p>
+      <p>Our team of master stylists and aestheticians are dedicated to curating an unparalleled experience, blending timeless techniques with avant-garde trends.</p>
+    </div>
+  </section>
+
+  <!-- Gallery -->
+  <section class="gallery" id="gallery">
+    <h2 class="section-title reveal char-reveal">The Aesthetic</h2>
+    <div class="gallery-grid">
+      <div class="gallery-item interactive reveal"><img src="https://picsum.photos/800/600?random=1" alt="Gallery"><div class="gallery-overlay"></div></div>
+      <div class="gallery-item interactive reveal" style="transition-delay: 0.1s;"><img src="https://picsum.photos/400/400?random=2" alt="Gallery"><div class="gallery-overlay"></div></div>
+      <div class="gallery-item interactive reveal" style="transition-delay: 0.2s;"><img src="https://picsum.photos/400/400?random=3" alt="Gallery"><div class="gallery-overlay"></div></div>
+      <div class="gallery-item interactive reveal" style="transition-delay: 0.1s;"><img src="https://picsum.photos/400/600?random=4" alt="Gallery"><div class="gallery-overlay"></div></div>
+      <div class="gallery-item interactive reveal" style="transition-delay: 0.2s;"><img src="https://picsum.photos/400/400?random=5" alt="Gallery"><div class="gallery-overlay"></div></div>
+      <div class="gallery-item interactive reveal" style="transition-delay: 0.3s;"><img src="https://picsum.photos/400/400?random=6" alt="Gallery"><div class="gallery-overlay"></div></div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="testimonials reveal" id="testimonials">
+    <div class="carousel">
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p class="quote">"An absolute dream. The attention to detail and the serene atmosphere make every visit feel like a royal retreat."</p>
+        <p class="author">Elena R.</p>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p class="quote">"Lumière transformed my hair completely. The staff is incredibly attentive and truly masters of their craft."</p>
+        <p class="author">Sophie M.</p>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p class="quote">"The premium facial was exactly what my skin needed. The environment is breathtakingly luxurious."</p>
+        <p class="author">Claire T.</p>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p class="quote">"Exceptional service from the moment you walk in. A sublime oasis in the busy city."</p>
+        <p class="author">Isabella L.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Booking CTA -->
+  <section class="booking-cta reveal" id="booking">
+    <h2 class="char-reveal">Ready to Indulge?</h2>
+    <a href="#" class="btn-gold btn-glow interactive">Reserve Your Appointment</a>
+  </section>
+
+  <!-- Footer -->
+  <footer class="reveal">
+    <div class="socials">
+      <a href="#" class="interactive">
+        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm3.975-9.658a1.414 1.414 0 11-2.827 0 1.414 1.414 0 012.827 0z"/></svg>
+      </a>
+      <a href="#" class="interactive">
+        <svg viewBox="0 0 24 24"><path d="M24 4.557a9.83 9.83 0 01-2.828.775 4.932 4.932 0 002.165-2.724 9.864 9.864 0 01-3.127 1.195 4.916 4.916 0 00-8.384 4.482A13.945 13.945 0 011.671 3.149a4.916 4.916 0 001.523 6.574 4.903 4.903 0 01-2.229-.616c-.054 2.281 1.581 4.415 3.949 4.89a4.935 4.935 0 01-2.224.084 4.928 4.928 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.904 13.904 0 007.548 2.212c9.057 0 14.01-7.502 14.01-14.01 0-.213-.005-.425-.014-.636A10.025 10.025 0 0024 4.557z"/></svg>
+      </a>
+    </div>
+    <div class="footer-links">
+      <a href="#" class="interactive">Privacy Policy</a>
+      <a href="#" class="interactive">Terms of Service</a>
+      <a href="#" class="interactive">Contact</a>
+    </div>
+    <div class="copyright">
+      &copy; 2026 Lumière Salon. All rights reserved.
+    </div>
+  </footer>
+
+  <script>
+    // 1. Custom Cursor
+    const cursor = document.getElementById('cursor');
+    let mouseX = 0, mouseY = 0;
+    let cursorX = 0, cursorY = 0;
+    // Smoother lag for cursor
+    function animateCursor() {
+      const dx = mouseX - cursorX;
+      const dy = mouseY - cursorY;
+      cursorX += dx * 0.2;
+      cursorY += dy * 0.2;
+      cursor.style.left = cursorX + 'px';
+      cursor.style.top = cursorY + 'px';
+      requestAnimationFrame(animateCursor);
+    }
+    
+    // Check if device is touch or prefers reduced motion
+    const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    
+    if (!isTouch && !prefersReduced) {
+      document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+      });
+      requestAnimationFrame(animateCursor);
+
+      const interactives = document.querySelectorAll('.interactive, .interactive-card, button, a');
+      interactives.forEach(el => {
+        el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+        el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+      });
+    } else {
+      cursor.style.display = 'none';
+      document.body.style.cursor = 'auto';
+    }
+
+    // 2. Wrap text in spans for char reveal
+    const charReveals = document.querySelectorAll('.char-reveal');
+    charReveals.forEach(el => {
+      // Avoid splitting nested tags directly, simple text content replacement
+      if(el.children.length === 0 || el.tagName === 'H1' || el.tagName === 'H2') {
+        const text = el.innerText;
+        el.innerHTML = '';
+        let delay = 0;
+        for (let i = 0; i < text.length; i++) {
+          const char = text[i];
+          const span = document.createElement('span');
+          if (char === ' ') {
+            span.innerHTML = '&nbsp;';
+          } else if(char === '\n') {
+            el.appendChild(document.createElement('br'));
+            continue;
+          } else {
+            span.innerText = char;
+          }
+          span.style.transitionDelay = `${delay}s`;
+          delay += 0.03;
+          el.appendChild(span);
+        }
+      }
+    });
+
+    // 3. Intersection Observer for Scroll Effects
+    const revealElements = document.querySelectorAll('.reveal');
+    
+    const revealCallback = (entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          
+          // Trigger char reveal if present
+          if (entry.target.classList.contains('char-reveal')) {
+            entry.target.classList.add('active');
+          } else {
+            const childCharReveals = entry.target.querySelectorAll('.char-reveal');
+            childCharReveals.forEach(child => child.classList.add('active'));
+          }
+
+          // Stat counter
+          if (entry.target.id === 'statCounter' && !entry.target.classList.contains('counted')) {
+            const target = parseInt(entry.target.getAttribute('data-target'));
+            let count = 0;
+            const interval = setInterval(() => {
+              count++;
+              entry.target.innerText = count;
+              if (count >= target) {
+                entry.target.innerText = target + "+";
+                clearInterval(interval);
+              }
+            }, 100);
+            entry.target.classList.add('counted');
+          }
+          observer.unobserve(entry.target);
+        }
+      });
+    };
+    
+    const observerOptions = {
+      threshold: 0.15,
+      rootMargin: "0px 0px -50px 0px"
+    };
+    const observer = new IntersectionObserver(revealCallback, observerOptions);
+    revealElements.forEach(el => observer.observe(el));
+
+    // 4. Parallax Background and Navbar Scroll
+    const header = document.getElementById('header');
+    const parallaxBg = document.getElementById('parallaxBg');
+    
+    window.addEventListener('scroll', () => {
+      const scrollPos = window.scrollY;
+      
+      // Navbar shrink/bg
+      if (scrollPos > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+      
+      // Hero parallax
+      if (!prefersReduced && scrollPos < window.innerHeight) {
+        parallaxBg.style.transform = `translateY(${scrollPos * 0.4}px)`;
+      }
+    });
+
+    // 5. Card 3D Tilt Effect
+    if (!isTouch && !prefersReduced) {
+      const cards = document.querySelectorAll('.interactive-card');
+      cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+          const rotateX = ((y - centerY) / centerY) * -10;
+          const rotateY = ((x - centerX) / centerX) * 10;
+          card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+        });
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = `perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)`;
+          card.style.transition = `transform 0.5s ease-out`;
+        });
+        card.addEventListener('mouseenter', () => {
+          card.style.transition = `none`;
+        });
+      });
+    }
+
+    // 6. Ripple Effect for Buttons
+    const buttons = document.querySelectorAll('.btn-gold');
+    buttons.forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        const rect = btn.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        const ripple = document.createElement('span');
+        ripple.classList.add('ripple');
+        ripple.style.left = x + 'px';
+        ripple.style.top = y + 'px';
+        
+        // Size of the ripple should cover the button
+        const size = Math.max(rect.width, rect.height);
+        ripple.style.width = ripple.style.height = size + 'px';
+        ripple.style.transform = 'translate(-50%, -50%) scale(0)';
+        
+        this.appendChild(ripple);
+        setTimeout(() => {
+          ripple.remove();
+        }, 600);
+      });
+    });
+
+    // 7. Mobile Nav
+    const hamburger = document.getElementById('hamburger');
+    const navDrawer = document.getElementById('navDrawer');
+    const drawerLinks = navDrawer.querySelectorAll('a');
+    
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      navDrawer.classList.toggle('open');
+    });
+    
+    drawerLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        navDrawer.classList.remove('open');
+      });
+    });
+
+    // Trigger hero reveal immediately
+    setTimeout(() => {
+      document.querySelector('.hero-title').classList.add('active');
+    }, 100);
+  </script>
+</body>
+</html>
