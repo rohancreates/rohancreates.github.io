@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>AURORA GLOW — Beauty Studio</title>
+    <meta
+      name="description"
+      content="Aurora Glow is a modern beauty studio offering luxurious skin, hair, and nail experiences in an ultra-calming, immersive space."
+    />
+
+    <!-- Fonts -->
+    <link
+      rel="preconnect"
+      href="https://fonts.googleapis.com"
+    />
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Styles -->
+    <link
+      rel="stylesheet"
+      href="./styles.css"
+    />
+  </head>
+
+  <body>
+    <!-- Custom cursor (hidden on touch devices via CSS) -->
+    <div class="cursor cursor-main"></div>
+    <div class="cursor cursor-trail"></div>
+
+    <!-- Ambient gradient background -->
+    <div class="page-glow page-glow--top"></div>
+    <div class="page-glow page-glow--bottom"></div>
+
+    <header class="site-header" data-blur-on-scroll>
+      <div class="shell">
+        <a href="#hero" class="brand">
+          <div class="brand-mark">
+            <span class="brand-mark__line"></span>
+          </div>
+          <div class="brand-copy">
+            <span class="brand-copy__kicker">Beauty studio</span>
+            <span class="brand-copy__name">Aurora Glow</span>
+          </div>
+        </a>
+
+        <nav class="nav" aria-label="Primary">
+          <button
+            class="nav-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span></span><span></span>
+          </button>
+          <ul class="nav-list">
+            <li><a href="#services" data-nav-link>Services</a></li>
+            <li><a href="#rituals" data-nav-link>Rituals</a></li>
+            <li><a href="#gallery" data-nav-link>Gallery</a></li>
+            <li><a href="#reviews" data-nav-link>Stories</a></li>
+            <li><a href="#booking" data-nav-link>Book</a></li>
+          </ul>
+        </nav>
+
+        <a href="#booking" class="chip chip--accent">Book a glow</a>
+      </div>
+    </header>
+
+    <main>
+      <!-- HERO -->
+      <section id="hero" class="section section--hero">
+        <div class="shell shell--hero">
+          <div class="hero-copy" data-reveal>
+            <p class="eyebrow">Where calm light meets skin</p>
+            <h1>
+              Soft, luminous
+              <span class="hero-word hero-word--gradient">beauty</span>
+              rituals.
+            </h1>
+            <p class="lede">
+              A city-hideaway beauty studio designed like a slow Sunday morning:
+              warm light, quiet details, and treatments that let your nervous
+              system exhale.
+            </p>
+
+            <div class="hero-actions">
+              <a href="#booking" class="btn btn--primary">Book an appointment</a>
+              <button class="btn btn--ghost" data-scroll-to="#rituals">
+                Explore rituals
+              </button>
+            </div>
+
+            <div class="hero-meta">
+              <div>
+                <span class="hero-meta__label">Average visit</span>
+                <span class="hero-meta__value">90 minutes of calm</span>
+              </div>
+              <div>
+                <span class="hero-meta__label">Clients</span>
+                <span class="hero-meta__value">4.9 ★ over 2,400 visits</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-visual" data-reveal>
+            <div class="hero-card hero-card--primary" data-parallax>
+              <div class="hero-card__badge">New</div>
+              <div class="hero-card__image hero-card__image--skin"></div>
+              <div class="hero-card__content">
+                <h2>Glow Reset Facial</h2>
+                <p>Deep cleanse, glass-skin mask, LED therapy &amp; lymphatic massage.</p>
+                <div class="hero-card__meta">
+                  <span>75 min</span>
+                  <span>₹4,900</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="hero-card hero-card--secondary" data-parallax data-parallax-slower>
+              <div class="hero-chip">Silent appointments available</div>
+              <div class="hero-pill">
+                <span>Zero rush</span>
+                <span class="dot"></span>
+                <span>Therapist curated playlists</span>
+              </div>
+              <div class="hero-stats">
+                <div>
+                  <span class="hero-stats__value">03</span>
+                  <span class="hero-stats__label">Chairs only</span>
+                </div>
+                <div>
+                  <span class="hero-stats__value">01</span>
+                  <span class="hero-stats__label">Client per therapist</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button class="scroll-indicator" data-scroll-to="#services" aria-label="Scroll to services">
+          <span class="scroll-indicator__icon"></span>
+          <span class="scroll-indicator__label">Scroll to explore</span>
+        </button>
+      </section>
+
+      <!-- SERVICES -->
+      <section id="services" class="section section--soft" data-section>
+        <div class="shell">
+          <header class="section-head" data-reveal>
+            <p class="eyebrow">Services</p>
+            <div class="section-head__content">
+              <h2>Everything for luminous, everyday beauty.</h2>
+              <p>
+                We design each visit as a small ceremony — slow, attentive and
+                custom to your skin, mood and schedule.
+              </p>
+            </div>
+          </header>
+
+          <div class="grid grid--services">
+            <article class="card card--service" data-reveal>
+              <div class="card-tag">Skin studio</div>
+              <h3>Facials &amp; skin rituals</h3>
+              <p>
+                From barrier-strength facials to glow-before-events, layered
+                with LED, gua sha and custom masks.
+              </p>
+              <ul>
+                <li>Glass Skin Deep Glow</li>
+                <li>Blue Light Detox Facial</li>
+                <li>Overnight Flight Recovery</li>
+              </ul>
+              <div class="card-footer">
+                <span>Starting at ₹2,900</span>
+                <span>45 – 90 min</span>
+              </div>
+            </article>
+
+            <article class="card card--service" data-reveal>
+              <div class="card-tag">Hair room</div>
+              <h3>Hair, blowouts &amp; color</h3>
+              <p>
+                Low-maintenance cuts, lived-in color and head massage rituals
+                that feel like a mini-vacation.
+              </p>
+              <ul>
+                <li>Soft Layered Cut</li>
+                <li>Signature Aurora Balayage</li>
+                <li>Glass Hair Blowdry</li>
+              </ul>
+              <div class="card-footer">
+                <span>Starting at ₹1,800</span>
+                <span>40 – 120 min</span>
+              </div>
+            </article>
+
+            <article class="card card--service" data-reveal>
+              <div class="card-tag">Detail bar</div>
+              <h3>Nails, lashes &amp; brows</h3>
+              <p>
+                Gentle detail work with meticulous hygiene, vegan products and
+                a focus on healthy growth.
+              </p>
+              <ul>
+                <li>Biab Manicure</li>
+                <li>Lash Lift &amp; Tint</li>
+                <li>Brow Sculpt &amp; Lamination</li>
+              </ul>
+              <div class="card-footer">
+                <span>Starting at ₹1,200</span>
+                <span>30 – 75 min</span>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- RITUALS / EXPERIENCE -->
+      <section id="rituals" class="section section--split" data-section>
+        <div class="shell shell--split">
+          <div class="split-col split-col--sticky" data-reveal>
+            <p class="eyebrow">The Aurora experience</p>
+            <h2>Designed like a slow, golden hour.</h2>
+            <p>
+              From the moment you step in, we lower the volume on everything
+              outside — with warm light, sound-absorbing interiors and
+              aromatherapy picked for your mood.
+            </p>
+            <div class="list list--ticks">
+              <div>
+                <h3>Soft light, soft sound</h3>
+                <p>
+                  Indirect lighting, no harsh white tubes. Custom playlists or
+                  total silence — you choose.
+                </p>
+              </div>
+              <div>
+                <h3>Products that respect skin</h3>
+                <p>
+                  European &amp; Korean skincare, sulphate-free haircare and
+                  breathable gel systems for nails.
+                </p>
+              </div>
+              <div>
+                <h3>Slower beauty philosophy</h3>
+                <p>
+                  No over-scheduling. One client per chair, so your therapist
+                  never rushes through your ritual.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="split-col split-col--stack">
+            <div class="panel panel--ambient" data-parallax>
+              <div class="panel-image panel-image--massage"></div>
+              <div class="panel-content">
+                <h3>Silent appointments</h3>
+                <p>
+                  Prefer a quiet ritual? Request a silent appointment — your
+                  therapist will speak only when necessary.
+                </p>
+              </div>
+            </div>
+            <div class="panel panel--ambient" data-parallax data-parallax-slower>
+              <div class="panel-image panel-image--nails"></div>
+              <div class="panel-content">
+                <h3>Members’ late hours</h3>
+                <p>
+                  On select days we stay open late for members-only facials,
+                  hair and nail rituals after 9pm.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- GALLERY / SCROLLING STRIP -->
+      <section id="gallery" class="section section--gallery" data-section>
+        <div class="shell">
+          <header class="section-head section-head--center" data-reveal>
+            <p class="eyebrow">Inside Aurora</p>
+            <h2>Soft-toned rooms, sunlit mirrors, tiny details.</h2>
+          </header>
+        </div>
+
+        <div class="gallery-rail" data-horizontal-scroll>
+          <div class="gallery-row gallery-row--one">
+            <div class="gallery-card gallery-card--1"></div>
+            <div class="gallery-card gallery-card--2"></div>
+            <div class="gallery-card gallery-card--3"></div>
+          </div>
+          <div class="gallery-row gallery-row--two">
+            <div class="gallery-card gallery-card--4"></div>
+            <div class="gallery-card gallery-card--5"></div>
+            <div class="gallery-card gallery-card--6"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- REVIEWS -->
+      <section id="reviews" class="section section--soft" data-section>
+        <div class="shell">
+          <header class="section-head" data-reveal>
+            <p class="eyebrow">Guest stories</p>
+            <div class="section-head__content">
+              <h2>The reviews all mention one thing: calm.</h2>
+              <p>
+                We obsess over small comforts. So much so, our most common
+                review is actually about how people feel when they leave.
+              </p>
+            </div>
+          </header>
+
+          <div class="grid grid--reviews">
+            <article class="review" data-reveal>
+              <p class="review-body">
+                “It feels like walking into a moodboard I had pinned for years.
+                The facial was unreal, but I think I’ll come back for the
+                silence.”
+              </p>
+              <div class="review-meta">
+                <span class="review-name">Sanjana • Glass Skin Ritual</span>
+                <span class="review-tag">First-time guest</span>
+              </div>
+            </article>
+
+            <article class="review" data-reveal>
+              <p class="review-body">
+                “The only salon where my balayage still looks soft after three
+                months. They educate you without being preachy.”
+              </p>
+              <div class="review-meta">
+                <span class="review-name">Ananya • Hair color</span>
+                <span class="review-tag">Monthly regular</span>
+              </div>
+            </article>
+
+            <article class="review" data-reveal>
+              <p class="review-body">
+                “They took my request for a silent appointment so seriously. It
+                was the first time I truly rested during a salon visit.”
+              </p>
+              <div class="review-meta">
+                <span class="review-name">Megha • Nail + brow ritual</span>
+                <span class="review-tag">Evening slot</span>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- BOOKING -->
+      <section id="booking" class="section section--booking" data-section>
+        <div class="shell shell--booking">
+          <div class="booking-copy" data-reveal>
+            <p class="eyebrow">Bookings</p>
+            <h2>Ready for your next reset?</h2>
+            <p>
+              Share a bit about your skin, hair and schedule. Our team will text
+              you back within 30 minutes with curated slot and ritual options.
+            </p>
+
+            <div class="booking-meta">
+              <div>
+                <span class="booking-meta__label">Location</span>
+                <span class="booking-meta__value">Indiranagar, Bengaluru</span>
+              </div>
+              <div>
+                <span class="booking-meta__label">Hours</span>
+                <span class="booking-meta__value">Tue – Sun · 10am – 9pm</span>
+              </div>
+              <div>
+                <span class="booking-meta__label">WhatsApp</span>
+                <span class="booking-meta__value">+91-98XX-XXX-XXX</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="booking-card" data-reveal>
+            <form class="form" autocomplete="on" novalidate>
+              <div class="form-row">
+                <div class="field">
+                  <label for="name">Name</label>
+                  <input
+                    id="name"
+                    name="name"
+                    type="text"
+                    placeholder="Full name"
+                    required
+                  />
+                </div>
+                <div class="field">
+                  <label for="phone">Phone</label>
+                  <input
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    placeholder="+91-"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="field">
+                  <label for="service">What are you booking?</label>
+                  <select id="service" name="service" required>
+                    <option value="">Select a ritual</option>
+                    <option>Facial / skin ritual</option>
+                    <option>Haircut / color</option>
+                    <option>Nails</option>
+                    <option>Lashes / brows</option>
+                    <option>Multiple rituals</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="time">Preferred time</label>
+                  <select id="time" name="time">
+                    <option value="">Anytime works</option>
+                    <option>Weekday · Daytime</option>
+                    <option>Weekday · Evening</option>
+                    <option>Weekend · Daytime</option>
+                    <option>Weekend · Evening</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="notes">Anything we should know?</label>
+                <textarea
+                  id="notes"
+                  name="notes"
+                  rows="3"
+                  placeholder="Skin concerns, sensitivities, or notes for your therapist."
+                ></textarea>
+              </div>
+
+              <div class="field field--inline">
+                <label class="checkbox">
+                  <input type="checkbox" name="silent" />
+                  <span>I'd love a silent appointment</span>
+                </label>
+                <label class="checkbox">
+                  <input type="checkbox" name="updates" checked />
+                  <span>Send me launch offers on WhatsApp</span>
+                </label>
+              </div>
+
+              <button type="submit" class="btn btn--primary btn--full">
+                Request a time slot
+              </button>
+
+              <p class="form-footnote">
+                No spam. We only use your details to confirm and manage your
+                booking.
+              </p>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="shell shell--footer">
+        <div class="footer-brand">
+          <span class="footer-kicker">Aurora Glow</span>
+          <span class="footer-copy">Slow, light-filled beauty studio.</span>
+        </div>
+        <div class="footer-nav">
+          <a href="#hero">Back to top</a>
+          <a href="#services">Services</a>
+          <a href="#booking">Book</a>
+        </div>
+        <div class="footer-meta">
+          <span>Instagram · @auroraglow.studio</span>
+          <span>Made for modern salons</span>
+        </div>
+      </div>
+    </footer>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
