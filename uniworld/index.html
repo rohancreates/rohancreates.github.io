@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>UniWorld — The Campus Universe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & VARS ──────────────────────────── */
+:root {
+  --bg: #04060f;
+  --bg2: #080d1a;
+  --cyan: #00f5ff;
+  --magenta: #ff2d8f;
+  --violet: #7c3aed;
+  --yellow: #ffe600;
+  --green: #00ff88;
+  --white: #f0f4ff;
+  --muted: rgba(240,244,255,0.45);
+  --glass: rgba(255,255,255,0.04);
+  --glass-border: rgba(255,255,255,0.08);
+  --pad: clamp(1.2rem, 5vw, 6rem);
+  --pad-v: clamp(4rem, 10vh, 8rem);
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  overflow-x: hidden;
+}
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--cyan); border-radius: 3px; }
+
+/* ── CUSTOM CURSOR (desktop only) ───────────── */
+@media (hover: hover) and (pointer: fine) {
+  body { cursor: none; }
+  #cursor {
+    position: fixed; width: 10px; height: 10px;
+    background: var(--cyan); border-radius: 50%;
+    pointer-events: none; z-index: 9999;
+    transform: translate(-50%,-50%);
+    transition: width .2s, height .2s, background .2s;
+    mix-blend-mode: screen;
+  }
+  #cursor-ring {
+    position: fixed; width: 38px; height: 38px;
+    border: 1.5px solid rgba(0,245,255,0.5);
+    border-radius: 50%; pointer-events: none; z-index: 9998;
+    transform: translate(-50%,-50%);
+  }
+}
+@media (hover: none) {
+  #cursor, #cursor-ring { display: none; }
+}
+
+/* ── NAV ──────────────────────────────────── */
+nav {
+  position: fixed; top:0; left:0; right:0; z-index:1000;
+  padding: 1rem var(--pad);
+  display: flex; align-items: center; justify-content: space-between;
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  background: rgba(4,6,15,0.85);
+  border-bottom: 1px solid var(--glass-border);
+}
+.nav-logo {
+  font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.4rem;
+  background: linear-gradient(90deg, var(--cyan), var(--magenta));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; letter-spacing: -0.02em; flex-shrink: 0;
+}
+.nav-links {
+  display: flex; gap: 2rem; list-style: none; align-items: center;
+}
+.nav-links a {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
+  color: var(--muted); text-decoration: none;
+  letter-spacing: 0.05em; transition: color .2s; text-transform: uppercase;
+}
+.nav-links a:hover { color: var(--cyan); }
+.nav-cta {
+  background: linear-gradient(135deg, var(--cyan), var(--violet));
+  color: #04060f !important; -webkit-text-fill-color: #04060f !important;
+  padding: .5rem 1.2rem; border-radius: 100px; font-weight: 700 !important;
+  transition: box-shadow .3s, transform .2s !important;
+}
+.nav-cta:hover { box-shadow: 0 0 30px rgba(0,245,255,.3); transform: translateY(-2px); }
+
+/* Hamburger */
+.nav-toggle {
+  display: none; flex-direction: column; gap: 5px;
+  background: none; border: none; cursor: pointer; padding: 4px; z-index: 1001;
+}
+.nav-toggle span {
+  display: block; width: 24px; height: 2px;
+  background: var(--white); border-radius: 2px;
+  transition: transform .3s, opacity .3s;
+}
+.nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle.open span:nth-child(2) { opacity: 0; }
+.nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Mobile nav overlay */
+.mobile-menu {
+  display: none; position: fixed; inset: 0; z-index: 999;
+  background: rgba(4,6,15,0.97); flex-direction: column;
+  align-items: center; justify-content: center; gap: 2.5rem;
+  backdrop-filter: blur(20px);
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 800;
+  color: var(--white); text-decoration: none; text-transform: uppercase;
+  letter-spacing: -0.02em; transition: color .2s;
+}
+.mobile-menu a:hover { color: var(--cyan); }
+.mobile-menu .m-cta {
+  background: linear-gradient(135deg, var(--cyan), var(--violet));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@media (max-width: 900px) {
+  .nav-links { display: none; }
+  .nav-toggle { display: flex; }
+}
+
+/* ── HERO ──────────────────────────────────── */
+#hero {
+  position: relative; min-height: 100svh;
+  display: flex; align-items: center; overflow: hidden;
+}
+#hero-canvas {
+  position: absolute; inset: 0; z-index: 0;
+  width: 100% !important; height: 100% !important;
+}
+.hero-content {
+  position: relative; z-index: 10;
+  padding: 5rem var(--pad) 2rem;
+  max-width: min(780px, 100%);
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: .5rem;
+  background: var(--glass); border: 1px solid var(--glass-border);
+  backdrop-filter: blur(10px); padding: .4rem 1rem; border-radius: 100px;
+  font-family: 'JetBrains Mono', monospace; font-size: .62rem;
+  color: var(--cyan); letter-spacing: .1em; text-transform: uppercase;
+  margin-bottom: 1.5rem; opacity: 0; animation: slideIn .8s .2s forwards;
+}
+.badge-dot {
+  width: 6px; height: 6px; background: var(--cyan);
+  border-radius: 50%; animation: blink 1.5s infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
+.hero-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(2.8rem, 10vw, 7.5rem);
+  font-weight: 800; line-height: .92; letter-spacing: -.03em;
+  opacity: 0; animation: slideIn .9s .4s forwards;
+}
+.hero-title .line2 {
+  background: linear-gradient(90deg, var(--cyan), var(--magenta), var(--yellow));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; background-size: 200%;
+  animation: gradShift 4s linear infinite, slideIn .9s .4s forwards;
+}
+@keyframes gradShift { 0%{background-position:0%} 100%{background-position:200%} }
+.hero-sub {
+  font-size: clamp(.9rem, 2.5vw, 1.15rem); color: var(--muted);
+  line-height: 1.7; margin: 1.5rem 0 2rem; max-width: 520px;
+  opacity: 0; animation: slideIn .9s .6s forwards; font-weight: 300;
+}
+.hero-actions {
+  display: flex; gap: .8rem; align-items: center; flex-wrap: wrap;
+  opacity: 0; animation: slideIn .9s .8s forwards;
+}
+.hero-stats {
+  position: absolute; bottom: 2rem; right: var(--pad);
+  display: flex; gap: 2rem; z-index: 10;
+  opacity: 0; animation: slideIn .9s 1s forwards;
+}
+@media (max-width: 600px) {
+  .hero-stats { position: static; margin: 2rem var(--pad) 0; padding-bottom: 2rem; }
+  .hero-content { padding-bottom: 0; }
+  #hero { flex-direction: column; align-items: flex-start; }
+}
+.stat-item { text-align: right; }
+.stat-number {
+  font-family: 'Syne', sans-serif; font-size: clamp(1.5rem, 5vw, 2.2rem);
+  font-weight: 800;
+  background: linear-gradient(90deg, var(--cyan), var(--magenta));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.stat-label {
+  font-size: .62rem; color: var(--muted);
+  font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: .1em;
+}
+@keyframes slideIn { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+
+/* ── BUTTONS ───────────────────────────────── */
+.btn-primary {
+  display: inline-flex; align-items: center; gap: .5rem;
+  background: linear-gradient(135deg, var(--cyan), var(--violet));
+  color: white; padding: .85rem 1.8rem; border-radius: 100px;
+  font-family: 'Syne', sans-serif; font-weight: 700; font-size: .9rem;
+  text-decoration: none; border: none; cursor: pointer;
+  transition: transform .2s, box-shadow .3s; position: relative; overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn-primary::after {
+  content:''; position:absolute; inset:0;
+  background: linear-gradient(135deg, var(--magenta), var(--cyan));
+  opacity:0; transition: opacity .3s;
+}
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 20px 60px rgba(0,245,255,.3); }
+.btn-primary:hover::after { opacity:1; }
+.btn-primary span { position:relative; z-index:1; }
+.btn-secondary {
+  display: inline-flex; align-items: center; gap: .5rem;
+  background: transparent; color: var(--white);
+  padding: .85rem 1.8rem; border-radius: 100px;
+  font-family: 'Syne', sans-serif; font-weight: 600; font-size: .9rem;
+  text-decoration: none; border: 1px solid var(--glass-border);
+  transition: border-color .3s, background .3s;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn-secondary:hover { border-color: var(--cyan); background: rgba(0,245,255,.05); }
+
+/* ── SECTION BASE ─────────────────────────── */
+section { position: relative; padding: var(--pad-v) var(--pad); }
+.section-label {
+  font-family: 'JetBrains Mono', monospace; font-size: .62rem;
+  letter-spacing: .3em; text-transform: uppercase; color: var(--cyan); margin-bottom: .8rem;
+}
+.section-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(1.8rem, 5vw, 3.5rem);
+  font-weight: 800; line-height: 1.05; letter-spacing: -.02em;
+}
+.section-title em {
+  font-style: italic;
+  background: linear-gradient(90deg, var(--magenta), var(--violet));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+
+/* ── GLOW DIVIDER ─────────────────────────── */
+.glow-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cyan), var(--magenta), transparent);
+  margin: 0 var(--pad); opacity: .3;
+}
+
+/* ── FEATURES ─────────────────────────────── */
+#features {
+  background: radial-gradient(ellipse 80% 50% at 50% 100%, rgba(124,58,237,.08) 0%, transparent 70%);
+}
+.features-header { text-align:center; margin-bottom: 3rem; }
+.features-header p { color: var(--muted); font-size:1rem; margin-top: .8rem; font-weight:300; }
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.2rem;
+}
+@media (max-width: 900px) { .features-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .features-grid { grid-template-columns: 1fr; } }
+
+.feat-card {
+  background: var(--glass); border: 1px solid var(--glass-border);
+  border-radius: 20px; padding: 2rem;
+  position: relative; overflow: hidden;
+  transition: border-color .3s, transform .1s;
+  transform-style: preserve-3d;
+  -webkit-tap-highlight-color: transparent;
+}
+.feat-card::before {
+  content:''; position:absolute; inset:0;
+  background: var(--card-glow, linear-gradient(135deg,rgba(0,245,255,.05),transparent));
+  opacity:0; transition: opacity .3s; border-radius:20px;
+}
+.feat-card:hover { border-color: var(--card-color,var(--cyan)); }
+.feat-card:hover::before { opacity:1; }
+.feat-icon { font-size: 2.2rem; margin-bottom:1.2rem; display:block;
+  filter: drop-shadow(0 0 12px var(--card-color,var(--cyan))); }
+.feat-title { font-family:'Syne',sans-serif; font-size:1.15rem; font-weight:700;
+  margin-bottom:.6rem; color: var(--card-color,var(--cyan)); }
+.feat-desc { font-size:.88rem; color:var(--muted); line-height:1.7; }
+.feat-tag {
+  position:absolute; top:1.2rem; right:1.2rem;
+  font-family:'JetBrains Mono',monospace; font-size:.52rem;
+  background:rgba(255,255,255,.05); border:1px solid var(--glass-border);
+  padding:.2rem .5rem; border-radius:100px; color:var(--muted);
+  letter-spacing:.1em; text-transform:uppercase;
+}
+
+/* ── FESTS ────────────────────────────────── */
+#fests {
+  background: radial-gradient(ellipse 60% 40% at 0% 50%, rgba(255,45,143,.07) 0%, transparent 60%);
+}
+.fests-layout {
+  display: grid; grid-template-columns: 1fr 1.6fr; gap: 4rem; align-items: start;
+}
+@media (max-width: 860px) {
+  .fests-layout { grid-template-columns: 1fr; gap: 2.5rem; }
+}
+.fests-intro p { color:var(--muted); margin-top:1.2rem; line-height:1.8; font-size:.95rem; }
+.filter-row { display:flex; gap:.5rem; margin-top:1.5rem; flex-wrap:wrap; }
+.filter-btn {
+  font-family:'JetBrains Mono',monospace; font-size:.58rem;
+  padding:.38rem .85rem; border-radius:100px;
+  border:1px solid var(--glass-border); background:transparent;
+  color:var(--muted); cursor:pointer; transition:all .2s;
+  text-transform:uppercase; letter-spacing:.08em;
+  -webkit-tap-highlight-color: transparent;
+}
+.filter-btn.active, .filter-btn:hover {
+  border-color:var(--magenta); color:var(--magenta); background:rgba(255,45,143,.08);
+}
+.fests-list { display:flex; flex-direction:column; gap:.9rem; }
+.fest-card {
+  background:var(--glass); border:1px solid var(--glass-border);
+  border-radius:16px; padding:1.4rem 1.6rem;
+  display:flex; align-items:center; gap:1.2rem;
+  transition:border-color .3s, transform .2s, box-shadow .3s;
+  cursor:pointer; position:relative; overflow:hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+.fest-card::after {
+  content:''; position:absolute; left:0; top:0; bottom:0; width:3px;
+  background:var(--fest-color,var(--cyan)); border-radius:0 3px 3px 0;
+}
+.fest-card:hover, .fest-card:active {
+  border-color:var(--fest-color,var(--cyan)); transform:translateX(5px);
+  box-shadow:-5px 0 35px var(--fest-glow,rgba(0,245,255,.1));
+}
+.fest-date-block { text-align:center; min-width:52px; }
+.fest-day { font-family:'Syne',sans-serif; font-size:1.8rem; font-weight:800;
+  color:var(--fest-color,var(--cyan)); line-height:1; }
+.fest-mon { font-family:'JetBrains Mono',monospace; font-size:.58rem;
+  color:var(--muted); text-transform:uppercase; letter-spacing:.1em; }
+.fest-info { flex:1; min-width:0; }
+.fest-name { font-family:'Syne',sans-serif; font-weight:700; font-size:1rem; margin-bottom:.25rem;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.fest-meta { font-family:'JetBrains Mono',monospace; font-size:.58rem; color:var(--muted); letter-spacing:.04em; }
+.fest-badge {
+  font-family:'JetBrains Mono',monospace; font-size:.52rem;
+  padding:.28rem .7rem; border-radius:100px;
+  border:1px solid var(--fest-color,var(--cyan));
+  color:var(--fest-color,var(--cyan));
+  text-transform:uppercase; letter-spacing:.08em; white-space:nowrap; flex-shrink:0;
+}
+.countdown-wrap { display:flex; gap:.35rem; margin-top:.45rem; align-items:center; }
+.cd-unit { background:rgba(255,255,255,.05); border-radius:6px; padding:.18rem .45rem; text-align:center; }
+.cd-num { font-family:'JetBrains Mono',monospace; font-size:.95rem; font-weight:700;
+  color:var(--fest-color,var(--cyan)); line-height:1; }
+.cd-lbl { font-size:.42rem; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; }
+.cd-sep { font-family:'JetBrains Mono',monospace; color:var(--muted); font-size:.9rem; line-height:1; }
+
+/* ── BUZZ ─────────────────────────────────── */
+#buzz {
+  background: radial-gradient(ellipse 70% 50% at 100% 50%, rgba(0,245,255,.05) 0%, transparent 60%);
+}
+.buzz-layout { display:grid; grid-template-columns:1.6fr 1fr; gap:3rem; align-items:start; margin-top:2.5rem; }
+@media (max-width: 900px) { .buzz-layout { grid-template-columns:1fr; } }
+.feed { display:flex; flex-direction:column; gap:1rem; }
+.post-card {
+  background:var(--glass); border:1px solid var(--glass-border);
+  border-radius:16px; padding:1.4rem;
+  transition:border-color .3s; cursor:pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.post-card:hover, .post-card:active { border-color:rgba(0,245,255,.3); }
+.post-header { display:flex; align-items:center; gap:.7rem; margin-bottom:.9rem; }
+.avatar {
+  width:36px; height:36px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:.82rem; font-weight:700; flex-shrink:0;
+}
+.post-user-name { font-family:'Syne',sans-serif; font-size:.88rem; font-weight:700; }
+.post-user-meta { font-size:.68rem; color:var(--muted); font-family:'JetBrains Mono',monospace; }
+.post-body { font-size:.9rem; line-height:1.6; color:rgba(240,244,255,.85); margin-bottom:.9rem; }
+.post-body strong { color:var(--cyan); }
+.post-actions { display:flex; gap:1.2rem; flex-wrap:wrap; }
+.post-action {
+  font-family:'JetBrains Mono',monospace; font-size:.62rem;
+  color:var(--muted); display:flex; align-items:center; gap:.35rem;
+  transition:color .2s; cursor:pointer;
+}
+.post-action:hover, .post-action:active { color:var(--cyan); }
+.post-tag {
+  display:inline-block; padding:.15rem .5rem; border-radius:100px;
+  font-family:'JetBrains Mono',monospace; font-size:.58rem;
+  margin-right:.3rem; margin-bottom:.4rem;
+}
+.trending { display:flex; flex-direction:column; gap:.9rem; }
+.trending-title {
+  font-family:'Syne',sans-serif; font-weight:700; font-size:.9rem;
+  margin-bottom:.4rem; color:var(--muted); text-transform:uppercase; letter-spacing:.08em;
+}
+.trend-item {
+  background:var(--glass); border:1px solid var(--glass-border); border-radius:12px;
+  padding:.9rem 1.1rem; display:flex; align-items:center; gap:.9rem;
+  cursor:pointer; transition:border-color .3s, transform .2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.trend-item:hover, .trend-item:active { border-color:var(--magenta); transform:translateX(-3px); }
+.trend-rank { font-family:'JetBrains Mono',monospace; font-size:.62rem; color:var(--muted); min-width:16px; }
+.trend-text { flex:1; min-width:0; }
+.trend-tag { font-family:'Syne',sans-serif; font-size:.85rem; font-weight:700; color:var(--magenta); }
+.trend-count { font-family:'JetBrains Mono',monospace; font-size:.58rem; color:var(--muted); margin-top:.15rem; }
+.trend-arrow { color:var(--muted); font-size:.75rem; flex-shrink:0; }
+.trend-item:hover .trend-arrow { color:var(--magenta); }
+
+/* ── STUDY GROUPS ─────────────────────────── */
+#study {
+  background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(124,58,237,.1) 0%, transparent 60%);
+}
+.study-header { text-align:center; margin-bottom:3rem; }
+.study-header p { color:var(--muted); margin-top:.8rem; font-size:.95rem; }
+.study-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; }
+@media (max-width: 1000px) { .study-grid { grid-template-columns:repeat(2,1fr); } }
+@media (max-width: 520px) { .study-grid { grid-template-columns:1fr; } }
+.study-card {
+  background:var(--glass); border:1px solid var(--glass-border);
+  border-radius:16px; padding:1.6rem; position:relative; cursor:pointer;
+  transition:border-color .3s, transform .2s; overflow:hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+.study-card::before {
+  content:''; position:absolute; top:-50%; left:-50%; width:200%; height:200%;
+  background:radial-gradient(circle, var(--sg-color,rgba(0,245,255,.08)) 0%, transparent 60%);
+  opacity:0; transition:opacity .4s;
+}
+.study-card:hover { border-color:var(--sg-color,var(--cyan)); }
+.study-card:hover::before { opacity:1; }
+.sg-subject {
+  font-family:'JetBrains Mono',monospace; font-size:.58rem;
+  text-transform:uppercase; letter-spacing:.15em;
+  color:var(--sg-color,var(--cyan)); margin-bottom:.4rem;
+}
+.sg-name { font-family:'Syne',sans-serif; font-size:1rem; font-weight:700; margin-bottom:.9rem; line-height:1.3; }
+.sg-members { display:flex; align-items:center; gap:.5rem; margin-bottom:.9rem; }
+.sg-avatars { display:flex; }
+.sg-av {
+  width:24px; height:24px; border-radius:50%; border:2px solid var(--bg2);
+  margin-left:-6px; font-size:.58rem; display:flex; align-items:center; justify-content:center; font-weight:700;
+}
+.sg-av:first-child { margin-left:0; }
+.sg-count { font-family:'JetBrains Mono',monospace; font-size:.58rem; color:var(--muted); }
+.sg-tags { display:flex; flex-wrap:wrap; gap:.35rem; }
+.sg-tag {
+  font-family:'JetBrains Mono',monospace; font-size:.52rem; padding:.18rem .45rem;
+  border-radius:6px; background:rgba(255,255,255,.05); color:var(--muted);
+  text-transform:uppercase; letter-spacing:.05em;
+}
+.sg-live {
+  position:absolute; top:1.1rem; right:1.1rem;
+  display:flex; align-items:center; gap:.35rem;
+  font-family:'JetBrains Mono',monospace; font-size:.52rem;
+  color:var(--green); text-transform:uppercase; letter-spacing:.08em;
+}
+.sg-live-dot { width:6px; height:6px; background:var(--green); border-radius:50%; animation:blink 1s infinite; }
+
+/* ── MARKETPLACE ─────────────────────────── */
+.market-header { margin-bottom:2.5rem; }
+.market-header p { color:var(--muted); margin-top:.8rem; max-width:500px; font-size:.95rem; }
+.market-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; }
+@media (max-width: 900px) { .market-grid { grid-template-columns:repeat(2,1fr); } }
+@media (max-width: 480px) { .market-grid { grid-template-columns:repeat(2,1fr); } }
+.market-card {
+  background:var(--glass); border:1px solid var(--glass-border);
+  border-radius:16px; overflow:hidden; cursor:pointer;
+  transition:border-color .3s, transform .2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.market-card:hover, .market-card:active { border-color:var(--yellow); transform:translateY(-5px); }
+.market-img {
+  height:120px; display:flex; align-items:center; justify-content:center;
+  font-size:3rem; position:relative; overflow:hidden;
+}
+.market-img::after {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(to bottom, transparent, rgba(4,6,15,.6));
+}
+.market-body { padding:1rem; }
+.market-name { font-family:'Syne',sans-serif; font-weight:700; font-size:.9rem; margin-bottom:.35rem; }
+.market-price { font-family:'JetBrains Mono',monospace; font-size:1rem; color:var(--yellow); font-weight:700; }
+.market-seller { font-size:.68rem; color:var(--muted); margin-top:.25rem; }
+.market-condition {
+  display:inline-block; font-family:'JetBrains Mono',monospace; font-size:.48rem;
+  padding:.15rem .45rem; border-radius:100px; text-transform:uppercase;
+  letter-spacing:.08em; margin-top:.45rem;
+}
+
+/* ── STATS ─────────────────────────────────── */
+#stats {
+  background:linear-gradient(135deg,rgba(0,245,255,.04),rgba(124,58,237,.04),rgba(255,45,143,.04));
+  border-top:1px solid var(--glass-border); border-bottom:1px solid var(--glass-border);
+}
+.stats-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:1.5rem; text-align:center; }
+@media (max-width: 860px) { .stats-grid { grid-template-columns:repeat(3,1fr); } }
+@media (max-width: 500px) { .stats-grid { grid-template-columns:repeat(2,1fr); } }
+.stat-card { padding:1.5rem .5rem; }
+.big-stat {
+  font-family:'Syne',sans-serif; font-size:clamp(2rem,5vw,4rem); font-weight:800; line-height:1;
+  background:var(--stat-grad,linear-gradient(90deg,var(--cyan),var(--violet)));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  margin-bottom:.4rem;
+}
+.stat-name { font-family:'JetBrains Mono',monospace; font-size:.58rem; color:var(--muted); text-transform:uppercase; letter-spacing:.15em; }
+
+/* ── OPPORTUNITIES ─────────────────────────── */
+#opportunities {
+  background:radial-gradient(ellipse 60% 50% at 100% 100%, rgba(255,230,0,.05) 0%, transparent 60%);
+}
+.opp-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin-top:2.5rem; }
+@media (max-width: 860px) { .opp-grid { grid-template-columns:1fr; } }
+@media (max-width: 600px) { .opp-grid { grid-template-columns:1fr; } }
+.opp-card {
+  background:var(--glass); border:1px solid var(--glass-border);
+  border-radius:16px; padding:1.8rem; cursor:pointer;
+  transition:border-color .3s, transform .2s; position:relative;
+  -webkit-tap-highlight-color: transparent;
+}
+.opp-card:hover, .opp-card:active { border-color:var(--yellow); transform:translateY(-4px); }
+.opp-company { display:flex; align-items:center; gap:.7rem; margin-bottom:1.1rem; }
+.company-logo { width:42px; height:42px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1.3rem; flex-shrink:0; }
+.company-name { font-family:'Syne',sans-serif; font-weight:700; font-size:.92rem; }
+.company-type { font-family:'JetBrains Mono',monospace; font-size:.56rem; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; }
+.opp-role { font-family:'Syne',sans-serif; font-size:1.05rem; font-weight:700; color:var(--yellow); margin-bottom:.45rem; }
+.opp-details { font-family:'JetBrains Mono',monospace; font-size:.6rem; color:var(--muted); margin-bottom:.9rem; line-height:1.9; }
+.opp-tags { display:flex; flex-wrap:wrap; gap:.35rem; margin-bottom:1.1rem; }
+.opp-tag {
+  font-family:'JetBrains Mono',monospace; font-size:.52rem; padding:.18rem .55rem;
+  border-radius:6px; background:rgba(255,230,0,.08); border:1px solid rgba(255,230,0,.15);
+  color:var(--yellow); text-transform:uppercase; letter-spacing:.05em;
+}
+.opp-apply {
+  display:inline-flex; align-items:center; gap:.4rem;
+  font-family:'JetBrains Mono',monospace; font-size:.6rem;
+  color:var(--yellow); text-transform:uppercase; letter-spacing:.08em; cursor:pointer;
+  transition:gap .2s;
+}
+.opp-apply:hover { gap:.7rem; }
+.opp-new {
+  position:absolute; top:1.3rem; right:1.3rem;
+  font-family:'JetBrains Mono',monospace; font-size:.48rem;
+  padding:.18rem .55rem; border-radius:100px;
+  background:rgba(0,255,136,.1); border:1px solid rgba(0,255,136,.3);
+  color:var(--green); text-transform:uppercase; letter-spacing:.08em;
+}
+
+/* ── CTA ──────────────────────────────────── */
+#cta { text-align:center; position:relative; overflow:hidden; }
+#cta-canvas { position:absolute; inset:0; z-index:0; width:100%!important; height:100%!important; }
+.cta-content { position:relative; z-index:10; }
+.cta-title {
+  font-family:'Syne',sans-serif;
+  font-size:clamp(2.2rem,8vw,6rem);
+  font-weight:800; letter-spacing:-.03em; line-height:1; margin-bottom:1.2rem;
+}
+.cta-title .accent {
+  background:linear-gradient(90deg,var(--cyan),var(--magenta));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+}
+.cta-sub { font-size:clamp(.9rem,2vw,1.1rem); color:var(--muted); margin-bottom:2.5rem; font-weight:300; }
+.cta-input-row { display:flex; gap:.7rem; justify-content:center; max-width:500px; margin:0 auto; flex-wrap:wrap; }
+.cta-input {
+  flex:1; min-width:200px;
+  background:var(--glass); border:1px solid var(--glass-border);
+  border-radius:100px; padding:.85rem 1.4rem;
+  font-family:'DM Sans',sans-serif; font-size:.88rem;
+  color:var(--white); outline:none; transition:border-color .3s;
+}
+.cta-input::placeholder { color:var(--muted); }
+.cta-input:focus { border-color:var(--cyan); }
+
+/* ── FOOTER ───────────────────────────────── */
+footer {
+  padding:2.5rem var(--pad);
+  border-top:1px solid var(--glass-border);
+  display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1.5rem;
+}
+.footer-copy { font-family:'JetBrains Mono',monospace; font-size:.58rem; color:var(--muted); letter-spacing:.1em; text-transform:uppercase; }
+.footer-links { display:flex; gap:1.5rem; list-style:none; flex-wrap:wrap; }
+.footer-links a { font-family:'JetBrains Mono',monospace; font-size:.58rem; color:var(--muted); text-decoration:none; text-transform:uppercase; letter-spacing:.08em; transition:color .2s; }
+.footer-links a:hover { color:var(--cyan); }
+
+/* ── REVEAL ───────────────────────────────── */
+.reveal { opacity:0; transform:translateY(35px); transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1); }
+.reveal.in { opacity:1; transform:translateY(0); }
+.reveal-delay-1 { transition-delay:.08s; }
+.reveal-delay-2 { transition-delay:.16s; }
+.reveal-delay-3 { transition-delay:.24s; }
+.reveal-delay-4 { transition-delay:.32s; }
+.reveal-delay-5 { transition-delay:.40s; }
+.reveal-delay-6 { transition-delay:.48s; }
+
+/* ── SUGGEST BOX ──────────────────────────── */
+.suggest-box {
+  margin-top:1.5rem; padding:1.3rem; background:var(--glass);
+  border:1px solid var(--glass-border); border-radius:16px;
+}
+.suggest-box-title {
+  font-family:'JetBrains Mono',monospace; font-size:.6rem; color:var(--muted);
+  text-transform:uppercase; letter-spacing:.1em; margin-bottom:.9rem;
+}
+.suggest-list { display:flex; flex-direction:column; gap:.75rem; }
+.suggest-item { display:flex; gap:.7rem; align-items:center; }
+.suggest-info { flex:1; min-width:0; }
+.suggest-name { font-family:'Syne',sans-serif; font-size:.85rem; font-weight:700; }
+.suggest-meta { font-size:.65rem; color:var(--muted); }
+.follow-btn {
+  background:linear-gradient(90deg,var(--cyan),var(--violet)); border:none; color:white;
+  padding:.28rem .75rem; border-radius:100px; font-family:'JetBrains Mono',monospace;
+  font-size:.52rem; cursor:pointer; font-weight:700; white-space:nowrap;
+  -webkit-tap-highlight-color:transparent;
+}
+
+/* ── MOBILE TOUCH ACTIVE STATES ─────────────── */
+@media (hover: none) {
+  .feat-card:active { border-color:var(--card-color,var(--cyan)); }
+  .feat-card:active::before { opacity:1; }
+  .study-card:active::before { opacity:1; }
+  .market-card:active { transform:translateY(-3px); }
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- MOBILE MENU OVERLAY -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#features" onclick="closeMobile()">Features</a>
+  <a href="#fests" onclick="closeMobile()">Fests</a>
+  <a href="#buzz" onclick="closeMobile()">Buzz</a>
+  <a href="#study" onclick="closeMobile()">Study</a>
+  <a href="#market" onclick="closeMobile()">Market</a>
+  <a href="#opportunities" onclick="closeMobile()">Jobs</a>
+  <a href="#cta" class="m-cta" onclick="closeMobile()">Join Free →</a>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Uni<span style="font-weight:400">World</span></div>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#fests">Fests</a></li>
+    <li><a href="#buzz">Buzz</a></li>
+    <li><a href="#study">Study</a></li>
+    <li><a href="#market">Market</a></li>
+    <li><a href="#opportunities">Jobs</a></li>
+    <li><a href="#cta" class="nav-cta">Join Free</a></li>
+  </ul>
+  <button class="nav-toggle" id="navToggle" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-content">
+    <div class="hero-badge"><span class="badge-dot"></span>Now live across 200+ campuses</div>
+    <h1 class="hero-title">Your<br><span class="line2">Campus.</span><br>Amplified.</h1>
+    <p class="hero-sub">UniWorld is the social universe built for college students — connect, compete, study, hustle, and build memories. All in one place.</p>
+    <div class="hero-actions">
+      <a href="#cta" class="btn-primary"><span>🚀</span><span>Get Started Free</span></a>
+      <a href="#features" class="btn-secondary">See Features →</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat-item"><div class="stat-number" data-target="500">0</div><div class="stat-label">K Students</div></div>
+    <div class="stat-item"><div class="stat-number" data-target="200">0</div><div class="stat-label">Campuses</div></div>
+    <div class="stat-item"><div class="stat-number" data-target="12">0</div><div class="stat-label">K Fests</div></div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="features-header reveal">
+    <p class="section-label">What We Offer</p>
+    <h2 class="section-title">Everything your campus<br>life <em>deserves</em></h2>
+    <p>Built by students. For students. Your entire college ecosystem, online.</p>
+  </div>
+  <div class="features-grid">
+    <div class="feat-card reveal reveal-delay-1" style="--card-color:#00f5ff;--card-glow:linear-gradient(135deg,rgba(0,245,255,.07),transparent)">
+      <span class="feat-tag">Core</span><span class="feat-icon">🌐</span>
+      <div class="feat-title">Campus Feed</div>
+      <div class="feat-desc">Real-time social feed tailored to your campus. Share updates, polls, memes, and connect with your college community like never before.</div>
+    </div>
+    <div class="feat-card reveal reveal-delay-2" style="--card-color:#ff2d8f;--card-glow:linear-gradient(135deg,rgba(255,45,143,.07),transparent)">
+      <span class="feat-tag">Hot 🔥</span><span class="feat-icon">🎪</span>
+      <div class="feat-title">Fests & Competitions</div>
+      <div class="feat-desc">Discover, register, and compete in college fests, hackathons, and inter-college competitions. Live countdowns and team forming included.</div>
+    </div>
+    <div class="feat-card reveal reveal-delay-3" style="--card-color:#7c3aed;--card-glow:linear-gradient(135deg,rgba(124,58,237,.07),transparent)">
+      <span class="feat-tag">Core</span><span class="feat-icon">📚</span>
+      <div class="feat-title">Study Groups</div>
+      <div class="feat-desc">Find or create study groups for any subject. Share notes, schedule sessions, quiz each other and ace every exam together.</div>
+    </div>
+    <div class="feat-card reveal reveal-delay-4" style="--card-color:#ffe600;--card-glow:linear-gradient(135deg,rgba(255,230,0,.07),transparent)">
+      <span class="feat-tag">New</span><span class="feat-icon">💼</span>
+      <div class="feat-title">Internship Board</div>
+      <div class="feat-desc">Exclusive internships, part-time gigs, and campus ambassador roles from alumni and companies recruiting directly from your campus.</div>
+    </div>
+    <div class="feat-card reveal reveal-delay-5" style="--card-color:#00ff88;--card-glow:linear-gradient(135deg,rgba(0,255,136,.07),transparent)">
+      <span class="feat-tag">Beta</span><span class="feat-icon">🛒</span>
+      <div class="feat-title">Campus Marketplace</div>
+      <div class="feat-desc">Buy and sell textbooks, gadgets, notes, and more with verified students at your college. No strangers, only campus neighbours.</div>
+    </div>
+    <div class="feat-card reveal reveal-delay-6" style="--card-color:#ff6b35;--card-glow:linear-gradient(135deg,rgba(255,107,53,.07),transparent)">
+      <span class="feat-tag">Core</span><span class="feat-icon">🏆</span>
+      <div class="feat-title">Clubs & Societies</div>
+      <div class="feat-desc">Join or manage your college clubs. Post events, recruit members, manage attendance, and build your extracurricular legacy.</div>
+    </div>
+  </div>
+</section>
+
+<div class="glow-divider"></div>
+
+<!-- FESTS -->
+<section id="fests">
+  <div class="fests-layout">
+    <div class="fests-intro reveal">
+      <p class="section-label">Fests & Events</p>
+      <h2 class="section-title">Never miss a <em>moment</em></h2>
+      <p>From mega college fests to niche hackathons — UniWorld tracks every event so you don't have to. Register in one tap.</p>
+      <div class="filter-row">
+        <button class="filter-btn active">All</button>
+        <button class="filter-btn">Hackathons</button>
+        <button class="filter-btn">Cultural</button>
+        <button class="filter-btn">Sports</button>
+        <button class="filter-btn">Technical</button>
+      </div>
+    </div>
+    <div class="fests-list reveal reveal-delay-2">
+      <div class="fest-card" style="--fest-color:#ff2d8f;--fest-glow:rgba(255,45,143,.15)">
+        <div class="fest-date-block"><div class="fest-day">15</div><div class="fest-mon">Mar</div></div>
+        <div class="fest-info">
+          <div class="fest-name">HackSphere 2025</div>
+          <div class="fest-meta">IIT Delhi · 48hr Hackathon</div>
+          <div class="countdown-wrap">
+            <div class="cd-unit"><div class="cd-num" id="cd1d">02</div><div class="cd-lbl">days</div></div>
+            <div class="cd-sep">:</div>
+            <div class="cd-unit"><div class="cd-num" id="cd1h">14</div><div class="cd-lbl">hrs</div></div>
+            <div class="cd-sep">:</div>
+            <div class="cd-unit"><div class="cd-num" id="cd1m">32</div><div class="cd-lbl">min</div></div>
+          </div>
+        </div>
+        <div class="fest-badge">Live</div>
+      </div>
+      <div class="fest-card" style="--fest-color:#00f5ff;--fest-glow:rgba(0,245,255,.15)">
+        <div class="fest-date-block"><div class="fest-day">22</div><div class="fest-mon">Mar</div></div>
+        <div class="fest-info">
+          <div class="fest-name">Mood Indigo — IIT Bombay</div>
+          <div class="fest-meta">Cultural Fest · Asia's Largest</div>
+          <div class="countdown-wrap">
+            <div class="cd-unit"><div class="cd-num" id="cd2d">09</div><div class="cd-lbl">days</div></div>
+            <div class="cd-sep">:</div>
+            <div class="cd-unit"><div class="cd-num" id="cd2h">07</div><div class="cd-lbl">hrs</div></div>
+            <div class="cd-sep">:</div>
+            <div class="cd-unit"><div class="cd-num" id="cd2m">18</div><div class="cd-lbl">min</div></div>
+          </div>
+        </div>
+        <div class="fest-badge">Register</div>
+      </div>
+      <div class="fest-card" style="--fest-color:#7c3aed;--fest-glow:rgba(124,58,237,.15)">
+        <div class="fest-date-block"><div class="fest-day">01</div><div class="fest-mon">Apr</div></div>
+        <div class="fest-info">
+          <div class="fest-name">CodeForces Campus Round</div>
+          <div class="fest-meta">Online · Coding · ₹2L Prize</div>
+          <div class="countdown-wrap">
+            <div class="cd-unit"><div class="cd-num" id="cd3d">19</div><div class="cd-lbl">days</div></div>
+            <div class="cd-sep">:</div>
+            <div class="cd-unit"><div class="cd-num" id="cd3h">21</div><div class="cd-lbl">hrs</div></div>
+            <div class="cd-sep">:</div>
+            <div class="cd-unit"><div class="cd-num" id="cd3m">44</div><div class="cd-lbl">min</div></div>
+          </div>
+        </div>
+        <div class="fest-badge">Open</div>
+      </div>
+      <div class="fest-card" style="--fest-color:#ffe600;--fest-glow:rgba(255,230,0,.15)">
+        <div class="fest-date-block"><div class="fest-day">10</div><div class="fest-mon">Apr</div></div>
+        <div class="fest-info">
+          <div class="fest-name">Robowar Championship</div>
+          <div class="fest-meta">NIT Trichy · Robotics · 50+ Colleges</div>
+          <div class="countdown-wrap">
+            <div class="cd-unit"><div class="cd-num" id="cd4d">28</div><div class="cd-lbl">days</div></div>
+            <div class="cd-sep">:</div>
+            <div class="cd-unit"><div class="cd-num" id="cd4h">11</div><div class="cd-lbl">hrs</div></div>
+            <div class="cd-sep">:</div>
+            <div class="cd-unit"><div class="cd-num" id="cd4m">55</div><div class="cd-lbl">min</div></div>
+          </div>
+        </div>
+        <div class="fest-badge">Soon</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="glow-divider"></div>
+
+<!-- BUZZ -->
+<section id="buzz">
+  <div class="reveal">
+    <p class="section-label">Campus Buzz</p>
+    <h2 class="section-title">What's <em>trending</em> right now</h2>
+  </div>
+  <div class="buzz-layout">
+    <div class="feed">
+      <div class="post-card reveal">
+        <div class="post-header">
+          <div class="avatar" style="background:linear-gradient(135deg,#00f5ff,#7c3aed)">AR</div>
+          <div><div class="post-user-name">Aryan Sharma</div><div class="post-user-meta">IIT Delhi · CS '26 · 2m ago</div></div>
+        </div>
+        <div class="post-body">Just submitted our project for <strong>#HackSphere2025</strong> 🔥 We built an AI-powered campus navigation app with AR overlays. Judge's reactions were insane. Best of luck to everyone competing! 👾</div>
+        <div>
+          <span class="post-tag" style="background:rgba(255,45,143,.1);color:#ff2d8f;border:1px solid rgba(255,45,143,.2)">#HackSphere2025</span>
+          <span class="post-tag" style="background:rgba(0,245,255,.1);color:#00f5ff;border:1px solid rgba(0,245,255,.2)">#IITD</span>
+        </div>
+        <div class="post-actions" style="margin-top:.8rem">
+          <span class="post-action">🔥 482</span>
+          <span class="post-action">💬 64</span>
+          <span class="post-action">🔁 Repost</span>
+        </div>
+      </div>
+      <div class="post-card reveal reveal-delay-1">
+        <div class="post-header">
+          <div class="avatar" style="background:linear-gradient(135deg,#ff2d8f,#ffe600)">PK</div>
+          <div><div class="post-user-name">Priya Kapoor</div><div class="post-user-meta">BITS Pilani · ECE '25 · 45m ago</div></div>
+        </div>
+        <div class="post-body">STUDY GROUP ALERT 📚 — Starting <strong>GATE 2026 prep</strong> tonight at 9pm. We'll cover Networks this week. DM me or drop a 🙋 below. 8 people confirmed, let's fill the room!</div>
+        <div>
+          <span class="post-tag" style="background:rgba(124,58,237,.1);color:#7c3aed;border:1px solid rgba(124,58,237,.2)">#GATE2026</span>
+          <span class="post-tag" style="background:rgba(0,245,255,.1);color:#00f5ff;border:1px solid rgba(0,245,255,.2)">#StudyGroup</span>
+        </div>
+        <div class="post-actions" style="margin-top:.8rem">
+          <span class="post-action">❤️ 219</span>
+          <span class="post-action">💬 38</span>
+          <span class="post-action">🔁 Repost</span>
+        </div>
+      </div>
+      <div class="post-card reveal reveal-delay-2">
+        <div class="post-header">
+          <div class="avatar" style="background:linear-gradient(135deg,#ffe600,#ff6b35)">RV</div>
+          <div><div class="post-user-name">Rohan Verma</div><div class="post-user-meta">NSUT Delhi · MBA '25 · 3h ago</div></div>
+        </div>
+        <div class="post-body">Just got my <strong>Google SWE internship offer</strong> through UniWorld's job board 🎉 Applied 2 weeks ago, 3 rounds, boom! To everyone grinding — it pays off. My prep resources are on my profile 💪</div>
+        <div>
+          <span class="post-tag" style="background:rgba(255,230,0,.1);color:#ffe600;border:1px solid rgba(255,230,0,.2)">#Placement</span>
+          <span class="post-tag" style="background:rgba(0,255,136,.1);color:#00ff88;border:1px solid rgba(0,255,136,.2)">#Google</span>
+        </div>
+        <div class="post-actions" style="margin-top:.8rem">
+          <span class="post-action">🚀 1.2K</span>
+          <span class="post-action">💬 210</span>
+          <span class="post-action">🔁 Repost</span>
+        </div>
+      </div>
+    </div>
+    <div class="trending reveal reveal-delay-3">
+      <p class="trending-title">Trending now</p>
+      <div class="trend-item"><span class="trend-rank">01</span><div class="trend-text"><div class="trend-tag">#HackSphere2025</div><div class="trend-count">4,832 posts · Trending</div></div><span class="trend-arrow">↗</span></div>
+      <div class="trend-item"><span class="trend-rank">02</span><div class="trend-text"><div class="trend-tag">#PlacementSeason</div><div class="trend-count">3,109 posts</div></div><span class="trend-arrow">↗</span></div>
+      <div class="trend-item"><span class="trend-rank">03</span><div class="trend-text"><div class="trend-tag">#MoodIndigo2025</div><div class="trend-count">2,744 posts</div></div><span class="trend-arrow">↗</span></div>
+      <div class="trend-item"><span class="trend-rank">04</span><div class="trend-text"><div class="trend-tag">#GATE2026Prep</div><div class="trend-count">1,981 posts</div></div><span class="trend-arrow">↗</span></div>
+      <div class="trend-item"><span class="trend-rank">05</span><div class="trend-text"><div class="trend-tag">#CampusLife</div><div class="trend-count">1,644 posts</div></div><span class="trend-arrow">↗</span></div>
+      <div class="suggest-box">
+        <p class="suggest-box-title">Suggested for you</p>
+        <div class="suggest-list">
+          <div class="suggest-item">
+            <div class="avatar" style="background:linear-gradient(135deg,#7c3aed,#ff2d8f);width:32px;height:32px;font-size:.7rem">NJ</div>
+            <div class="suggest-info"><div class="suggest-name">Neha Joshi</div><div class="suggest-meta">DTU · CS · 2.1K followers</div></div>
+            <button class="follow-btn">Follow</button>
+          </div>
+          <div class="suggest-item">
+            <div class="avatar" style="background:linear-gradient(135deg,#ffe600,#ff6b35);width:32px;height:32px;font-size:.7rem">SM</div>
+            <div class="suggest-info"><div class="suggest-name">Sahil Mehra</div><div class="suggest-meta">VIT · Robotics · 1.4K</div></div>
+            <button class="follow-btn">Follow</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="glow-divider"></div>
+
+<!-- STUDY GROUPS -->
+<section id="study">
+  <div class="study-header reveal">
+    <p class="section-label">Study Together</p>
+    <h2 class="section-title">Find your <em>tribe</em></h2>
+    <p>Join live study rooms, share notes, and crush exams with students who get it.</p>
+  </div>
+  <div class="study-grid">
+    <div class="study-card reveal reveal-delay-1" style="--sg-color:rgba(0,245,255,.6)">
+      <div class="sg-live"><div class="sg-live-dot"></div>Live</div>
+      <div class="sg-subject">Computer Science</div>
+      <div class="sg-name">DSA Marathon — Arrays & Trees</div>
+      <div class="sg-members">
+        <div class="sg-avatars">
+          <div class="sg-av" style="background:linear-gradient(135deg,#00f5ff,#7c3aed)">A</div>
+          <div class="sg-av" style="background:linear-gradient(135deg,#ff2d8f,#ffe600)">P</div>
+          <div class="sg-av" style="background:linear-gradient(135deg,#ffe600,#ff6b35)">R</div>
+          <div class="sg-av" style="background:#2a2a3d;color:var(--muted);font-size:.5rem">+8</div>
+        </div>
+        <span class="sg-count">11 active now</span>
+      </div>
+      <div class="sg-tags"><span class="sg-tag">LeetCode</span><span class="sg-tag">FAANG</span><span class="sg-tag">Notes</span></div>
+    </div>
+    <div class="study-card reveal reveal-delay-2" style="--sg-color:rgba(255,45,143,.6)">
+      <div class="sg-subject">Engineering</div>
+      <div class="sg-name">GATE 2026 — Networks & OS</div>
+      <div class="sg-members">
+        <div class="sg-avatars">
+          <div class="sg-av" style="background:linear-gradient(135deg,#ff2d8f,#7c3aed)">N</div>
+          <div class="sg-av" style="background:linear-gradient(135deg,#7c3aed,#00f5ff)">S</div>
+          <div class="sg-av" style="background:#2a2a3d;color:var(--muted);font-size:.5rem">+14</div>
+        </div>
+        <span class="sg-count">16 members</span>
+      </div>
+      <div class="sg-tags"><span class="sg-tag">PYQ Sets</span><span class="sg-tag">Mock Tests</span></div>
+    </div>
+    <div class="study-card reveal reveal-delay-3" style="--sg-color:rgba(124,58,237,.6)">
+      <div class="sg-live"><div class="sg-live-dot"></div>Live</div>
+      <div class="sg-subject">Mathematics</div>
+      <div class="sg-name">Calculus Crash Course — Sem 2</div>
+      <div class="sg-members">
+        <div class="sg-avatars">
+          <div class="sg-av" style="background:linear-gradient(135deg,#ffe600,#ff6b35)">K</div>
+          <div class="sg-av" style="background:linear-gradient(135deg,#00f5ff,#ff2d8f)">M</div>
+          <div class="sg-av" style="background:#2a2a3d;color:var(--muted);font-size:.5rem">+5</div>
+        </div>
+        <span class="sg-count">7 active now</span>
+      </div>
+      <div class="sg-tags"><span class="sg-tag">IIT Alumni</span><span class="sg-tag">Weekly Tests</span></div>
+    </div>
+    <div class="study-card reveal reveal-delay-4" style="--sg-color:rgba(255,230,0,.6)">
+      <div class="sg-subject">Management</div>
+      <div class="sg-name">CAT 2025 Quant Blitz</div>
+      <div class="sg-members">
+        <div class="sg-avatars">
+          <div class="sg-av" style="background:linear-gradient(135deg,#ffe600,#00f5ff)">T</div>
+          <div class="sg-av" style="background:linear-gradient(135deg,#ff6b35,#ff2d8f)">V</div>
+          <div class="sg-av" style="background:#2a2a3d;color:var(--muted);font-size:.5rem">+22</div>
+        </div>
+        <span class="sg-count">24 members</span>
+      </div>
+      <div class="sg-tags"><span class="sg-tag">CAT</span><span class="sg-tag">Speed Math</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="glow-divider"></div>
+
+<!-- MARKETPLACE -->
+<section id="market">
+  <div class="market-header reveal">
+    <p class="section-label">Campus Marketplace</p>
+    <h2 class="section-title">Buy. Sell. <em>Trade.</em></h2>
+    <p>Verified student marketplace. Textbooks to gadgets at student-friendly prices.</p>
+  </div>
+  <div class="market-grid">
+    <div class="market-card reveal reveal-delay-1">
+      <div class="market-img" style="background:linear-gradient(135deg,#1a2a3d,#2d4a6b)">📘</div>
+      <div class="market-body">
+        <div class="market-name">CLRS — Algorithms (4th Ed)</div>
+        <div class="market-price">₹480</div>
+        <div class="market-seller">@aryan_sharma · IIT-D</div>
+        <span class="market-condition" style="background:rgba(0,255,136,.1);border:1px solid rgba(0,255,136,.2);color:#00ff88">Good Condition</span>
+      </div>
+    </div>
+    <div class="market-card reveal reveal-delay-2">
+      <div class="market-img" style="background:linear-gradient(135deg,#1a1a2d,#3a2d6b)">🎧</div>
+      <div class="market-body">
+        <div class="market-name">Sony WH-1000XM4</div>
+        <div class="market-price">₹12,500</div>
+        <div class="market-seller">@priya.k · BITS Pilani</div>
+        <span class="market-condition" style="background:rgba(255,230,0,.1);border:1px solid rgba(255,230,0,.2);color:#ffe600">Like New</span>
+      </div>
+    </div>
+    <div class="market-card reveal reveal-delay-3">
+      <div class="market-img" style="background:linear-gradient(135deg,#2d1a1a,#6b2d2d)">💻</div>
+      <div class="market-body">
+        <div class="market-name">MacBook Air M1 8GB</div>
+        <div class="market-price">₹68,000</div>
+        <div class="market-seller">@rv_nsut · NSUT Delhi</div>
+        <span class="market-condition" style="background:rgba(0,245,255,.1);border:1px solid rgba(0,245,255,.2);color:#00f5ff">Excellent</span>
+      </div>
+    </div>
+    <div class="market-card reveal reveal-delay-4">
+      <div class="market-img" style="background:linear-gradient(135deg,#1a2d1a,#2d6b2d)">📝</div>
+      <div class="market-body">
+        <div class="market-name">DBMS Notes — Handwritten</div>
+        <div class="market-price">₹120</div>
+        <div class="market-seller">@neha.j · DTU</div>
+        <span class="market-condition" style="background:rgba(255,45,143,.1);border:1px solid rgba(255,45,143,.2);color:#ff2d8f">Digital PDF</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="glow-divider"></div>
+
+<!-- OPPORTUNITIES -->
+<section id="opportunities">
+  <div class="reveal">
+    <p class="section-label">Internships & Jobs</p>
+    <h2 class="section-title">Your next <em>big break</em></h2>
+  </div>
+  <div class="opp-grid">
+    <div class="opp-card reveal reveal-delay-1">
+      <span class="opp-new">New</span>
+      <div class="opp-company">
+        <div class="company-logo" style="background:rgba(0,245,255,.1)">🔍</div>
+        <div><div class="company-name">Google</div><div class="company-type">MNC · Bangalore</div></div>
+      </div>
+      <div class="opp-role">SWE Intern — Summer 2025</div>
+      <div class="opp-details">📍 Bangalore / Remote<br>💰 ₹1.2L/month stipend<br>⏳ 3 months · Apply by Mar 20</div>
+      <div class="opp-tags"><span class="opp-tag">Python</span><span class="opp-tag">DSA</span><span class="opp-tag">System Design</span></div>
+      <div class="opp-apply">Apply Now →</div>
+    </div>
+    <div class="opp-card reveal reveal-delay-2">
+      <div class="opp-company">
+        <div class="company-logo" style="background:rgba(255,45,143,.1)">📱</div>
+        <div><div class="company-name">Meesho</div><div class="company-type">Startup · Series G</div></div>
+      </div>
+      <div class="opp-role">Product Manager Intern</div>
+      <div class="opp-details">📍 Bangalore<br>💰 ₹80K/month stipend<br>⏳ 6 months · Apply by Mar 28</div>
+      <div class="opp-tags"><span class="opp-tag">Product</span><span class="opp-tag">Analytics</span><span class="opp-tag">SQL</span></div>
+      <div class="opp-apply">Apply Now →</div>
+    </div>
+    <div class="opp-card reveal reveal-delay-3">
+      <span class="opp-new">Hot 🔥</span>
+      <div class="opp-company">
+        <div class="company-logo" style="background:rgba(124,58,237,.1)">🤖</div>
+        <div><div class="company-name">DRDO</div><div class="company-type">Govt R&D · New Delhi</div></div>
+      </div>
+      <div class="opp-role">Research Intern — AI/ML</div>
+      <div class="opp-details">📍 New Delhi<br>💰 ₹50K/month stipend<br>⏳ 12 months · Apply by Apr 5</div>
+      <div class="opp-tags"><span class="opp-tag">ML</span><span class="opp-tag">PyTorch</span><span class="opp-tag">Research</span></div>
+      <div class="opp-apply">Apply Now →</div>
+    </div>
+  </div>
+</section>
+
+<div class="glow-divider"></div>
+
+<!-- STATS -->
+<section id="stats">
+  <div class="stats-grid">
+    <div class="stat-card reveal"><div class="big-stat" data-count="500" style="--stat-grad:linear-gradient(90deg,#00f5ff,#7c3aed)">0</div><div class="stat-name">K+ Students</div></div>
+    <div class="stat-card reveal reveal-delay-1"><div class="big-stat" data-count="200" style="--stat-grad:linear-gradient(90deg,#ff2d8f,#7c3aed)">0</div><div class="stat-name">Campuses</div></div>
+    <div class="stat-card reveal reveal-delay-2"><div class="big-stat" data-count="12" style="--stat-grad:linear-gradient(90deg,#ffe600,#ff6b35)">0</div><div class="stat-name">K Fests</div></div>
+    <div class="stat-card reveal reveal-delay-3"><div class="big-stat" data-count="50" style="--stat-grad:linear-gradient(90deg,#00ff88,#00f5ff)">0</div><div class="stat-name">K Study Groups</div></div>
+    <div class="stat-card reveal reveal-delay-4"><div class="big-stat" data-count="98" style="--stat-grad:linear-gradient(90deg,#ff2d8f,#ffe600)">0</div><div class="stat-name">% Recommend</div></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <canvas id="cta-canvas"></canvas>
+  <div class="cta-content">
+    <div class="reveal">
+      <p class="section-label" style="text-align:center">Join the Movement</p>
+      <h2 class="cta-title">Your campus.<br><span class="accent">Your universe.</span></h2>
+      <p class="cta-sub">Sign up free. No credit card. Be part of the campus revolution.</p>
+    </div>
+    <div class="cta-input-row reveal reveal-delay-1">
+      <input type="email" class="cta-input" placeholder="your.edu@college.ac.in">
+      <button class="btn-primary"><span>🚀</span><span>Join UniWorld</span></button>
+    </div>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--muted);text-align:center;margin-top:1.2rem;letter-spacing:.07em" class="reveal reveal-delay-2">IIT · BITS · NIT · DTU · VIT · NSUT AND 200+ MORE</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.3rem;background:linear-gradient(90deg,var(--cyan),var(--magenta));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">UniWorld</div>
+  <p class="footer-copy">© 2025 UniWorld · Built for students</p>
+  <ul class="footer-links">
+    <li><a href="#">Privacy</a></li><li><a href="#">Terms</a></li>
+    <li><a href="#">Blog</a></li><li><a href="#">Contact</a></li>
+  </ul>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+// ── MOBILE MENU ──────────────────────────────────────────────
+const navToggle = document.getElementById('navToggle');
+const mobileMenu = document.getElementById('mobileMenu');
+navToggle.addEventListener('click', () => {
+  navToggle.classList.toggle('open');
+  mobileMenu.classList.toggle('open');
+  document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+});
+function closeMobile() {
+  navToggle.classList.remove('open');
+  mobileMenu.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ── CUSTOM CURSOR (desktop only) ─────────────────────────────
+const isMobile = window.matchMedia('(hover: none)').matches;
+if (!isMobile) {
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursor-ring');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  function animCursor() {
+    cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+    rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(animCursor);
+  }
+  animCursor();
+  document.addEventListener('mouseover', e => {
+    if(e.target.closest('a,button,.feat-card,.market-card,.study-card,.opp-card,.post-card')) {
+      cursor.style.width = '18px'; cursor.style.height = '18px';
+      cursor.style.background = 'var(--magenta)';
+      ring.style.width = '54px'; ring.style.height = '54px';
+      ring.style.borderColor = 'var(--magenta)';
+    } else {
+      cursor.style.width = '10px'; cursor.style.height = '10px';
+      cursor.style.background = 'var(--cyan)';
+      ring.style.width = '38px'; ring.style.height = '38px';
+      ring.style.borderColor = 'rgba(0,245,255,.5)';
+    }
+  });
+}
+
+// ── 3D HERO SCENE ────────────────────────────────────────────
+(function() {
+  const canvas = document.getElementById('hero-canvas');
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 100);
+  camera.position.set(0, 0, isMobile ? 6 : 5);
+
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, isMobile ? 1.5 : 2));
+  renderer.setClearColor(0x04060f, 1);
+
+  function resizeHero() {
+    const w = canvas.parentElement.offsetWidth;
+    const h = canvas.parentElement.offsetHeight;
+    renderer.setSize(w, h);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
+  resizeHero();
+  window.addEventListener('resize', resizeHero);
+
+  scene.add(new THREE.AmbientLight(0x1a2040, 2));
+  const dLight = new THREE.DirectionalLight(0x00f5ff, 1.5);
+  dLight.position.set(5,5,5); scene.add(dLight);
+  const mLight = new THREE.PointLight(0xff2d8f, 2, 15);
+  mLight.position.set(-4,2,3); scene.add(mLight);
+
+  // Globe
+  const globeMat = new THREE.MeshStandardMaterial({ color:0x0a1428, wireframe:false, metalness:.2, roughness:.8, transparent:true, opacity:.15 });
+  scene.add(new THREE.Mesh(new THREE.SphereGeometry(2,32,32), globeMat));
+
+  const wMat = new THREE.MeshBasicMaterial({ color:0x00f5ff, wireframe:true, transparent:true, opacity:.06 });
+  const wireGlobe = new THREE.Mesh(new THREE.SphereGeometry(2.01, isMobile ? 18 : 24, isMobile ? 18 : 24), wMat);
+  scene.add(wireGlobe);
+
+  const nodeGroup = new THREE.Group();
+  scene.add(nodeGroup);
+  const lineGroup = new THREE.Group();
+  scene.add(lineGroup);
+
+  const nodeCount = isMobile ? 50 : 80;
+  const nodes = [];
+  const nMat1 = new THREE.MeshBasicMaterial({ color:0x00f5ff });
+  const nMat2 = new THREE.MeshBasicMaterial({ color:0xff2d8f });
+  const nGeo = new THREE.SphereGeometry(0.035, 6, 6);
+
+  for(let i = 0; i < nodeCount; i++) {
+    const phi = Math.acos(-1 + (2*i)/nodeCount);
+    const theta = Math.sqrt(nodeCount*Math.PI)*phi;
+    const m = new THREE.Mesh(nGeo, i%4===0 ? nMat2 : nMat1);
+    m.position.setFromSphericalCoords(2, phi, theta);
+    nodeGroup.add(m);
+    nodes.push({ mesh:m });
+  }
+  for(let i = 0; i < nodeCount; i++) {
+    for(let j = i+1; j < nodeCount; j++) {
+      const d = nodes[i].mesh.position.distanceTo(nodes[j].mesh.position);
+      if(d < 0.9 && Math.random() > 0.5) {
+        const lg = new THREE.BufferGeometry().setFromPoints([nodes[i].mesh.position.clone(), nodes[j].mesh.position.clone()]);
+        lineGroup.add(new THREE.Line(lg, new THREE.LineBasicMaterial({ color:0x00f5ff, transparent:true, opacity:.12 })));
+      }
+    }
+  }
+
+  const ringMat = new THREE.MeshBasicMaterial({ color:0xff2d8f, side:THREE.DoubleSide, transparent:true, opacity:.3 });
+  const outerRing = new THREE.Mesh(new THREE.RingGeometry(2.3,2.35,128), ringMat);
+  outerRing.rotation.x = Math.PI/2.5; scene.add(outerRing);
+  const ring2Mat = new THREE.MeshBasicMaterial({ color:0x7c3aed, side:THREE.DoubleSide, transparent:true, opacity:.2 });
+  const outerRing2 = new THREE.Mesh(new THREE.RingGeometry(2.55,2.58,128), ring2Mat);
+  outerRing2.rotation.x = Math.PI/3; outerRing2.rotation.z = 0.3; scene.add(outerRing2);
+
+  const pCount = isMobile ? 600 : 1200;
+  const pGeo = new THREE.BufferGeometry();
+  const pPos = new Float32Array(pCount*3);
+  for(let i=0;i<pCount;i++){pPos[i*3]=(Math.random()-.5)*20;pPos[i*3+1]=(Math.random()-.5)*20;pPos[i*3+2]=(Math.random()-.5)*20;}
+  pGeo.setAttribute('position', new THREE.BufferAttribute(pPos,3));
+  scene.add(new THREE.Points(pGeo, new THREE.PointsMaterial({ color:0x4060a0, size:.025, transparent:true, opacity:.5 })));
+
+  let targetRotX=0, targetRotY=0, t=0;
+  // Mouse (desktop)
+  document.addEventListener('mousemove', e => {
+    if(isMobile) return;
+    targetRotY = (e.clientX/innerWidth-.5)*.8;
+    targetRotX = (e.clientY/innerHeight-.5)*.4;
+  });
+  // Touch (mobile) — gentle gyro-like tilt
+  window.addEventListener('deviceorientation', e => {
+    if(!isMobile) return;
+    targetRotY = (e.gamma||0) * 0.01;
+    targetRotX = (e.beta||0) * 0.005;
+  });
+
+  function animate() {
+    requestAnimationFrame(animate);
+    t += 0.005;
+    if(window.scrollY / window.innerHeight > 1.5) return;
+    nodeGroup.rotation.y += 0.003;
+    nodeGroup.rotation.y += (targetRotY - nodeGroup.rotation.y) * 0.03;
+    nodeGroup.rotation.x += (targetRotX - nodeGroup.rotation.x) * 0.03;
+    wireGlobe.rotation.y = nodeGroup.rotation.y;
+    wireGlobe.rotation.x = nodeGroup.rotation.x;
+    lineGroup.rotation.y = nodeGroup.rotation.y;
+    lineGroup.rotation.x = nodeGroup.rotation.x;
+    outerRing.rotation.z += 0.002; outerRing2.rotation.z -= 0.001;
+    nodes.forEach((n,i) => { const s=1+Math.sin(t*2+i*.3)*.3; n.mesh.scale.setScalar(s); });
+    mLight.position.x = Math.sin(t*.7)*5;
+    mLight.position.y = Math.cos(t*.5)*3;
+    const sp = window.scrollY / window.innerHeight;
+    camera.position.y = -sp*1.5;
+    renderer.render(scene, camera);
+  }
+  animate();
+})();
+
+// ── CTA 3D SCENE ──────────────────────────────────────────────
+(function() {
+  const canvas = document.getElementById('cta-canvas');
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(60,1,.1,100);
+  camera.position.z = isMobile ? 8 : 6;
+
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias:!isMobile, alpha:true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, isMobile ? 1.5 : 2));
+  renderer.setClearColor(0,0);
+
+  function resize() {
+    const p = canvas.parentElement;
+    renderer.setSize(p.offsetWidth, p.offsetHeight);
+    camera.aspect = p.offsetWidth / p.offsetHeight;
+    camera.updateProjectionMatrix();
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const segs = isMobile ? 80 : 200;
+  const tkGeo = new THREE.TorusKnotGeometry(1.8,.4,segs,20);
+  const tkMat = new THREE.MeshStandardMaterial({ color:0x0a0820, metalness:.7, roughness:.2 });
+  const tKnot = new THREE.Mesh(tkGeo, tkMat);
+  scene.add(tKnot);
+  const tkWire = new THREE.Mesh(
+    new THREE.TorusKnotGeometry(1.82,.41,segs,20),
+    new THREE.MeshBasicMaterial({ color:0x00f5ff, wireframe:true, transparent:true, opacity:.15 })
+  );
+  scene.add(tkWire);
+  scene.add(new THREE.AmbientLight(0x0a0820,2));
+  const cL1 = new THREE.PointLight(0x00f5ff,3,20); cL1.position.set(5,5,5); scene.add(cL1);
+  const cL2 = new THREE.PointLight(0xff2d8f,3,20); cL2.position.set(-5,-5,3); scene.add(cL2);
+
+  let ct=0;
+  function animate() {
+    requestAnimationFrame(animate);
+    ct += 0.005;
+    tKnot.rotation.x = ct*.4; tKnot.rotation.y = ct*.6;
+    tkWire.rotation.x = tKnot.rotation.x; tkWire.rotation.y = tKnot.rotation.y;
+    cL1.position.x = Math.sin(ct)*6; cL1.position.y = Math.cos(ct*.7)*4;
+    cL2.position.x = Math.cos(ct*.8)*6; cL2.position.y = Math.sin(ct*1.1)*4;
+    renderer.render(scene, camera);
+  }
+  animate();
+})();
+
+// ── 3D TILT CARDS (desktop only) ─────────────────────────────
+if(!isMobile) {
+  document.querySelectorAll('.feat-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - .5;
+      const y = (e.clientY - r.top) / r.height - .5;
+      card.style.transform = `perspective(600px) rotateY(${x*16}deg) rotateX(${-y*10}deg) translateZ(8px)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+      card.style.transition = 'transform .5s cubic-bezier(.16,1,.3,1), border-color .3s';
+    });
+    card.addEventListener('mouseenter', () => { card.style.transition = 'none'; });
+  });
+  // Magnetic buttons
+  document.querySelectorAll('.btn-primary, .btn-secondary').forEach(btn => {
+    btn.addEventListener('mousemove', e => {
+      const r = btn.getBoundingClientRect();
+      const x = (e.clientX - r.left - r.width/2)*.22;
+      const y = (e.clientY - r.top - r.height/2)*.22;
+      btn.style.transform = `translate(${x}px,${y}px) translateY(-2px)`;
+    });
+    btn.addEventListener('mouseleave', () => {
+      btn.style.transform = '';
+      btn.style.transition = 'transform .4s cubic-bezier(.16,1,.3,1), box-shadow .3s';
+    });
+    btn.addEventListener('mouseenter', () => { btn.style.transition = 'none'; });
+  });
+}
+
+// ── INTERSECTION OBSERVER ─────────────────────────────────────
+new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold:.1 }).observe && document.querySelectorAll('.reveal').forEach(el =>
+  new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold:.08 }).observe(el)
+);
+
+// ── ANIMATED COUNTERS ─────────────────────────────────────────
+document.querySelectorAll('.big-stat[data-count]').forEach(el => {
+  new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(!e.isIntersecting) return;
+      const target = parseInt(el.dataset.count);
+      let start = 0;
+      const step = ts => {
+        if(!start) start = ts;
+        const prog = Math.min((ts-start)/2000, 1);
+        const ease = 1 - Math.pow(1-prog, 3);
+        el.textContent = Math.floor(ease*target);
+        if(prog < 1) requestAnimationFrame(step);
+        else el.textContent = target;
+      };
+      requestAnimationFrame(step);
+      e.target._io.disconnect();
+    });
+  }, { threshold:.3 }).observe(el);
+});
+// Simpler counter re-implementation
+document.querySelectorAll('.big-stat[data-count]').forEach(el => {
+  const io = new IntersectionObserver(entries => {
+    if(!entries[0].isIntersecting) return;
+    const target = parseInt(el.dataset.count);
+    let start = null;
+    const step = ts => {
+      if(!start) start = ts;
+      const prog = Math.min((ts-start)/2000,1);
+      el.textContent = Math.floor((1-Math.pow(1-prog,3))*target);
+      if(prog < 1) requestAnimationFrame(step); else el.textContent = target;
+    };
+    requestAnimationFrame(step);
+    io.disconnect();
+  }, { threshold:.3 });
+  io.observe(el);
+});
+
+// ── FILTER BUTTONS ────────────────────────────────────────────
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+
+// ── LIVE COUNTDOWN ────────────────────────────────────────────
+function updateCountdowns() {
+  const now = new Date();
+  const events = [
+    { ids:['cd1d','cd1h','cd1m'], date: new Date(now.getFullYear(),2,15,9,0) },
+    { ids:['cd2d','cd2h','cd2m'], date: new Date(now.getFullYear(),2,22,10,0) },
+    { ids:['cd3d','cd3h','cd3m'], date: new Date(now.getFullYear(),3,1,0,0) },
+    { ids:['cd4d','cd4h','cd4m'], date: new Date(now.getFullYear(),3,10,9,0) },
+  ];
+  const fmt = n => String(n).padStart(2,'0');
+  events.forEach(ev => {
+    let diff = Math.max((ev.date - now) / 1000, 0);
+    const d = document.getElementById(ev.ids[0]);
+    const h = document.getElementById(ev.ids[1]);
+    const m = document.getElementById(ev.ids[2]);
+    if(d) d.textContent = fmt(Math.floor(diff/86400));
+    if(h) h.textContent = fmt(Math.floor((diff%86400)/3600));
+    if(m) m.textContent = fmt(Math.floor((diff%3600)/60));
+  });
+}
+updateCountdowns();
+setInterval(updateCountdowns, 30000);
+
+// ── HERO STATS COUNTER (on load) ──────────────────────────────
+document.querySelectorAll('.stat-number[data-target]').forEach(el => {
+  const target = parseInt(el.dataset.target);
+  let start = null;
+  const step = ts => {
+    if(!start) start = ts;
+    const prog = Math.min((ts-start)/1800,1);
+    el.textContent = Math.floor((1-Math.pow(1-prog,3))*target);
+    if(prog < 1) requestAnimationFrame(step); else el.textContent = target;
+  };
+  setTimeout(() => requestAnimationFrame(step), 1200);
+});
+</script>
+</body>
+</html>
