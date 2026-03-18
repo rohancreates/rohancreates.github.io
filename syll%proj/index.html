@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mid Term-I · CSE 2025-26</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #080a0e;
+      --card:    #0d1017;
+      --border:  #181b24;
+      --border2: #222637;
+      --text:    #dde1ed;
+      --muted:   #4a506a;
+      --muted2:  #2e3245;
+      --accent:  #c8ff57;
+      --red:     #ff4d6d;
+      --yellow:  #ffd166;
+      --cyan:    #06d6a0;
+      --head:    'Syne', sans-serif;
+      --mono:    'DM Mono', monospace;
+    }
+
+    body {
+      font-family: var(--mono);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    header {
+      padding: 60px 48px 52px;
+      border-bottom: 1px solid var(--border2);
+      position: relative;
+      overflow: hidden;
+    }
+    header::after {
+      content: '';
+      position: absolute;
+      top: -120px; right: -80px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(200,255,87,0.05) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      font-size: 0.62rem;
+      letter-spacing: 0.24em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .eyebrow::before {
+      content: '';
+      width: 28px; height: 1px;
+      background: var(--accent);
+      opacity: 0.55;
+      flex-shrink: 0;
+    }
+
+    h1 {
+      font-family: var(--head);
+      font-size: clamp(3rem, 9vw, 7rem);
+      font-weight: 800;
+      line-height: 0.88;
+      letter-spacing: -0.035em;
+      color: var(--text);
+    }
+    h1 .hl { color: var(--accent); }
+
+    .tags {
+      margin-top: 26px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .tag {
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 3px;
+      border: 1px solid var(--border2);
+      color: var(--muted);
+    }
+    .tag.accent {
+      border-color: rgba(200,255,87,0.28);
+      color: var(--accent);
+      background: rgba(200,255,87,0.04);
+    }
+
+    /* ── MAIN ── */
+    main {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    .tbl-label {
+      font-size: 0.58rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    /* ── TABLE ── */
+    .wrap {
+      border: 1px solid var(--border2);
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--card);
+    }
+
+    table { width: 100%; border-collapse: collapse; }
+
+    thead tr { background: #090b11; border-bottom: 1px solid var(--border2); }
+    thead th {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 14px 20px;
+      text-align: left;
+      white-space: nowrap;
+    }
+    th.c-num  { width: 50px; text-align: center; }
+    th.c-date { width: 120px; }
+    th.c-day  { width: 110px; }
+    th.c-time { width: 175px; }
+    th.c-code { width: 120px; }
+    th.c-btn  { width: 140px; text-align: center; }
+
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background 0.14s;
+      opacity: 0;
+      animation: rowIn 0.4s ease forwards;
+    }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #111420; }
+
+    @keyframes rowIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    tbody tr:nth-child(1) { animation-delay: 0.06s; }
+    tbody tr:nth-child(2) { animation-delay: 0.12s; }
+    tbody tr:nth-child(3) { animation-delay: 0.18s; }
+    tbody tr:nth-child(4) { animation-delay: 0.24s; }
+    tbody tr:nth-child(5) { animation-delay: 0.30s; }
+    tbody tr:nth-child(6) { animation-delay: 0.36s; }
+
+    td { padding: 18px 20px; vertical-align: middle; }
+
+    td.c-num {
+      text-align: center;
+      font-size: 0.6rem;
+      color: var(--muted2);
+    }
+
+    /* date */
+    .big-day {
+      font-family: var(--head);
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1;
+      display: block;
+    }
+    .small-month {
+      font-size: 0.62rem;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      display: block;
+      margin-top: 3px;
+    }
+
+    td.c-day {
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+    }
+
+    td.c-time {
+      font-size: 0.7rem;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .pill {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 0.67rem;
+      font-weight: 500;
+      padding: 5px 10px;
+      border-radius: 4px;
+      background: rgba(200,255,87,0.07);
+      border: 1px solid rgba(200,255,87,0.2);
+      color: var(--accent);
+      letter-spacing: 0.04em;
+    }
+
+    .sub-name {
+      font-family: var(--head);
+      font-size: 0.96rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.3;
+    }
+
+    /* countdown badge */
+    .cd {
+      display: inline-block;
+      font-size: 0.57rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 500;
+      padding: 2px 8px;
+      border-radius: 20px;
+      margin-top: 7px;
+    }
+    .cd.urgent { background: rgba(255,77,109,0.1);  border: 1px solid rgba(255,77,109,0.3);  color: var(--red); }
+    .cd.soon   { background: rgba(255,209,102,0.08); border: 1px solid rgba(255,209,102,0.28); color: var(--yellow); }
+    .cd.later  { background: rgba(6,214,160,0.07);  border: 1px solid rgba(6,214,160,0.22);  color: var(--cyan); }
+    .cd.done   { background: rgba(46,50,69,0.4);    border: 1px solid var(--muted2);         color: var(--muted); }
+
+    td.c-btn { text-align: center; }
+
+    .btn-syl {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--mono);
+      font-size: 0.63rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 9px 18px;
+      border-radius: 6px;
+      border: 1px solid var(--border2);
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.16s ease;
+      white-space: nowrap;
+    }
+    .btn-syl.on {
+      border-color: rgba(200,255,87,0.32);
+      color: var(--accent);
+      background: rgba(200,255,87,0.05);
+    }
+    .btn-syl.on:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #080a0e;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(200,255,87,0.18);
+    }
+    .btn-syl:not(.on) { cursor: default; }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 0.6rem;
+      color: var(--muted2);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── LIGHTBOX ── */
+    .lb {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.9);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      backdrop-filter: blur(10px);
+    }
+    .lb.open { display: flex; }
+
+    .lb-box {
+      background: var(--card);
+      border: 1px solid var(--border2);
+      border-radius: 14px;
+      width: 100%;
+      max-width: 840px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 50px 120px rgba(0,0,0,0.8), 0 0 0 1px rgba(200,255,87,0.07);
+    }
+
+    .lb-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border2);
+      flex-shrink: 0;
+    }
+    .lb-code {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      color: var(--accent);
+      letter-spacing: 0.14em;
+      margin-bottom: 5px;
+    }
+    .lb-subname {
+      font-family: var(--head);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .lb-x {
+      width: 32px; height: 32px;
+      background: var(--border2);
+      border: none;
+      border-radius: 6px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.14s;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .lb-x:hover { background: var(--red); color: #fff; }
+
+    .lb-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+    }
+    .lb-content img { max-width: 100%; border-radius: 8px; }
+
+    .lb-empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 64px 30px;
+      text-align: center;
+      width: 100%;
+    }
+    .lb-empty .ei { font-size: 2.8rem; opacity: 0.25; }
+    .lb-empty .et {
+      font-family: var(--head);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--muted);
+    }
+    .lb-empty .eh {
+      font-size: 0.7rem;
+      color: var(--muted2);
+      line-height: 1.9;
+    }
+    .lb-empty code { color: rgba(200,255,87,0.55); }
+
+    /* ── MOBILE CARDS ── */
+    @media (max-width: 640px) {
+      header { padding: 36px 20px 30px; }
+      main   { padding: 24px 14px 60px; }
+
+      /* hide the table entirely on mobile */
+      .wrap { display: none; }
+
+      /* show card list instead */
+      .card-list { display: flex; flex-direction: column; gap: 12px; }
+
+      .exam-card {
+        background: var(--card);
+        border: 1px solid var(--border2);
+        border-radius: 12px;
+        padding: 18px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        opacity: 0;
+        animation: rowIn 0.4s ease forwards;
+      }
+
+      .exam-card .card-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .exam-card .card-date-block { flex-shrink: 0; }
+      .exam-card .card-date-block .big-day  { font-size: 2rem; }
+      .exam-card .card-date-block .small-month { font-size: 0.6rem; }
+
+      .exam-card .card-right { flex: 1; min-width: 0; }
+
+      .exam-card .card-code-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 6px;
+      }
+
+      .exam-card .sub-name {
+        font-size: 0.95rem;
+        line-height: 1.3;
+      }
+
+      .exam-card .card-meta {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-top: 4px;
+      }
+
+      .exam-card .card-day-time {
+        font-size: 0.65rem;
+        color: var(--muted);
+        letter-spacing: 0.06em;
+      }
+
+      .exam-card .card-bottom {
+        border-top: 1px solid var(--border);
+        padding-top: 10px;
+      }
+
+      .exam-card .btn-syl {
+        width: 100%;
+        justify-content: center;
+        padding: 11px;
+        font-size: 0.68rem;
+      }
+
+      .exam-card:nth-child(1) { animation-delay: 0.06s; }
+      .exam-card:nth-child(2) { animation-delay: 0.12s; }
+      .exam-card:nth-child(3) { animation-delay: 0.18s; }
+      .exam-card:nth-child(4) { animation-delay: 0.24s; }
+      .exam-card:nth-child(5) { animation-delay: 0.30s; }
+      .exam-card:nth-child(6) { animation-delay: 0.36s; }
+    }
+
+    /* hide card list on desktop */
+    .card-list { display: none; }
+
+    @media (max-width: 640px) {
+      .lb-box { border-radius: 10px; }
+      .lb-top { padding: 14px 16px; }
+      .lb-subname { font-size: 0.92rem; }
+      .lb-content { padding: 14px; }
+      .lb { padding: 10px; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="eyebrow">ABES Engineering College, Ghaziabad</div>
+    <h1>MID TERM<br><span class="hl">— I</span></h1>
+    <div class="tags">
+      <span class="tag accent">CSE (21–30)</span>
+      <span class="tag">B.Tech · First Year</span>
+      <span class="tag">Even Semester · 2025-26</span>
+      <span class="tag">3:10 PM – 4:25 PM</span>
+    </div>
+  </header>
+
+  <main>
+    <div class="tbl-label">Exam Schedule &nbsp;·&nbsp; 6 Papers</div>
+    <div class="wrap">
+      <table>
+        <thead>
+          <tr>
+            <th class="c-num">#</th>
+            <th class="c-date">Date</th>
+            <th class="c-day">Day</th>
+            <th class="c-time">Timing</th>
+            <th class="c-code">Paper Code</th>
+            <th>Paper Name</th>
+            <th class="c-btn">Syllabus</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+
+    <!-- Mobile card list -->
+    <div class="card-list" id="cardList"></div>
+  </main>
+
+  <footer>ABES Engineering College &nbsp;·&nbsp; Mid Term-I &nbsp;·&nbsp; Even Semester 2025-26</footer>
+
+  <!-- Lightbox -->
+  <div class="lb" id="lb">
+    <div class="lb-box">
+      <div class="lb-top">
+        <div>
+          <div class="lb-code" id="lbCode"></div>
+          <div class="lb-subname" id="lbSub"></div>
+        </div>
+        <button class="lb-x" id="lbX">✕</button>
+      </div>
+      <div class="lb-content" id="lbContent"></div>
+    </div>
+  </div>
+
+  <script>
+    /* ============================================================
+       DATA — this is all you need to edit
+       Once you have syllabus images:
+         1. Put the image in /syllabus/ folder
+         2. Set syllabus: "syllabus/your-file.jpg"
+         3. Push to GitHub
+    ============================================================ */
+    const exams = [
+      { date:"23-Mar-26", day:"Monday",    timing:"3:10 PM – 4:25 PM", code:"25AS202", name:"Applied Calculus & Differential Equation", syllabus:"" },
+      { date:"24-Mar-26", day:"Tuesday",   timing:"3:10 PM – 4:25 PM", code:"25AI201", name:"Essentials of AI",                          syllabus:"" },
+      { date:"25-Mar-26", day:"Wednesday", timing:"3:10 PM – 4:25 PM", code:"25CS201", name:"Data Structure Using C++",                  syllabus:"" },
+      { date:"27-Mar-26", day:"Friday",    timing:"3:10 PM – 4:25 PM", code:"25AS201", name:"Applied Physics",                           syllabus:"" },
+      { date:"28-Mar-26", day:"Saturday",  timing:"3:10 PM – 4:25 PM", code:"25AS203", name:"Environment & Sustainability",               syllabus:"" },
+      { date:"30-Mar-26", day:"Monday",    timing:"3:10 PM – 4:25 PM", code:"25EL201", name:"Basics of Electrical Engg.",                 syllabus:"" },
+    ];
+
+    /* countdown */
+    function countdown(str) {
+      const mo = {Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};
+      const [d,m,y] = str.split('-');
+      const exam  = new Date(2000+parseInt(y), mo[m], parseInt(d));
+      const today = new Date(); today.setHours(0,0,0,0);
+      const diff  = Math.round((exam-today)/86400000);
+      if (diff < 0)   return {txt:"Done",        cls:"done"};
+      if (diff === 0) return {txt:"Today!",       cls:"urgent"};
+      if (diff === 1) return {txt:"Tomorrow",     cls:"urgent"};
+      if (diff <= 4)  return {txt:`${diff} days`, cls:"urgent"};
+      if (diff <= 8)  return {txt:`${diff} days`, cls:"soon"};
+                      return {txt:`${diff} days`, cls:"later"};
+    }
+
+    /* render rows */
+    const tbody    = document.getElementById('tbody');
+    const cardList = document.getElementById('cardList');
+
+    exams.forEach((e, i) => {
+      const has  = e.syllabus.trim() !== "";
+      const cd   = countdown(e.date);
+      const [dd, mm] = e.date.split('-');
+
+      /* ── TABLE ROW ── */
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td class="c-num">${String(i+1).padStart(2,'0')}</td>
+        <td>
+          <span class="big-day">${dd}</span>
+          <span class="small-month">${mm} · 2026</span>
+        </td>
+        <td class="c-day">${e.day}</td>
+        <td class="c-time">${e.timing}</td>
+        <td><span class="pill">${e.code}</span></td>
+        <td>
+          <div class="sub-name">${e.name}</div>
+          <span class="cd ${cd.cls}">${cd.txt}</span>
+        </td>
+        <td class="c-btn">
+          <button class="btn-syl ${has ? 'on' : ''}" data-i="${i}">
+            ${has ? '⌗&nbsp;View' : '— Soon'}
+          </button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+
+      /* ── MOBILE CARD ── */
+      const card = document.createElement('div');
+      card.className = 'exam-card';
+      card.innerHTML = `
+        <div class="card-top">
+          <div class="card-date-block">
+            <span class="big-day">${dd}</span>
+            <span class="small-month">${mm} · 2026</span>
+          </div>
+          <div class="card-right">
+            <div class="card-code-row">
+              <span class="pill">${e.code}</span>
+              <span class="cd ${cd.cls}">${cd.txt}</span>
+            </div>
+            <div class="sub-name">${e.name}</div>
+            <div class="card-meta">
+              <span class="card-day-time">${e.day} &nbsp;·&nbsp; ${e.timing}</span>
+            </div>
+          </div>
+        </div>
+        <div class="card-bottom">
+          <button class="btn-syl ${has ? 'on' : ''}" data-i="${i}">
+            ${has ? '⌗&nbsp;View Syllabus' : '— Syllabus Coming Soon'}
+          </button>
+        </div>
+      `;
+      cardList.appendChild(card);
+    });
+
+    /* lightbox logic */
+    const lb      = document.getElementById('lb');
+    const lbCode  = document.getElementById('lbCode');
+    const lbSub   = document.getElementById('lbSub');
+    const lbCont  = document.getElementById('lbContent');
+    const lbX     = document.getElementById('lbX');
+
+    document.querySelectorAll('.btn-syl').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const e = exams[+btn.dataset.i];
+        lbCode.textContent = e.code;
+        lbSub.textContent  = e.name;
+        const has = e.syllabus.trim() !== "";
+        lbCont.innerHTML = has
+          ? `<img src="${e.syllabus}" alt="${e.name} syllabus"/>`
+          : `<div class="lb-empty">
+               <div class="ei">📂</div>
+               <div class="et">No syllabus uploaded yet</div>
+               <div class="eh">Drop the image in <code>/syllabus/</code><br>
+               then set <code>syllabus: "syllabus/file.jpg"</code><br>
+               in <code>index.html</code> and push to GitHub.</div>
+             </div>`;
+        lb.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      });
+    });
+
+    const close = () => { lb.classList.remove('open'); document.body.style.overflow=''; };
+    lbX.addEventListener('click', close);
+    lb.addEventListener('click', e => { if(e.target===lb) close(); });
+    document.addEventListener('keydown', e => { if(e.key==='Escape') close(); });
+  </script>
+</body>
+</html>
