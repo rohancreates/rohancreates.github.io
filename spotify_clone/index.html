@@ -397,25 +397,25 @@
         {
           title: "Billie Jean",
           artist: "Michael Jackson",
-          file: "./Michael Jackson - Billie Jean.mp3",
+          file: "Michael Jackson - Billie Jean.mp3",
           emoji: "🕺",
         },
         {
           title: "Smooth Criminal",
           artist: "Michael Jackson",
-          file: "./Michael Jackson - Smooth Criminal.mp3",
+          file: "Michael Jackson - Smooth Criminal.mp3",
           emoji: "🎩",
         },
         {
           title: "Don't Stop 'Til You Get Enough",
           artist: "Michael Jackson",
-          file: "./Michael Jackson - Don't Stop 'Til You Get Enough.mp3",
+          file: "Michael Jackson - Don't Stop 'Til You Get Enough.mp3",
           emoji: "✨",
         },
         {
           title: "Beat It",
           artist: "Michael Jackson",
-          file: "./Michael Jackson - Beat It (.mp3",
+          file: "Michael Jackson - Beat It.mp3",
           emoji: "🎸",
         },
       ];
@@ -474,7 +474,7 @@
             '<span class="index">' +
             (index + 1) +
             "</span>" +
-            "<span class="title">" +
+            '<span class="title">' +
             song.title +
             "</span>" +
             '<span class="artist">' +
@@ -495,19 +495,22 @@
           el.classList.remove("playing");
         });
 
-        document
-          .querySelector('.song-card[data-index="' + currentIndex + '"]')
-          ?.classList.add("playing");
-        document
-          .querySelector('.track-row[data-index="' + currentIndex + '"]')
-          ?.classList.add("playing");
+        var activeCard = document.querySelector(
+          '.song-card[data-index="' + currentIndex + '"]'
+        );
+        var activeRow = document.querySelector(
+          '.track-row[data-index="' + currentIndex + '"]'
+        );
+
+        if (activeCard) activeCard.classList.add("playing");
+        if (activeRow) activeRow.classList.add("playing");
       }
 
       function loadSong(index, autoplay) {
         currentIndex = index;
-        const song = songs[index];
+        var song = songs[index];
 
-        audio.src = song.file;
+        audio.src = encodeURI(song.file);
         playerTitle.textContent = song.title;
         playerArtist.textContent = song.artist;
         playerCover.textContent = song.emoji;
@@ -521,6 +524,9 @@
             isPlaying = false;
             playBtn.textContent = "▶";
           });
+        } else {
+          isPlaying = false;
+          playBtn.textContent = "▶";
         }
       }
 
@@ -587,6 +593,12 @@
 
       volumeBar.addEventListener("input", function () {
         audio.volume = volumeBar.value / 100;
+      });
+
+      audio.addEventListener("error", function () {
+        playerTitle.textContent = "Could not load: " + songs[currentIndex].title;
+        isPlaying = false;
+        playBtn.textContent = "▶";
       });
 
       audio.volume = 0.8;
