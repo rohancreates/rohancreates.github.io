@@ -185,6 +185,12 @@
         color: var(--green);
       }
 
+      .track-row .track-title {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
       .track-row .artist {
         color: var(--muted);
       }
@@ -356,16 +362,62 @@
         </section>
 
         <h2 class="section-title">Popular tracks</h2>
-        <div class="song-grid" id="songGrid"></div>
+        <div class="song-grid" id="songGrid">
+          <article class="song-card playing" data-index="0" data-file="Michael Jackson - Billie Jean.mp3" data-emoji="&#127917;">
+            <div class="song-cover">&#127917;</div>
+            <h3>Billie Jean</h3>
+            <p>Michael Jackson</p>
+          </article>
+          <article class="song-card" data-index="1" data-file="Michael Jackson - Smooth Criminal.mp3" data-emoji="&#127913;">
+            <div class="song-cover">&#127913;</div>
+            <h3>Smooth Criminal</h3>
+            <p>Michael Jackson</p>
+          </article>
+          <article class="song-card" data-index="2" data-file="Michael Jackson - Don't Stop 'Til You Get Enough.mp3" data-emoji="&#10024;">
+            <div class="song-cover">&#10024;</div>
+            <h3>Don&apos;t Stop &apos;Til You Get Enough</h3>
+            <p>Michael Jackson</p>
+          </article>
+          <article class="song-card" data-index="3" data-file="Michael Jackson - Beat It.mp3" data-emoji="&#127928;">
+            <div class="song-cover">&#127928;</div>
+            <h3>Beat It</h3>
+            <p>Michael Jackson</p>
+          </article>
+        </div>
 
-        <div class="track-list" id="trackList"></div>
+        <div class="track-list" id="trackList">
+          <div class="track-row playing" data-index="0" data-file="Michael Jackson - Billie Jean.mp3" data-emoji="&#127917;">
+            <span class="index">1</span>
+            <span class="track-title">Billie Jean</span>
+            <span class="artist">Michael Jackson</span>
+            <span class="duration">--:--</span>
+          </div>
+          <div class="track-row" data-index="1" data-file="Michael Jackson - Smooth Criminal.mp3" data-emoji="&#127913;">
+            <span class="index">2</span>
+            <span class="track-title">Smooth Criminal</span>
+            <span class="artist">Michael Jackson</span>
+            <span class="duration">--:--</span>
+          </div>
+          <div class="track-row" data-index="2" data-file="Michael Jackson - Don't Stop 'Til You Get Enough.mp3" data-emoji="&#10024;">
+            <span class="index">3</span>
+            <span class="track-title">Don&apos;t Stop &apos;Til You Get Enough</span>
+            <span class="artist">Michael Jackson</span>
+            <span class="duration">--:--</span>
+          </div>
+          <div class="track-row" data-index="3" data-file="Michael Jackson - Beat It.mp3" data-emoji="&#127928;">
+            <span class="index">4</span>
+            <span class="track-title">Beat It</span>
+            <span class="artist">Michael Jackson</span>
+            <span class="duration">--:--</span>
+          </div>
+        </div>
       </main>
 
       <footer class="player">
         <div class="now-playing">
-          <div class="now-playing-cover" id="playerCover">♪</div>
+          <div class="now-playing-cover" id="playerCover">&#127917;</div>
           <div class="now-playing-info">
-            <h4 id="playerTitle">No song selected</h4>
+            <h4 id="playerTitle">Billie Jean</h4>
             <p id="playerArtist">Michael Jackson</p>
           </div>
         </div>
@@ -393,217 +445,171 @@
     <audio id="audio"></audio>
 
     <script>
-      const songs = [
-        {
-          title: "Billie Jean",
-          artist: "Michael Jackson",
-          file: "Michael Jackson - Billie Jean.mp3",
-          emoji: "🕺",
-        },
-        {
-          title: "Smooth Criminal",
-          artist: "Michael Jackson",
-          file: "Michael Jackson - Smooth Criminal.mp3",
-          emoji: "🎩",
-        },
-        {
-          title: "Don't Stop 'Til You Get Enough",
-          artist: "Michael Jackson",
-          file: "Michael Jackson - Don't Stop 'Til You Get Enough.mp3",
-          emoji: "✨",
-        },
-        {
-          title: "Beat It",
-          artist: "Michael Jackson",
-          file: "Michael Jackson - Beat It.mp3",
-          emoji: "🎸",
-        },
-      ];
+      (function () {
+        var audio = document.getElementById("audio");
+        var playBtn = document.getElementById("playBtn");
+        var prevBtn = document.getElementById("prevBtn");
+        var nextBtn = document.getElementById("nextBtn");
+        var progressBar = document.getElementById("progressBar");
+        var volumeBar = document.getElementById("volumeBar");
+        var playerTitle = document.getElementById("playerTitle");
+        var playerArtist = document.getElementById("playerArtist");
+        var playerCover = document.getElementById("playerCover");
+        var currentTimeEl = document.getElementById("currentTime");
+        var totalTimeEl = document.getElementById("totalTime");
+        var songCards = document.querySelectorAll(".song-card");
+        var trackRows = document.querySelectorAll(".track-row");
 
-      const audio = document.getElementById("audio");
-      const songGrid = document.getElementById("songGrid");
-      const trackList = document.getElementById("trackList");
-      const playBtn = document.getElementById("playBtn");
-      const prevBtn = document.getElementById("prevBtn");
-      const nextBtn = document.getElementById("nextBtn");
-      const progressBar = document.getElementById("progressBar");
-      const volumeBar = document.getElementById("volumeBar");
-      const playerTitle = document.getElementById("playerTitle");
-      const playerArtist = document.getElementById("playerArtist");
-      const playerCover = document.getElementById("playerCover");
-      const currentTimeEl = document.getElementById("currentTime");
-      const totalTimeEl = document.getElementById("totalTime");
+        var currentIndex = 0;
+        var isPlaying = false;
+        var tracks = [];
 
-      let currentIndex = 0;
-      let isPlaying = false;
-
-      function formatTime(seconds) {
-        if (!seconds || isNaN(seconds)) return "0:00";
-        const mins = Math.floor(seconds / 60);
-        const secs = Math.floor(seconds % 60);
-        return mins + ":" + String(secs).padStart(2, "0");
-      }
-
-      function renderSongs() {
-        songGrid.innerHTML = "";
-        trackList.innerHTML = "";
-
-        songs.forEach(function (song, index) {
-          const card = document.createElement("article");
-          card.className = "song-card";
-          card.dataset.index = index;
-          card.innerHTML =
-            '<div class="song-cover">' +
-            song.emoji +
-            "</div>" +
-            "<h3>" +
-            song.title +
-            "</h3>" +
-            "<p>" +
-            song.artist +
-            "</p>";
-          card.addEventListener("click", function () {
-            loadSong(index, true);
+        songCards.forEach(function (card) {
+          tracks.push({
+            title: card.querySelector("h3").textContent,
+            artist: card.querySelector("p").textContent,
+            file: card.getAttribute("data-file"),
+            emoji: card.getAttribute("data-emoji"),
           });
-          songGrid.appendChild(card);
-
-          const row = document.createElement("div");
-          row.className = "track-row";
-          row.dataset.index = index;
-          row.innerHTML =
-            '<span class="index">' +
-            (index + 1) +
-            "</span>" +
-            '<span class="title">' +
-            song.title +
-            "</span>" +
-            '<span class="artist">' +
-            song.artist +
-            "</span>" +
-            '<span class="duration" data-duration="' +
-            index +
-            '">--:--</span>';
-          row.addEventListener("click", function () {
-            loadSong(index, true);
-          });
-          trackList.appendChild(row);
-        });
-      }
-
-      function updateActiveUI() {
-        document.querySelectorAll(".song-card, .track-row").forEach(function (el) {
-          el.classList.remove("playing");
         });
 
-        var activeCard = document.querySelector(
-          '.song-card[data-index="' + currentIndex + '"]'
-        );
-        var activeRow = document.querySelector(
-          '.track-row[data-index="' + currentIndex + '"]'
-        );
+        function formatTime(seconds) {
+          if (!seconds || isNaN(seconds)) return "0:00";
+          var mins = Math.floor(seconds / 60);
+          var secs = Math.floor(seconds % 60);
+          return mins + ":" + (secs < 10 ? "0" : "") + secs;
+        }
 
-        if (activeCard) activeCard.classList.add("playing");
-        if (activeRow) activeRow.classList.add("playing");
-      }
+        function updateActiveUI() {
+          for (var i = 0; i < songCards.length; i++) {
+            songCards[i].classList.remove("playing");
+            trackRows[i].classList.remove("playing");
+          }
+          if (songCards[currentIndex]) songCards[currentIndex].classList.add("playing");
+          if (trackRows[currentIndex]) trackRows[currentIndex].classList.add("playing");
+        }
 
-      function loadSong(index, autoplay) {
-        currentIndex = index;
-        var song = songs[index];
+        function loadSong(index, autoplay) {
+          currentIndex = index;
+          var track = tracks[index];
 
-        audio.src = encodeURI(song.file);
-        playerTitle.textContent = song.title;
-        playerArtist.textContent = song.artist;
-        playerCover.textContent = song.emoji;
-        updateActiveUI();
+          audio.src = encodeURI(track.file);
+          playerTitle.textContent = track.title;
+          playerArtist.textContent = track.artist;
+          playerCover.innerHTML = track.emoji;
+          updateActiveUI();
 
-        if (autoplay) {
-          audio.play().then(function () {
-            isPlaying = true;
-            playBtn.textContent = "⏸";
-          }).catch(function () {
+          if (autoplay) {
+            audio.play().then(function () {
+              isPlaying = true;
+              playBtn.textContent = "\u23F8";
+            }).catch(function () {
+              isPlaying = false;
+              playBtn.textContent = "\u25B6";
+            });
+          } else {
             isPlaying = false;
-            playBtn.textContent = "▶";
-          });
-        } else {
+            playBtn.textContent = "\u25B6";
+          }
+        }
+
+        function togglePlay() {
+          if (!audio.src) {
+            loadSong(0, true);
+            return;
+          }
+
+          if (isPlaying) {
+            audio.pause();
+            isPlaying = false;
+            playBtn.textContent = "\u25B6";
+          } else {
+            audio.play().then(function () {
+              isPlaying = true;
+              playBtn.textContent = "\u23F8";
+            });
+          }
+        }
+
+        function playNext() {
+          loadSong((currentIndex + 1) % tracks.length, true);
+        }
+
+        function playPrev() {
+          if (audio.currentTime > 3) {
+            audio.currentTime = 0;
+            return;
+          }
+          loadSong((currentIndex - 1 + tracks.length) % tracks.length, true);
+        }
+
+        function onTrackClick(index) {
+          if (currentIndex === index && isPlaying) {
+            audio.pause();
+            isPlaying = false;
+            playBtn.textContent = "\u25B6";
+          } else {
+            loadSong(index, true);
+          }
+        }
+
+        playBtn.addEventListener("click", togglePlay);
+        nextBtn.addEventListener("click", playNext);
+        prevBtn.addEventListener("click", playPrev);
+
+        for (var c = 0; c < songCards.length; c++) {
+          (function (index) {
+            songCards[index].addEventListener("click", function () {
+              onTrackClick(index);
+            });
+            trackRows[index].addEventListener("click", function () {
+              onTrackClick(index);
+            });
+          })(c);
+        }
+
+        audio.addEventListener("timeupdate", function () {
+          if (audio.duration) {
+            progressBar.value = (audio.currentTime / audio.duration) * 100;
+            currentTimeEl.textContent = formatTime(audio.currentTime);
+          }
+        });
+
+        audio.addEventListener("loadedmetadata", function () {
+          totalTimeEl.textContent = formatTime(audio.duration);
+          if (trackRows[currentIndex]) {
+            var durationEl = trackRows[currentIndex].querySelector(".duration");
+            if (durationEl) durationEl.textContent = formatTime(audio.duration);
+          }
+        });
+
+        audio.addEventListener("ended", playNext);
+
+        audio.addEventListener("error", function () {
+          playerTitle.textContent = "Could not load: " + tracks[currentIndex].title;
           isPlaying = false;
-          playBtn.textContent = "▶";
-        }
-      }
+          playBtn.textContent = "\u25B6";
+        });
 
-      function togglePlay() {
-        if (!audio.src) {
-          loadSong(0, true);
-          return;
-        }
+        progressBar.addEventListener("input", function () {
+          if (audio.duration) {
+            audio.currentTime = (progressBar.value / 100) * audio.duration;
+          }
+        });
 
-        if (isPlaying) {
-          audio.pause();
-          isPlaying = false;
-          playBtn.textContent = "▶";
-        } else {
-          audio.play().then(function () {
-            isPlaying = true;
-            playBtn.textContent = "⏸";
+        volumeBar.addEventListener("input", function () {
+          audio.volume = volumeBar.value / 100;
+        });
+
+        document.querySelectorAll(".nav-link").forEach(function (link) {
+          link.addEventListener("click", function (event) {
+            event.preventDefault();
           });
-        }
-      }
+        });
 
-      function playNext() {
-        currentIndex = (currentIndex + 1) % songs.length;
-        loadSong(currentIndex, true);
-      }
-
-      function playPrev() {
-        if (audio.currentTime > 3) {
-          audio.currentTime = 0;
-          return;
-        }
-        currentIndex = (currentIndex - 1 + songs.length) % songs.length;
-        loadSong(currentIndex, true);
-      }
-
-      playBtn.addEventListener("click", togglePlay);
-      nextBtn.addEventListener("click", playNext);
-      prevBtn.addEventListener("click", playPrev);
-
-      audio.addEventListener("timeupdate", function () {
-        if (audio.duration) {
-          progressBar.value = (audio.currentTime / audio.duration) * 100;
-          currentTimeEl.textContent = formatTime(audio.currentTime);
-        }
-      });
-
-      audio.addEventListener("loadedmetadata", function () {
-        totalTimeEl.textContent = formatTime(audio.duration);
-        const durationEl = document.querySelector(
-          '.duration[data-duration="' + currentIndex + '"]'
-        );
-        if (durationEl) {
-          durationEl.textContent = formatTime(audio.duration);
-        }
-      });
-
-      audio.addEventListener("ended", playNext);
-
-      progressBar.addEventListener("input", function () {
-        if (audio.duration) {
-          audio.currentTime = (progressBar.value / 100) * audio.duration;
-        }
-      });
-
-      volumeBar.addEventListener("input", function () {
-        audio.volume = volumeBar.value / 100;
-      });
-
-      audio.addEventListener("error", function () {
-        playerTitle.textContent = "Could not load: " + songs[currentIndex].title;
-        isPlaying = false;
-        playBtn.textContent = "▶";
-      });
-
-      audio.volume = 0.8;
-      renderSongs();
-      loadSong(0, false);
+        audio.volume = 0.8;
+        loadSong(0, false);
+      })();
     </script>
   </body>
 </html>
