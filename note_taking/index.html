@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To-Do List</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: Arial, sans-serif;
+        background: #f4f4f4;
+        color: #222;
+        padding: 2rem 1rem;
+      }
+
+      .app {
+        max-width: 480px;
+        margin: 0 auto;
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 1.5rem;
+      }
+
+      h1 {
+        margin: 0 0 1rem;
+        font-size: 1.5rem;
+        text-align: center;
+      }
+
+      .add-form {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .add-form input {
+        flex: 1;
+        padding: 0.6rem 0.75rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 1rem;
+      }
+
+      .add-form button {
+        padding: 0.6rem 1rem;
+        border: none;
+        border-radius: 4px;
+        background: #2563eb;
+        color: #fff;
+        font-size: 1rem;
+        cursor: pointer;
+      }
+
+      .add-form button:hover {
+        background: #1d4ed8;
+      }
+
+      .todo-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .todo-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid #eee;
+      }
+
+      .todo-item:last-child {
+        border-bottom: none;
+      }
+
+      .todo-item.done span {
+        text-decoration: line-through;
+        color: #888;
+      }
+
+      .todo-item span {
+        flex: 1;
+        word-break: break-word;
+      }
+
+      .todo-item button {
+        padding: 0.35rem 0.6rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background: #fff;
+        cursor: pointer;
+      }
+
+      .todo-item button:hover {
+        background: #fee2e2;
+        border-color: #fca5a5;
+      }
+
+      .empty {
+        text-align: center;
+        color: #888;
+        padding: 1rem 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <h1>To-Do List</h1>
+
+      <form class="add-form" id="addForm">
+        <input
+          type="text"
+          id="taskInput"
+          placeholder="Add a new task..."
+          autocomplete="off"
+          required
+        />
+        <button type="submit">Add</button>
+      </form>
+
+      <ul class="todo-list" id="todoList"></ul>
+      <p class="empty" id="emptyMsg">No tasks yet. Add one above.</p>
+    </div>
+
+    <script>
+      const addForm = document.getElementById("addForm");
+      const taskInput = document.getElementById("taskInput");
+      const todoList = document.getElementById("todoList");
+      const emptyMsg = document.getElementById("emptyMsg");
+
+      let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+      function saveTasks() {
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+      }
+
+      function renderTasks() {
+        todoList.innerHTML = "";
+
+        tasks.forEach(function (task, index) {
+          const li = document.createElement("li");
+          li.className = "todo-item" + (task.done ? " done" : "");
+
+          const checkbox = document.createElement("input");
+          checkbox.type = "checkbox";
+          checkbox.checked = task.done;
+          checkbox.addEventListener("change", function () {
+            tasks[index].done = checkbox.checked;
+            saveTasks();
+            renderTasks();
+          });
+
+          const text = document.createElement("span");
+          text.textContent = task.text;
+
+          const deleteBtn = document.createElement("button");
+          deleteBtn.type = "button";
+          deleteBtn.textContent = "Delete";
+          deleteBtn.addEventListener("click", function () {
+            tasks.splice(index, 1);
+            saveTasks();
+            renderTasks();
+          });
+
+          li.appendChild(checkbox);
+          li.appendChild(text);
+          li.appendChild(deleteBtn);
+          todoList.appendChild(li);
+        });
+
+        emptyMsg.style.display = tasks.length === 0 ? "block" : "none";
+      }
+
+      addForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const text = taskInput.value.trim();
+        if (!text) return;
+
+        tasks.push({ text: text, done: false });
+        saveTasks();
+        taskInput.value = "";
+        renderTasks();
+      });
+
+      renderTasks();
+    </script>
+  </body>
+</html>
