@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Live Clock</title>
+    <meta
+      name="description"
+      content="A simple live clock that shows the current time and updates every second."
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=JetBrains+Mono:wght@500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      :root {
+        color-scheme: dark;
+        --bg: #0b0d12;
+        --surface: rgba(255, 255, 255, 0.04);
+        --border: rgba(255, 255, 255, 0.1);
+        --text: #f5f7fb;
+        --muted: rgba(245, 247, 251, 0.62);
+        --accent: #8b9dff;
+        --glow: rgba(139, 157, 255, 0.35);
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        font-family: "DM Sans", system-ui, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+      }
+
+      body::before,
+      body::after {
+        content: "";
+        position: fixed;
+        inset: auto;
+        width: 42rem;
+        height: 42rem;
+        border-radius: 50%;
+        filter: blur(80px);
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      body::before {
+        top: -12rem;
+        left: -10rem;
+        background: radial-gradient(circle, var(--glow), transparent 70%);
+      }
+
+      body::after {
+        right: -10rem;
+        bottom: -12rem;
+        background: radial-gradient(
+          circle,
+          rgba(255, 160, 220, 0.18),
+          transparent 70%
+        );
+      }
+
+      .clock {
+        position: relative;
+        z-index: 1;
+        width: min(92vw, 34rem);
+        padding: 3rem 2rem;
+        text-align: center;
+        border: 1px solid var(--border);
+        border-radius: 1.75rem;
+        background: var(--surface);
+        backdrop-filter: blur(18px);
+        box-shadow:
+          0 24px 60px rgba(0, 0, 0, 0.35),
+          inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      }
+
+      .clock__label {
+        margin: 0 0 0.75rem;
+        font-size: 0.85rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .clock__time {
+        margin: 0;
+        font-family: "JetBrains Mono", ui-monospace, monospace;
+        font-size: clamp(2.75rem, 12vw, 4.5rem);
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        line-height: 1.1;
+        font-variant-numeric: tabular-nums;
+        text-shadow: 0 0 24px rgba(139, 157, 255, 0.25);
+      }
+
+      .clock__date {
+        margin: 1rem 0 0;
+        font-size: 1rem;
+        color: var(--muted);
+      }
+
+      .clock__seconds {
+        color: var(--accent);
+      }
+    </style>
+  </head>
+
+  <body>
+    <main class="clock" aria-live="polite" aria-atomic="true">
+      <p class="clock__label">Current time</p>
+      <p class="clock__time" id="time">00:00:00</p>
+      <p class="clock__date" id="date"></p>
+    </main>
+
+    <script>
+      const timeEl = document.getElementById("time");
+      const dateEl = document.getElementById("date");
+
+      function pad(value) {
+        return String(value).padStart(2, "0");
+      }
+
+      function updateClock() {
+        const now = new Date();
+
+        const hours = pad(now.getHours());
+        const minutes = pad(now.getMinutes());
+        const seconds = pad(now.getSeconds());
+
+        timeEl.innerHTML =
+          hours +
+          ":" +
+          minutes +
+          ':<span class="clock__seconds">' +
+          seconds +
+          "</span>";
+
+        dateEl.textContent = now.toLocaleDateString(undefined, {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        });
+      }
+
+      updateClock();
+      setInterval(updateClock, 1000);
+    </script>
+  </body>
+</html>
